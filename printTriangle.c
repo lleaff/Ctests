@@ -1,11 +1,10 @@
 #include <stdio.h>
 
-#define BRICK '#'
-#define DOOR ':'
+#define BRICK ':'
 
 int main() {
 	int height, width;
-	printf("Pyramid base length?\n>");
+	printf("Triangle base length?\n>");
 	scanf("%d", &width);
 	height = (width / 2);
 	if(width % 2 != 0)
@@ -17,17 +16,10 @@ int main() {
 	{
 		for (; x <= width; x++)
 		{
-			if (x >= y + 1 && x <= width - y)
-			{
-				if (((width >= 8) && (y <= 1)) && (x == width / 2 || x == width / 2 + 1))
-					printf("%c", DOOR);
-				else
-					printf("%c", BRICK);
-			}
+			if (y == 0 || x == y + 1 || x == width - y)
+				printf("%c", BRICK);
 			else 
-			{
 				printf(" ");
-			}
 		}
 		printf("\n");
 	}
