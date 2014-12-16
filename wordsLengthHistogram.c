@@ -9,7 +9,7 @@ void printHorizontalHistogram(int values[], int start, int end, int maxVal);
 void printVerticalHistogram(int values[], int start, int end);
 void printArray(int array[], int start, int end);
 
-int main() {
+int main(int argc, char *argv[]) {
 	//Scanning loop
 	int ch;
 	BOOL in = false;
