@@ -8,7 +8,13 @@ int main() {
 	scanf("%d", &x);
 	printf("y?\n>");
 	scanf("%d", &y);
+	if (y < 0)
+	{
+		printf("ERROR: y can only be a positive integer");
+		return 1;
+	}
 	printf("%d", power(x, y));
+	return 0;
 }
 
 int power(int myVar, int exponent) {
