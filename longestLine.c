@@ -19,7 +19,7 @@ int main() {
 			lineLMax = lineL;
 			copyCharArr(line, lineMax);
 		}
-	} while (lineL != -1);
+	} while (lineL > 0);
 
 	//print result
 	printf("Longest line: %d characters.\n%s\n", lineLMax, lineMax);
@@ -32,10 +32,8 @@ int main() {
 //get line length + output line to char array
 int getLine(char line[]) {
 	int ch, lineLength;
-	for (lineLength = 0; (ch = getchar()) != '\n'; lineLength++) 
+	for (lineLength = 0; (ch = getchar()) != '\n' && ch != EOF; lineLength++) 
 	{
-		if(ch == EOF)
-			return -1;
 		if (lineLength <= MAXSTOREDLINE - 1)
 			line[lineLength] = ch;
 	}
