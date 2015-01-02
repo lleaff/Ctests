@@ -1,3 +1,5 @@
+//Basic version, doesn't handle special cases and string literals
+
 #include <stdio.h>
 
 #define MAXLINESIZE 1000
@@ -6,37 +8,29 @@
 
 int getLine(char line[]);
 void insertChar(char line[], int position, char character);
+int containsChar(char charArr[], char val);
 
 int main()
 {
-	printf("Fold lines longer than... ");
+	printf("Fold lines longer than...\n");
 	int maxLineL = 20;
 	//scanf("%d", &lines);
 
 	char line[MAXLINESIZE];
-	int lineL = getLine(line);
-	int i;
-	int folded;
+	int i, iCurr;
+	int lineLength;
 
-	for (folded = FALSE; lineL != EOF; folded = FALSE) {
-		for(i = 0; folded == FALSE && i <= 0; i--) {
-			if(lineL > maxLineL + i) {
-				switch(line[maxLineL + i]) {
-					case ' ':
-					case '\t':
-						line[maxLineL + i] = '\n';
-						folded = TRUE;
-						break;
-					case '(':
-						insertChar(line, maxLineL + i, '\n');
-						folded = TRUE;
-						break;
-					default:
-						break;
-				}
+	char openingBraces[] = "({[<";
+
+	for (lineLength = getLine(line); lineLength != -1; lineLength = getLine(line)) {
+		for (i = maxLineL, iCurr = lineLength; iCurr > maxLineL && i >= 0; i--) {
+			if (containsChar(openingBraces, line[i]) || (line[i] == ' ' || line[i] == '\t')) {
+				insertChar(line, i++, '\n');
+				iCurr = lineLength - i;
+				i += maxLineL;
 			}
 		}
-		printf("%s", line);
+		printf("%s\n", line);
 	}
 
 	return 0;
@@ -47,20 +41,19 @@ int getLine(char line[])
 	int length = 0;
 	int ch = getchar();
 	if (ch == EOF) {
-		return EOF;
+		return -1; //ERROR: EOF
 	}
-	while(ch != '\n' || ch != EOF) {
+	while(ch != '\n' && ch != EOF) {
 		line[length] = ch;
 		ch = getchar();
 		length++;
-
 	} 
 	line[length] = '\0';
 	return length;
 }
 
 //Pushes values to the right of the inserted value
-//Requires that the char array be long enough to accomodate the inserted value
+//Requires that the char array be long enough to accomodate the additional value
 void insertChar(char line[], int position, char character)
 {
 	int i;
@@ -73,4 +66,15 @@ void insertChar(char line[], int position, char character)
 	line[i] = ch;
 	line[position] = character;
 	return;
+}
+
+int containsChar(char charArr[], char val)
+{
+	int i;
+	for (i = 0; charArr[i] != '\0'; i++) {
+		if (charArr[i] == val) {
+			return 1; //TRUE
+		}
+	}
+	return 0; //FALSE
 }
