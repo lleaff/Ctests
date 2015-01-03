@@ -16,7 +16,7 @@ int main()
 	int slashCommentOpened = FALSE;	// // comment
 	int starCommentOpened  = FALSE;	// /* comment 
 	int commentedOutLine   = FALSE; // Skip printing the line
-	int blankLine          = FALSE; // Only whitespace line, safe to skip printing
+	int blankLine          = TRUE; // Only whitespace line, safe to skip printing
 
 	// Store the whitespace before printing it in case the line is commented out
 	char whiteSpaceBuffer[MAXINDENTSIZE]; 
