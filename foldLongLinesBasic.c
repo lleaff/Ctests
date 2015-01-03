@@ -1,5 +1,4 @@
-//Advanced multiple pass version for C programs
-//Not finished, will come back to it later when I have more knowledge of C
+//Basic version, doesn't handle special cases and string literals
 
 #include <stdio.h>
 
@@ -10,8 +9,6 @@
 int getLine(char line[]);
 void insertChar(char line[], int position, char character);
 int containsChar(char charArr[], char val);
-int isSurroundedBy(char charArr[], int position, char surroundingChar);
-
 
 int main()
 {
@@ -24,19 +21,15 @@ int main()
 	int lineLength;
 
 	char openingBraces[] = "({[<";
-	char closingBraces[] = ")}]>";
 
 	for (lineLength = getLine(line); lineLength != -1; lineLength = getLine(line)) {
 		for (i = maxLineL, iCurr = lineLength; iCurr > maxLineL && i >= 0; i--) {
-
 			if (containsChar(openingBraces, line[i]) || (line[i] == ' ' || line[i] == '\t')) {
 				insertChar(line, i++, '\n');
 				iCurr = lineLength - i;
 				i += maxLineL;
 			}
-
 		}
-
 		printf("%s\n", line);
 	}
 
@@ -84,34 +77,4 @@ int containsChar(char charArr[], char val)
 		}
 	}
 	return 0; //FALSE
-}
-
-int isSurroundedBy(char charArr[], int position, char surroundingChar)
-{
-	int inside = FALSE, containsPosition = FALSE, escaped = FALSE;
-	int i;
-	for (i = 0; charArr[i] != EOF && charArr[i] != '\0'; i++) {
-		if (!inside) {
-			if (i == position) {
-				return FALSE;
-			} else if (charArr[i] == surroundingChar && !escaped) {
-				inside = TRUE;
-			}
-		} else {
-			if (i == position) {
-				containsPosition = TRUE;
-			} else if (charArr[i] == surroundingChar && !escaped) {
-				if (containsPosition) {
-					return TRUE;
-				}
-				inside = FALSE;
-			}
-		}
-		if (charArr[i] == '\\') {
-			escaped = TRUE;
-		} else {
-			escaped = FALSE;
-		}
-	}
-	return FALSE;
 }
