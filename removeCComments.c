@@ -7,6 +7,8 @@
 
 int getLine(char line[]);
 int nextXChars(char line[], int index, int x, char chars[]);
+int isSurroundedBy(char line[], int index, char surroundingChar);
+int isStringLiteral(char line[], int index);
 
 int main()
 {
@@ -16,10 +18,12 @@ int main()
 	int slashCommentOpened = FALSE;	// // comment
 	int starCommentOpened  = FALSE;	// /* comment 
 	int commentedOutLine   = FALSE; // Skip printing the line
-	int blankLine          = TRUE; // Only whitespace line, safe to skip printing
+	int blankLine		   = TRUE; // Only whitespace line, safe to skip printing
+	int dontCountNext      = FALSE; // Don't print next char
 
 	// Store the whitespace before printing it in case the line is commented out
 	char whiteSpaceBuffer[MAXINDENTSIZE]; 
+	whiteSpaceBuffer[0] = '\0';
 
 	int i;
 	// Read the input line by line
@@ -29,26 +33,31 @@ int main()
 		for (i = 0; i < lineLength; i++) {
 			if (slashCommentOpened) {
 				break;
-			} else if (!starCommentOpened && nextXChars(line, i, 2, "//") && (i == 0 || line[i - 1] != '*')) {
+			} else if (!starCommentOpened && nextXChars(line, i, 2, "//") && (i == 0 || line[i - 1] != '*') && !isStringLiteral(line, i)) {
 				// Third condition checks against "*//" special case where "*/" has precedence
 				if (blankLine) {
 					commentedOutLine = TRUE;
 				}
 				slashCommentOpened = TRUE;
-			} else if (nextXChars(line, i, 2, "/*")) { 
+			} else if (nextXChars(line, i, 2, "/*") && !isStringLiteral(line, i)) {
 				starCommentOpened = TRUE;
-			} else if (nextXChars(line, i, 2, "*/")) {
+			} else if (nextXChars(line, i, 2, "*/") && starCommentOpened) {
 				starCommentOpened = FALSE;
-			} else if (!starCommentOpened && (i == 0 || !nextXChars(line, i - 1, 2, "*/"))) {
-				if (blankLine && (line[i] == ' ' || line[i] == '\t')) {
-					whiteSpaceBuffer[i] = line[i];
-					whiteSpaceBuffer[i + 1] = '\0';
+				dontCountNext = TRUE;
+			} else if (!starCommentOpened) {
+				if (dontCountNext) {
+					dontCountNext = FALSE;
 				} else {
-				if (blankLine) {
-					printf("%s", whiteSpaceBuffer);
-					blankLine = FALSE;
-				}
-				printf("%c", line[i]);
+					if (blankLine && (line[i] == ' ' || line[i] == '\t')) {
+						whiteSpaceBuffer[i] = line[i];
+						whiteSpaceBuffer[i + 1] = '\0';
+					} else {
+						if (blankLine) {
+							printf("%s", whiteSpaceBuffer);
+							blankLine = FALSE;
+						}
+						printf("%c", line[i]);
+					}
 				}
 			}
 		} 
@@ -62,7 +71,6 @@ int main()
 		whiteSpaceBuffer[0] = '\0';
 	}
 }
-
 
 int getLine(char line[])
 {
@@ -79,7 +87,8 @@ int getLine(char line[])
 	return length;
 }
 
-int nextXChars(char line[], int index, int x, char chars[]) {
+int nextXChars(char line[], int index, int x, char chars[])
+{
 	int i;
 	int equal = FALSE;
 	for (i = x - 1; i >= 0; i--) {
@@ -91,4 +100,38 @@ int nextXChars(char line[], int index, int x, char chars[]) {
 		}
 	}
 	return equal;
+}
+
+int isSurroundedBy(char line[], int index, char surroundingChar)
+{
+	int i;
+	int open		= FALSE;
+	int indexPassed = FALSE;
+	for (i = 0; line[i] != '\0'; i++) {
+		if (line[i] == surroundingChar && (i == 0 || line[i - 1] != '\\')) {
+			//Second condition checks whether the char is escaped in which case it isn't counted
+			if (open) {	//=> closed
+				if (indexPassed) { 
+					return TRUE;
+				}
+				open = FALSE;
+			} else {
+				open = TRUE;
+			}
+		}
+		if ((i) == index) {
+			if (!open) {
+				return FALSE; // Can't be surrounded
+			} else {
+				indexPassed = TRUE;
+			}
+		}
+	}
+	return -1; //ERROR: Index out of bounds
+}
+
+// Specialized wrapper for isSurroundedBy
+int isStringLiteral(char line[], int index)
+{
+	return isSurroundedBy(line, index, '"');
 }
