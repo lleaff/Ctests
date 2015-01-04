@@ -19,7 +19,6 @@ int main()
 	int starCommentOpened  = FALSE;	// /* comment 
 	int commentedOutLine   = FALSE; // Skip printing the line
 	int blankLine		   = TRUE; // Only whitespace line, safe to skip printing
-	int dontCountNext      = FALSE; // Don't print next char
 
 	// Store the whitespace before printing it in case the line is commented out
 	char whiteSpaceBuffer[MAXINDENTSIZE]; 
@@ -43,23 +42,20 @@ int main()
 				starCommentOpened = TRUE;
 			} else if (nextXChars(line, i, 2, "*/") && starCommentOpened) {
 				starCommentOpened = FALSE;
-				dontCountNext = TRUE;
+				i++;
 			} else if (!starCommentOpened) {
-				if (dontCountNext) {
-					dontCountNext = FALSE;
+				if (blankLine && (line[i] == ' ' || line[i] == '\t')) {
+					whiteSpaceBuffer[i] = line[i];
+					whiteSpaceBuffer[i + 1] = '\0';
 				} else {
-					if (blankLine && (line[i] == ' ' || line[i] == '\t')) {
-						whiteSpaceBuffer[i] = line[i];
-						whiteSpaceBuffer[i + 1] = '\0';
-					} else {
-						if (blankLine) {
-							printf("%s", whiteSpaceBuffer);
-							blankLine = FALSE;
-						}
-						printf("%c", line[i]);
+					if (blankLine) {
+						printf("%s", whiteSpaceBuffer);
+						blankLine = FALSE;
 					}
+					printf("%c", line[i]);
 				}
 			}
+
 		} 
 		if (!commentedOutLine && !starCommentOpened) {
 			printf("\n");
