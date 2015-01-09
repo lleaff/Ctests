@@ -51,4 +51,3 @@ int hexToInt(char hex[])
 	}
 	return integer;
 }
-
