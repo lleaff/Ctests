@@ -25,7 +25,7 @@ void swapArrValues(void *arr1, void *arr2, int elementSize, int arrayLength)
 void explicitString(int length, char myString[])
 {
 	int i;
-	for (i = 0; i <= length; i++) {
+	for (i = 0; i < length; i++) {
 		if (myString[i] == '\0') {
 			printf("\\0");
 		} else {
@@ -74,29 +74,37 @@ Generic swap function\n\
 	testResult((z == wB && w == zB), returnC);
 	printf("\n---------\n");
 
-	char husband[9] = "Peter";
-	char wife[] = "Alexandra";
+	char husband[10] = "Peter";
+	char wife[10] = "Alexandra";
+	explicitString(10, husband);
+	printf("\n");
+	explicitString(10, wife);
+	printf("\n");
 	printf("husband: %-9s wife: %-9s\n", husband, wife);
 	swap(&husband, &wife, sizeof(char*));
 	printf("...swap(&husband, &wife, sizeof(char*))...\n");
 	printf("husband: %-9s wife: %-9s\n", husband, wife);
 	testResult((husband[5] == 'n' && husband[6] == 'd' && wife[5] == '\0'), returnC);
-	explicitString(9, husband);
+	explicitString(10, husband);
 	printf("\n");
-	explicitString(9, wife);
+	explicitString(10, wife);
 	printf("\n");
 	printf("\n---------\n");
 
-	char husband2[9] = "Peter";
-	char wife2[] = "Alexandra";
+	char husband2[10] = "Peter";
+	char wife2[10] = "Alexandra";
+	explicitString(10, husband2);
+	printf("\n");
+	explicitString(10, wife2);
+	printf("\n");
 	printf("husband2: %-9s wife2: %-9s\n", husband2, wife2);
-	swapArrValues(husband2, wife2, sizeof(char), 9);
-	printf("...swapArrValues(husband2, wife2, sizeof(char), 9)...\n");
+	swapArrValues(husband2, wife2, sizeof(char), 10);
+	printf("...swapArrValues(husband2, wife2, sizeof(char), 10)...\n");
 	printf("husband2: %-9s wife2: %-9s\n", husband2, wife2);
 	testResult((husband2[5] == 'n' && husband2[6] == 'd' && wife2[5] == '\0'), returnC);
-	explicitString(9, husband2);
+	explicitString(10, husband2);
 	printf("\n");
-	explicitString(9, wife2);
+	explicitString(10, wife2);
 	printf("\n");
 	printf("\n---------\n");
 	return returnC;
