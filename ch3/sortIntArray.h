@@ -3,10 +3,10 @@
 
 #define MAXINTARRLENGTH 500
 
+typedef enum { YES, NO, ERROR } ReturnCode;
+
 void printIntArrCommaSeparated(int arrayLength, int array[]);
 
 int sortIntArray(int arrayLength, int array[]);
-
-typedef enum { YES, NO, ERROR } ReturnCode;
 
 #endif
