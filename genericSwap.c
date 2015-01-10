@@ -15,13 +15,6 @@ void swap(void *vpt1, void *vpt2, int size)
 	memcpy(vpt2, tmp, size);
 }
 
-void swapArrValues(void *arr1, void *arr2, int elementSize, int arrayLength)
-{
-	for (; arrayLength >= 0; arrayLength--) {
-		swap(&arr1[arrayLength], &arr2[arrayLength], elementSize);
-	}
-}
-
 void explicitString(int length, char myString[])
 {
 	int i;
@@ -30,6 +23,19 @@ void explicitString(int length, char myString[])
 			printf("\\0");
 		} else {
 			printf("%2c", myString[i]);
+		}
+	}
+}
+
+void printDoubleArrCommaSeparated(int arrayLength, double array[])
+{
+	int i;
+	for (i = 0; i < arrayLength; i++) {
+		printf("%9.0f", array[i]);
+		if (i < arrayLength - 1) {
+			printf(", ");
+		} else {
+			printf(";");
 		}
 	}
 }
@@ -46,66 +52,75 @@ void testResult(BOOL result, int returnC)
 	printf("\n");
 }
 
+void printSeparator()
+{
+	int width = 70;
+	char separatorChar = '-';
+	int i;
+	for (i = 0; i < width; i++) {
+		printf("%c", separatorChar);
+	}
+	printf("\n");
+}
+
 int main()
 {
 	int returnC = 0;
 
-	printf("\n\
-Generic swap function\n\
----------------------\n");
+	printf("\nGeneric swap function\n");
+	printSeparator();
 
 	char x = 'x';
 	char y = 'y';
 	char xB = x, yB = y;
 	printf("x: %-3c y: %-3c\n", x, y);
 	swap(&y, &x, sizeof(char));
-	printf("...swap(&y, &x, sizeof(char))...\n");
+	printf("\n...swap(&y, &x, sizeof(char))...\n\n");
 	printf("x: %-3c y: %-3c\n", x, y);
 	testResult((x == yB && y == xB), returnC);
-	printf("\n---------\n");
+	printSeparator();
 
 	double z = 9999;
 	double w = 1.5;
 	double zB = z, wB = w;
-	printf("z: %-4f w: %-4f\n", z, w);
+	printf("z: %-4.1f w: %-4.1f\n", z, w);
 	swap(&z, &w, sizeof(double));
-	printf("...swap(&z, &w, sizeof(double))...\n");
-	printf("z: %-4f w: %-4f\n", z, w);
+	printf("\n...swap(&z, &w, sizeof(double))...\n\n");
+	printf("z: %-4.1f w: %-4.1f\n", z, w);
 	testResult((z == wB && w == zB), returnC);
-	printf("\n---------\n");
+	printSeparator();
 
 	char husband[10] = "Peter";
 	char wife[10] = "Alexandra";
+	printf("husband: %-9s wife: %-9s\n", husband, wife);
 	explicitString(10, husband);
 	printf("\n");
 	explicitString(10, wife);
 	printf("\n");
+	swap(husband, wife, sizeof(char) * strlen(wife));
+	printf("\n...swap(husband, wife, sizeof(char) * strlen(wife))...\n\n");
 	printf("husband: %-9s wife: %-9s\n", husband, wife);
-	swap(&husband, &wife, sizeof(char*));
-	printf("...swap(&husband, &wife, sizeof(char*))...\n");
-	printf("husband: %-9s wife: %-9s\n", husband, wife);
+	explicitString(10, husband);
+	printf("\n");
+	explicitString(10, wife);
+	printf("\n");
 	testResult((husband[5] == 'n' && husband[6] == 'd' && wife[5] == '\0'), returnC);
-	explicitString(10, husband);
-	printf("\n");
-	explicitString(10, wife);
-	printf("\n");
-	printf("\n---------\n");
+	printSeparator();
 
-	char husband2[10] = "Peter";
-	char wife2[10] = "Alexandra";
-	explicitString(10, husband2);
+	double numsX[5] = { 10, 15, 20, 25, 30 };
+	double numsY[5] = { 34234, 230424, 234234, 504, 54391099 };
+	printDoubleArrCommaSeparated(5, numsX);
 	printf("\n");
-	explicitString(10, wife2);
+	printDoubleArrCommaSeparated(5, numsY);
 	printf("\n");
-	printf("husband2: %-9s wife2: %-9s\n", husband2, wife2);
-	swapArrValues(husband2, wife2, sizeof(char), 10);
-	printf("...swapArrValues(husband2, wife2, sizeof(char), 10)...\n");
-	printf("husband2: %-9s wife2: %-9s\n", husband2, wife2);
-	testResult((husband2[5] == 'n' && husband2[6] == 'd' && wife2[5] == '\0'), returnC);
-	explicitString(10, husband2);
+	swap(numsX, numsY, sizeof(double) * 5);
+	printf("\n...swap(numsX, numsY, sizeof(double) * 5)...\n\n");
+	printDoubleArrCommaSeparated(5, numsX);
 	printf("\n");
-	explicitString(10, wife2);
+	printDoubleArrCommaSeparated(5, numsY);
 	printf("\n");
-	printf("\n---------\n");
+	testResult((numsX[0] == 34234 && numsY[0] == 10), returnC);
+	printSeparator();
+
 	return returnC;
 }
