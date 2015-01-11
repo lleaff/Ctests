@@ -2,6 +2,8 @@
 
 int fahrToCels(int fahr);
 
+#ifndef MAIN
+#define MAIN
 int main () {
 	double fahr, cels;
 	int lower, upper, step;
@@ -18,6 +20,7 @@ int main () {
 		fahr += step;
 	}
 }
+#endif 
 
 int fahrToCels(int fahr) {
 	return 5 * ( fahr - 32) / 9;
