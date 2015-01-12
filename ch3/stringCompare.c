@@ -11,8 +11,3 @@ BOOL stringCompare(char string1[], char string2[])
 	}
 	return TRUE;
 }
-
-int main() 
-{
-	return 0;
-}

@@ -64,17 +64,46 @@ int getWord(char word[], char charBuffer)
 int stringAppend(char base[], int position, char appended[])
 {
 	int i;
+	//find end of string if position > stringLength
+	if (base[position] == '\0') {
+		for (; base[position] == '\0'; position--);
+	}
 	for (i = 0; appended[i] != '\0' && base[i] != '\0'; i++) {
 		base[position + i] = appended[i];
 	}
 	return --i;
 }
 
+int stringToUppercase(char inputString[], char outputString[])
+{
+	int i;
+	for (i = 0; inputString[i] != '\0'; i++) {
+			outputString[i] = (inputString[i] >= 'a' && inputString[i] <= 'z') ? \
+							  outputString[i] - 'a' + 'A' : inputString[i];
+	}
+	return i;
+}
+
+int symbolsToUnderscore(char inputString[], char outputString[])
+{
+	int i;
+	for (i = 0; inputString[i] != '\0'; i++) {
+		if ((inputString[i] >= 'a' && inputString[i] <= 'z') || \
+					(inputString[i] >= 'A' && inputString[i] <= 'Z')) {
+			outputString[i] = inputString[i];
+		} else {
+			outputString[i] = '_';
+		}
+	}
+	return i;
+}
+
 int getStatement(char statement[], int wordsStart[])
 {
 	char charBuffer = '\0';
 	char word[MAXWORDLENGTH];
-	int wordCount = 0; //Different "word" meaning as words counted in wordsStart[], doesn't count syntax chars/words
+	int wordCount = 0; 
+	//^ Different "word" meaning as words counted in wordsStart[], doesn't count syntax chars/words
 	int i;
 	for (i = 0; !stringCompare(word, ";"); ) {
 		i += wordsStart[i] = getWord(word, charBuffer);
@@ -88,6 +117,17 @@ int getStatement(char statement[], int wordsStart[])
 
 int main()
 {
+	char programName[MAXWORDLENGTH] = "testProgram"; //TODO parse name from arguments
+	char headerName[MAXWORDLENGTH];
+	symbolsToUnderscore(headerName, headerName);
+	stringAppend(headerName, stringToUppercase(programName, headerName) - 1, "_H");
+	
+
 	char statement[MAXSTATEMENTLENGTH] = { 'X' }; //X to DEBUG, change to \0 otherwise
-	int wordsStart[MAXSTATEMENTLENGTH] = { 0 }; // n > 0 value indicates that a word of length n is starting at this position
+	int wordsStart[MAXSTATEMENTLENGTH] = { 0 }; 
+	//^ A n > 0 value indicates that a word of length n is starting at this position
+	
+	printf("#ifndef %s\n#define %s\n", headerName, headerName);
+	printf("#endif /* %s $/\n", headerName);
+
 }
