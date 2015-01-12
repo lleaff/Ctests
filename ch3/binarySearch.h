@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int searchInIntArr(int num, int array[]);
+int searchInIntArr(int arrayLength, int array[], int searchedValue)
 
 void randomArray(int length, int array[], int lowerLimit, int upperLimit);
 
