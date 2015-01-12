@@ -20,7 +20,8 @@ BOOL stringContainsChar(char myChar, char myString[])
 
 BOOL isValidIdentifierChar(char myChar)
 {
-	return ((myChar >= 'A' && myChar <= 'Z') || (myChar >= 'a' && myChar <= 'z') || (myChar >= '0' && myChar <= '9') || myChar == '_');
+	return ((myChar >= 'A' && myChar <= 'Z') || (myChar >= 'a' && myChar <= 'z')\
+			|| (myChar >= '0' && myChar <= '9') || myChar == '_');
 }
 
 int getWord(char word[], char charBuffer)
