@@ -32,11 +32,40 @@
 //}
 //#endif /* MAIN_FUNC */
 
-void printIntArrCommaSeparated(int arrayLength, int array[])
+int power(int operand, int power)
+{
+	int num = operand;
+	for(; power > 0; power--) {
+		num *= operand;
+	}
+	return num;
+}
+
+void alignNumbers(char formattedNum[], int num, int align)
+{
+	int numL = 0;
+	int tmp = num;
+	while (tmp > 0) {
+		tmp = num / 10;
+		numL++;
+	}
+	int i;
+	if (align) {
+		formattedNum[align] = '\0';
+		for (i = align; align >= 0; align--) {
+
+		}
+	} else {
+		formattedNum[-align] = '\0';
+	}
+}
+
+void printIntArrCommaSeparated(int arrayLength, int array[], int align)
 {
 	int i;
+	char formattedNum[50]; //TODO: compute real max
 	for (i = 0; i < arrayLength; i++) {
-		printf("%d", array[i]);
+		printf("%s", formattedNum);
 		if (i < arrayLength - 1) {
 			printf(", ");
 		} else {
