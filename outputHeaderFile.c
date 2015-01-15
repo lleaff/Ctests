@@ -24,29 +24,31 @@ BOOL isValidIdentifierChar(char myChar)
 			|| (myChar >= '0' && myChar <= '9') || myChar == '_');
 }
 
-int getWord(char word[], char charBuffer)
+int getWord(char word[], char* charBuffer)
 {
 	int wordLength = 0;
 	BOOL WORDFOUND = FALSE;
 	char ch;
 	//Check past getWord buffer to see if it stopped at a singleCharWordDelimiter
-	if (stringContainsChar(charBuffer, wordDelimiters)) {
-		sprintf(word, "%c", charBuffer);
-		charBuffer = '\0';
+	if (stringContainsChar(*charBuffer, wordDelimiters)) {
+		//sprintf(word, "%c", *charBuffer); //<= why did I use that instead of just "word[0] = charBuffer" ?
+		word[0] = *charBuffer;
+		*charBuffer = '\0';
 		wordLength = 1;
 		WORDFOUND = TRUE;
 	}
-	BOOL escaped = (charBuffer == '\\') ? TRUE : FALSE;
+	BOOL escaped = (*charBuffer == '\\') ? TRUE : FALSE;
 	//Loop through the next characters 
-	for (ch = charBuffer; !WORDFOUND && ch != EOF; ch = getchar(), wordLength++) {
+	ch = (*charBuffer == '\0') ? getchar() : *charBuffer;
+	for (; !WORDFOUND && ch != EOF; ch = getchar(), wordLength++) {
+		printf("\t\t\tDEBUG: ch=%c\n", ch);//DEBUG
 		if (!escaped) {
 			if (stringContainsChar(ch, wordDelimiters)) {
-				charBuffer = ch;
+				printf("DEBUG: *charBuffer_%c_ = %c\n", *charBuffer, ch);//DEBUG
 				WORDFOUND = TRUE;
-			} else if (ch == ' ' || ch == '\t' || ch == '\0') {
-				charBuffer = '\0';
+			} else if (ch == ' ' || ch == '\t' || (ch > 0 && ch == '\0')) {
 				WORDFOUND = TRUE;
-			} else if (isValidIdentifierChar(ch) && !(wordLength == 0 && (ch >= '0' && ch <= '9'))) {
+			} else if (isValidIdentifierChar(ch) && (wordLength == 0 && (ch >= '0' && ch <= '9'))) {
 				//is identifier
 			} else if (ch == '\\') {
 				escaped = TRUE;
@@ -54,7 +56,7 @@ int getWord(char word[], char charBuffer)
 		}
 		word[wordLength] = ch;
 	}
-
+	*charBuffer = ch;
 	wordLength--;
 	word[wordLength] = '\0'; //Close the string
 	return wordLength;
@@ -68,7 +70,8 @@ int stringAppend(char base[], int position, char appended[])
 	if (base[position] == '\0') {
 		for (; base[position] == '\0'; position--);
 	}
-	for (i = 0; appended[i] != '\0' && base[i] != '\0'; i++) {
+	position++;
+	for (i = 0; appended[i] != '\0'; i++) {
 		base[position + i] = appended[i];
 	}
 	return --i;
@@ -78,8 +81,7 @@ int stringToUppercase(char inputString[], char outputString[])
 {
 	int i;
 	for (i = 0; inputString[i] != '\0'; i++) {
-			outputString[i] = (inputString[i] >= 'a' && inputString[i] <= 'z') ? \
-							  outputString[i] - 'a' + 'A' : inputString[i];
+			outputString[i] = (inputString[i] >= 'a' && inputString[i] <= 'z') ? inputString[i] - 'a' + 'A' : inputString[i];
 	}
 	return i;
 }
@@ -105,13 +107,16 @@ int getStatement(char statement[], int wordsStart[])
 	int wordCount = 0; 
 	//^ Different "word" meaning as words counted in wordsStart[], doesn't count syntax chars/words
 	int i;
-	for (i = 0; !stringCompare(word, ";"); ) {
-		i += wordsStart[i] = getWord(word, charBuffer);
+	for (i = 0; stringCompare(word, ";"); ) {
+		wordsStart[i] = getWord(word, &charBuffer);
+		printf("word=%s\n", word);//DEBUG
 		stringAppend(statement, i, word);
 		if (!stringContainsChar(word[0], " \t") && !stringContainsChar(word[0], wordDelimiters)) {
 			wordCount++;
 		}
+		i += wordsStart[i];
 	}
+	statement[i + 1] = '\0';
 	return wordCount;
 }
 
@@ -119,15 +124,26 @@ int main()
 {
 	char programName[MAXWORDLENGTH] = "testProgram"; //TODO parse name from arguments
 	char headerName[MAXWORDLENGTH];
-	symbolsToUnderscore(headerName, headerName);
-	stringAppend(headerName, stringToUppercase(programName, headerName) - 1, "_H");
+	stringAppend(headerName, stringToUppercase(programName, headerName), "_H");
+	//symbolsToUnderscore(headerName, headerName);
 	
 
-	char statement[MAXSTATEMENTLENGTH] = { 'X' }; //X to DEBUG, change to \0 otherwise
+	char statement[MAXSTATEMENTLENGTH] /*= { 'X' }*/; //X to DEBUG, change to \0 otherwise
 	int wordsStart[MAXSTATEMENTLENGTH] = { 0 }; 
 	//^ A n > 0 value indicates that a word of length n is starting at this position
 	
-	printf("#ifndef %s\n#define %s\n", headerName, headerName);
-	printf("#endif /* %s $/\n", headerName);
+	printf("#ifndef %s\n#define %s\n", headerName, headerName); //Keep at top
 
+	//DEBUG Tests begin
+	int x;
+	char chBuffer = '\0';
+	char word[MAXWORDLENGTH];
+	for (x = 0; x < 25; x++) {
+		getWord(word, &chBuffer);
+		printf("%02d. \"%s\",\n  charBuffer: \"%s%c\"\n", x, word, (charBuffer == '\0') ? "\\0" : "", charBuffer);
+	}
+	//DEBUG Tests end
+
+	printf("#endif /* %s $/\n", headerName); //Keep at bottom
+	return 0;
 }
