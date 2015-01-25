@@ -60,12 +60,11 @@ void alignNumbers(char formattedNum[], int num, int align)
 	}
 }
 
-void printIntArrCommaSeparated(int arrayLength, int array[], int align)
+void printIntArrCommaSeparated(int arrayLength, int array[])
 {
 	int i;
-	char formattedNum[50]; //TODO: compute real max
 	for (i = 0; i < arrayLength; i++) {
-		printf("%s", formattedNum);
+		printf("%d", array[i]);
 		if (i < arrayLength - 1) {
 			printf(", ");
 		} else {
