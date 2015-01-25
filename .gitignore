@@ -1,5 +1,9 @@
 *.exe
+
+#Vim temp files
 *.swp
+*.swo
+*.swn
 
 ###OS X
 
