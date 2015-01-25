@@ -41,24 +41,24 @@ int power(int operand, int power)
 	return num;
 }
 
-void alignNumbers(char formattedNum[], int num, int align)
-{
-	int numL = 0;
-	int tmp = num;
-	while (tmp > 0) {
-		tmp = num / 10;
-		numL++;
-	}
-	int i;
-	if (align) {
-		formattedNum[align] = '\0';
-		for (i = align; align >= 0; align--) {
-
-		}
-	} else {
-		formattedNum[-align] = '\0';
-	}
-}
+//void alignNumbers(char formattedNum[], int num, int align)
+//{
+//	int numL = 0;
+//	int tmp = num;
+//	while (tmp > 0) {
+//		tmp = num / 10;
+//		numL++;
+//	}
+//	int i;
+//	if (align) {
+//		formattedNum[align] = '\0';
+//		for (i = align; align >= 0; align--) {
+//
+//		}
+//	} else {
+//		formattedNum[-align] = '\0';
+//	}
+//}
 
 void printIntArrCommaSeparated(int arrayLength, int array[])
 {

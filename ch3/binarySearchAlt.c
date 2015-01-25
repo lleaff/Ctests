@@ -9,101 +9,98 @@ int charToDigit(char myChar);
 int stringToInt(char myString[]);
 int searchInIntArr2Tests(int arrayLength, int array[], int searchedValue);
 
-#ifndef MAIN_FUNC
-#define MAIN_FUNC
-int main(int argc, char *argv[])
-{
-	const int testC = 6; // number of tests
-
-	BOOL perfTest = FALSE;
-
-	const int testArrayLength = 10;
-	const int testArrayLowerLimit = 0;
-	const int testArrayUpperLimit = 16;
-	int searchedValue = 0;
-
-	if (argc <= 1) {
-	printf("What value between %d and %d do you want to search for?\n", testArrayLowerLimit, testArrayUpperLimit);
-		scanf("%d", &searchedValue);
-	} else {
-		if (argc > 2) {
-			if (!strcmp(argv[2], "-p") || !strcmp(argv[2], "--performance")) {
-				perfTest = TRUE;
-			}
-		}
-		searchedValue = stringToInt(argv[1]);
-	}
-	printf("Let's search the number %d in those arrays:\n", searchedValue);
-
-	int testArray[MAXINTARRLENGTH];
-
-	srand(time(NULL));
-	int i, j, curVal;
-	int pos;
-	for (i = 1; i <= testC; i++) {
-		randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
-		sortIntArray(testArrayLength, testArray);
-		printIntArrCommaSeparated(testArrayLength, testArray);
-		printf("\n");
-
-		pos = searchInIntArr(testArrayLength, testArray, searchedValue);
-
-		//Put spaces before arrow
-		for (j = 0; pos > 0 && j < pos; j++) {
-			//Compensate for spaces, commas and number of digits, dependant on printIntArrCommaSeparated
-			for (curVal = ((testArray[j] == 0) ? 1 : testArray[j]) * (j > 0 ? 100 : 10); curVal > 0; curVal /= 10) {
-				printf(" ");
-			}
-		}
-		if (pos >= 0) {
-			for (curVal = ((testArray[j] == 0) ? 1 : testArray[j]); curVal > 0 && pos > 0; curVal /= 10) {
-				printf(" ");
-			}
-			printf("^\n");
-		} else {
-			printf("Not found.\n");
-		}
-	}
-
-	//Performance test
-	if (perfTest) {
-		printf("\n");
-		long int time1Test = 0, time2Tests = 0;
-		struct timespec timeBuffer1, timeBuffer2;
-		int perfTestsC = 4;
-
-		int perfArrayLength = 5000;
-		int perfArray[perfArrayLength];
-		int perfArrayLowerLimit = 0; 
-		int perfArrayUpperLimit = 50;
-		int perfSearchedValue = 20;
-
-		int j;
-		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
-		for (j = perfTestsC; j >= 0; j--) {
-			randomArray(perfArrayLength, perfArray, perfArrayLowerLimit, perfArrayUpperLimit);
-			sortIntArray(perfArrayLength, perfArray);
-			searchInIntArr(perfArrayLength, perfArray, perfSearchedValue);
-		}
-		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
-		time1Test = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
-
-		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
-		for (j = perfTestsC; j >= 0; j--) {
-			randomArray(perfArrayLength, perfArray, perfArrayLowerLimit, perfArrayUpperLimit);
-			sortIntArray(perfArrayLength, perfArray);
-			searchInIntArr2Tests(perfArrayLength, perfArray, perfSearchedValue);
-		}
-		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
-		time2Tests = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
-		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n%s version is faster.",
-				time1Test, time2Tests, (time1Test < time2Tests) ? "The single test" : 
-				((time1Test == time2Tests) ? "No " : "The double test"));
-	}
-
-	return 0;
-}
-#endif /* MAIN_FUNC */
+//int main(int argc, char *argv[])
+//{
+//	const int testC = 6; // number of tests
+//
+//	BOOL perfTest = FALSE;
+//
+//	const int testArrayLength = 10;
+//	const int testArrayLowerLimit = 0;
+//	const int testArrayUpperLimit = 16;
+//	int searchedValue = 0;
+//
+//	if (argc <= 1) {
+//	printf("What value between %d and %d do you want to search for?\n", testArrayLowerLimit, testArrayUpperLimit);
+//		scanf("%d", &searchedValue);
+//	} else {
+//		if (argc > 2) {
+//			if (!strcmp(argv[2], "-p") || !strcmp(argv[2], "--performance")) {
+//				perfTest = TRUE;
+//			}
+//		}
+//		searchedValue = stringToInt(argv[1]);
+//	}
+//	printf("Let's search the number %d in those arrays:\n", searchedValue);
+//
+//	int testArray[MAXINTARRLENGTH];
+//
+//	srand(time(NULL));
+//	int i, j, curVal;
+//	int pos;
+//	for (i = 1; i <= testC; i++) {
+//		randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
+//		sortIntArray(testArrayLength, testArray);
+//		printIntArrCommaSeparated(testArrayLength, testArray);
+//		printf("\n");
+//
+//		pos = searchInIntArr(testArrayLength, testArray, searchedValue);
+//
+//		//Put spaces before arrow
+//		for (j = 0; pos > 0 && j < pos; j++) {
+//			//Compensate for spaces, commas and number of digits, dependant on printIntArrCommaSeparated
+//			for (curVal = ((testArray[j] == 0) ? 1 : testArray[j]) * (j > 0 ? 100 : 10); curVal > 0; curVal /= 10) {
+//				printf(" ");
+//			}
+//		}
+//		if (pos >= 0) {
+//			for (curVal = ((testArray[j] == 0) ? 1 : testArray[j]); curVal > 0 && pos > 0; curVal /= 10) {
+//				printf(" ");
+//			}
+//			printf("^\n");
+//		} else {
+//			printf("Not found.\n");
+//		}
+//	}
+//
+//	//Performance test
+//	if (perfTest) {
+//		printf("\n");
+//		long int time1Test = 0, time2Tests = 0;
+//		struct timespec timeBuffer1, timeBuffer2;
+//		int perfTestsC = 4;
+//
+//		int perfArrayLength = 5000;
+//		int perfArray[perfArrayLength];
+//		int perfArrayLowerLimit = 0; 
+//		int perfArrayUpperLimit = 50;
+//		int perfSearchedValue = 20;
+//
+//		int j;
+//		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
+//		for (j = perfTestsC; j >= 0; j--) {
+//			randomArray(perfArrayLength, perfArray, perfArrayLowerLimit, perfArrayUpperLimit);
+//			sortIntArray(perfArrayLength, perfArray);
+//			searchInIntArr(perfArrayLength, perfArray, perfSearchedValue);
+//		}
+//		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
+//		time1Test = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
+//
+//		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
+//		for (j = perfTestsC; j >= 0; j--) {
+//			randomArray(perfArrayLength, perfArray, perfArrayLowerLimit, perfArrayUpperLimit);
+//			sortIntArray(perfArrayLength, perfArray);
+//			searchInIntArr2Tests(perfArrayLength, perfArray, perfSearchedValue);
+//		}
+//		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
+//		time2Tests = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
+//		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n%s version is faster.",
+//				time1Test, time2Tests, (time1Test < time2Tests) ? "The single test" : 
+//				((time1Test == time2Tests) ? "No " : "The double test"));
+//	}
+//
+//	return 0;
+//}
 
 int randomInt(int lowerLimit, int upperLimit)
 {
