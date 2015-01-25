@@ -28,7 +28,9 @@ int main()
 		sortIntArray(testArrayLength, testArray);
 		printIntArrCommaSeparated(testArrayLength, testArray);
 		printf("\n");
+		//Put spaces before arrow
 		for (pos = searchInIntArr(testArrayLength, testArray, searchedValue), j = 0; pos > 0 && j < pos; j++) {
+			//Compensate for spaces, commas and number of digits, dependant on printIntArrCommaSeparated
 			for (curVal = ((testArray[j] == 0) ? 1 : testArray[j]) * (j > 0 ? 100 : 10); curVal > 0; curVal /= 10) {
 				printf(" ");
 			}
