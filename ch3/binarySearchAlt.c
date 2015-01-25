@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 		int perfTestsC;
 
 		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
-		for (perfTestsC = 5000; perfTestsC >= 0; perfTestsC--) {
+		for (perfTestsC = 10000; perfTestsC >= 0; perfTestsC--) {
 			randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
 			sortIntArray(testArrayLength, testArray);
 			searchInIntArr(testArrayLength, testArray, searchedValue);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 		time1Test = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
 
 		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
-		for (perfTestsC = 5000; perfTestsC >= 0; perfTestsC--) {
+		for (perfTestsC = 10000; perfTestsC >= 0; perfTestsC--) {
 			randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
 			sortIntArray(testArrayLength, testArray);
 			searchInIntArr2Tests(testArrayLength, testArray, searchedValue);
