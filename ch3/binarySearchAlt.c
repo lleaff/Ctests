@@ -1,16 +1,21 @@
-#include "binarySearch.h"
+#include "binarySearchAlt.h"
 #include "sortIntArray.h"
 #include <stdio.h>
+#include <string.h>
+#include <time.h> //Performance test
 
 int randomInt(int lowerLimit, int upperLimit);
 int charToDigit(char myChar);
 int stringToInt(char myString[]);
+int searchInIntArr2Tests(int arrayLength, int array[], int searchedValue);
 
 #ifndef MAIN_FUNC
 #define MAIN_FUNC
 int main(int argc, char *argv[])
 {
 	const int testC = 6; // number of tests
+
+	BOOL perfTest = FALSE;
 
 	const int testArrayLength = 10;
 	const int testArrayLowerLimit = 0;
@@ -21,6 +26,11 @@ int main(int argc, char *argv[])
 	printf("What value between %d and %d do you want to search for?\n", testArrayLowerLimit, testArrayUpperLimit);
 		scanf("%d", &searchedValue);
 	} else {
+		if (argc > 2) {
+			if (strcmp(argv[2], "-p") == 0 || strcmp(argv[2], "--performance") == 0) {
+				perfTest = TRUE;
+			}
+		}
 		searchedValue = stringToInt(argv[1]);
 	}
 	printf("Let's search the number %d in those arrays:\n", searchedValue);
@@ -35,8 +45,11 @@ int main(int argc, char *argv[])
 		sortIntArray(testArrayLength, testArray);
 		printIntArrCommaSeparated(testArrayLength, testArray);
 		printf("\n");
+
+		pos = searchInIntArr(testArrayLength, testArray, searchedValue);
+
 		//Put spaces before arrow
-		for (pos = searchInIntArr(testArrayLength, testArray, searchedValue), j = 0; pos > 0 && j < pos; j++) {
+		for (j = 0; pos > 0 && j < pos; j++) {
 			//Compensate for spaces, commas and number of digits, dependant on printIntArrCommaSeparated
 			for (curVal = ((testArray[j] == 0) ? 1 : testArray[j]) * (j > 0 ? 100 : 10); curVal > 0; curVal /= 10) {
 				printf(" ");
@@ -51,6 +64,33 @@ int main(int argc, char *argv[])
 			printf("Not found.\n");
 		}
 	}
+
+	if (perfTest) {
+		printf("\n");
+		long int time1Test = 0, time2Tests = 0;
+		struct timespec timeBuffer1, timeBuffer2;
+		int perfTestsC;
+
+		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
+		for (perfTestsC = 5000; perfTestsC >= 0; perfTestsC--) {
+			randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
+			sortIntArray(testArrayLength, testArray);
+			searchInIntArr(testArrayLength, testArray, searchedValue);
+		}
+		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
+		time1Test = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
+
+		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
+		for (perfTestsC = 5000; perfTestsC >= 0; perfTestsC--) {
+			randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
+			sortIntArray(testArrayLength, testArray);
+			searchInIntArr2Tests(testArrayLength, testArray, searchedValue);
+		}
+		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
+		time2Tests = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
+		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n", time1Test, time2Tests);
+	}
+
 	return 0;
 }
 #endif /* MAIN_FUNC */
