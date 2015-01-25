@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 		scanf("%d", &searchedValue);
 	} else {
 		if (argc > 2) {
-			if (strcmp(argv[2], "-p") == 0 || strcmp(argv[2], "--performance") == 0) {
+			if (!strcmp(argv[2], "-p") || !strcmp(argv[2], "--performance")) {
 				perfTest = TRUE;
 			}
 		}
