@@ -88,7 +88,9 @@ int main(int argc, char *argv[])
 		}
 		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
 		time2Tests = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
-		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n", time1Test, time2Tests);
+		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n\
+%s version is faster.", time1Test, time2Tests, (time1Test < time2Tests) ? "The single test" : 
+				((time1Test == time2Tests) ? "No" : "The double test"));
 	}
 
 	return 0;
