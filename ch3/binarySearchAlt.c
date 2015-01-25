@@ -65,32 +65,40 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	//Performance test
 	if (perfTest) {
 		printf("\n");
 		long int time1Test = 0, time2Tests = 0;
 		struct timespec timeBuffer1, timeBuffer2;
-		int perfTestsC;
+		int perfTestsC = 4;
 
+		int perfArrayLength = 5000;
+		int perfArray[perfArrayLength];
+		int perfArrayLowerLimit = 0; 
+		int perfArrayUpperLimit = 50;
+		int perfSearchedValue = 20;
+
+		int j;
 		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
-		for (perfTestsC = 10000; perfTestsC >= 0; perfTestsC--) {
-			randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
-			sortIntArray(testArrayLength, testArray);
-			searchInIntArr(testArrayLength, testArray, searchedValue);
+		for (j = perfTestsC; j >= 0; j--) {
+			randomArray(perfArrayLength, perfArray, perfArrayLowerLimit, perfArrayUpperLimit);
+			sortIntArray(perfArrayLength, perfArray);
+			searchInIntArr(perfArrayLength, perfArray, perfSearchedValue);
 		}
 		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
 		time1Test = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
 
 		clock_gettime(CLOCK_REALTIME, &timeBuffer1);
-		for (perfTestsC = 10000; perfTestsC >= 0; perfTestsC--) {
-			randomArray(testArrayLength, testArray, testArrayLowerLimit, testArrayUpperLimit);
-			sortIntArray(testArrayLength, testArray);
-			searchInIntArr2Tests(testArrayLength, testArray, searchedValue);
+		for (j = perfTestsC; j >= 0; j--) {
+			randomArray(perfArrayLength, perfArray, perfArrayLowerLimit, perfArrayUpperLimit);
+			sortIntArray(perfArrayLength, perfArray);
+			searchInIntArr2Tests(perfArrayLength, perfArray, perfSearchedValue);
 		}
 		clock_gettime(CLOCK_REALTIME, &timeBuffer2);
 		time2Tests = timeBuffer2.tv_nsec - timeBuffer1.tv_nsec;
-		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n\
-%s version is faster.", time1Test, time2Tests, (time1Test < time2Tests) ? "The single test" : 
-				((time1Test == time2Tests) ? "No" : "The double test"));
+		printf("Time taken with 1 test function:  %ld\nTime taken with 2 tests function: %ld\n%s version is faster.",
+				time1Test, time2Tests, (time1Test < time2Tests) ? "The single test" : 
+				((time1Test == time2Tests) ? "No " : "The double test"));
 	}
 
 	return 0;
