@@ -100,12 +100,14 @@ int expand(char input[], char output[])
 		if (input[i] == '-' && i > 0 && input[i + 1] != '\0') {
 			firstCharType = getCharType(input[i - 1]);
 			secondCharType = getCharType(input[i + 1]);
-			if (firstCharType.type == secondCharType.type) {
+			if (firstCharType.type == secondCharType.type && firstCharType.type != other) {
 				expansionC++;
 				for (k = 1, target = input[i + 1]; output[j - 1] != target; j++, k++) {
 					output[j] = input[i - 1] + k;
 				}
 				j--, i++;
+			} else {
+				output[j] = input[i];
 			}
 		} else {
 			output[j] = input[i];
