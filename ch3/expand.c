@@ -93,6 +93,7 @@ int expand(char input[], char output[])
 	int expansionC = 0;
 
 	char target;
+	BOOL isTargetUp;
 	int i, j, k;
 	charType firstCharType, secondCharType;
 	for (i = j = 0; input[i] != '\0'; i++, j++) {
@@ -100,14 +101,14 @@ int expand(char input[], char output[])
 		if (input[i] == '-' && i > 0 && input[i + 1] != '\0') {
 			firstCharType = getCharType(input[i - 1]);
 			secondCharType = getCharType(input[i + 1]);
-			if (firstCharType.type == secondCharType.type && firstCharType.type != other) {
+			if (firstCharType.type == secondCharType.type) {
 				expansionC++;
-				for (k = 1, target = input[i + 1]; output[j - 1] != target; j++, k++) {
-					output[j] = input[i - 1] + k;
+				target = input[i + 1];
+				isTargetUp = input[i - 1] < target;
+				for (k = 1; output[j - 1] != target; j++, k++) {
+					output[j] = input[i - 1] + (k * (isTargetUp ? 1 : -1));
 				}
 				j--, i++;
-			} else {
-				output[j] = input[i];
 			}
 		} else {
 			output[j] = input[i];
