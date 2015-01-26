@@ -18,6 +18,12 @@ int main()
 		integerToString(testNums[i], testString);
 		printf("%5d\t%s\n", testNums[i], testString);
 	}
+
+	//Test with lowest negative int
+	const int intLowerLimit = (int)-(pow(2.0, sizeof(int) * 8) / 2);
+	integerToString(intLowerLimit, testString);
+	printf("%d\t%s\n", intLowerLimit, testString);
+
 }
 
 int integerToString(int myInt, char myString[])
