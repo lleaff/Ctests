@@ -14,35 +14,44 @@ int printfExcerpt(char str[], int maxLength, int focusedIndex);
 
 int stringToInt(char myString[])
 {
-	int i;
+	int i = 0;
+	BOOL neg = FALSE;
 	if (myString[0] == '\0') {
 		return -1; //Error empty string
+	} else if (myString[0] == '-') {
+		neg = TRUE;
+		i++;
 	}
 	int num = 0;
-	for (i = 0; myString[i] != '\0'; i++) {
+	for (; myString[i] != '\0'; i++) {
 		num = (num * 10) + (myString[i] - '0');
 	}
-	return num;
+	return neg ? -num : num;
 }
 
 int main(int argc, char **argv)
 {
 	BOOL test = FALSE;
 	int testC;
-	char searchedChar;
+	char searchedChar = EOF; //Boggus initialization
 	char containingString[MAXSTRINGSIZE];
 	if (argc == 1) {
 		scanf("%c", &searchedChar);
 		scanf("%s", containingString);
-	} else if (argc <= 3) {
-		if (!strcmp(argv[1], "--test")) {
+	} else {
+		if (argc <= 3 && !strcmp(argv[1], "--test")) {
 			test = TRUE;
 			testC = 6;
 			if (argc == 3) {
 				testC = stringToInt(argv[2]);
 			}
+		} else {
+			int i;
+			for (i = 1; i < argc; i++) {
+				
+			}
 		}
-	}
+	} 
 
 	printf("%d", searchChar(searchedChar, containingString));
 
