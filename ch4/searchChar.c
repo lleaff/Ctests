@@ -11,19 +11,35 @@ typedef enum { FALSE, TRUE } BOOL;
 int randInt(int lowerLimit, int upperLimit);
 int printfExcerpt(char str[], int maxLength, int focusedIndex);
 
+int stringToInt(char myString[])
+{
+	int i;
+	if (myString[0] == '\0') {
+		return -1; //Error empty string
+	}
+	int num = 0;
+	for (i = 0; myString[i] != '\0'; i++) {
+		num = (num * 10) + (myString[i] - '0');
+	}
+	return num;
+}
+
 int main(int argc, char **argv)
 {
 	BOOL test = FALSE;
-
+	int testC;
 	if (argc == 1) {
-	} else if (argc == 2) {
+	} else if (argc <= 3) {
 		if (!strcmp(argv[1], "--test")) {
 			test = TRUE;
+			testC = 6;
+			if (argc == 3) {
+				testC = stringToInt(argv[2]);
+			}
 		}
 	}
 
 	if (test) {
-		const int testC= 6;
 		char testString[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 		srand(time(NULL));
 		char searchedChar;
@@ -71,9 +87,10 @@ void printfFromTo(char str[], int beginning, int end)
 //Returns the position of the focusedIndex in the new printed text
 int printfExcerpt(char str[], int maxLength, int focusedIndex)
 {
-	char separatorA[] = "...";
-	char separatorB[strlen(separatorA)];
-	strcpy(separatorB, separatorA);
+	char separatorA[] = "<< ";
+	char separatorB[] = " >>";
+	//char separatorB[strlen(separatorA)];	// To have separatorA & B
+	//strcpy(separatorB, separatorA);		//  be the same
 	maxLength -= strlen(separatorA) + strlen(separatorB);
 
 	int len = strlen(str);
