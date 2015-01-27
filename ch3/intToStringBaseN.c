@@ -1,4 +1,4 @@
-#include "integerToString.h"
+#include "intToStringBaseN.h"
 #include "binarySearch.h"
 #include <stdio.h>
 #include <math.h>
@@ -14,15 +14,21 @@ int main()
 	int testNums[testC];
 	srand(time(NULL));
 	randomArray(testC, testNums, -9999, 9999);
-	int i;
+	const int basesC = 5;
+	int bases[] = { 2, 8, 10, 16, 32 };
+	int i, n;
 	for (i = 0; i < testC; i++) {
-		integerToString(testNums[i], testString);
-		printf("%5d\t%s\n", testNums[i], testString);
+		printf("%d:", testNums[i]);
+		for (n = 0; n < basesC; n++) {
+			intToStringBaseN(testNums[i], bases[n], testString);
+			printf("%s%s", testString, (i < testC - 1) ? "   " : "");
+		}
+		printf("\n");
 	}
 
 	//Test with lowest negative int
 	const int intLowerLimit = (int)-(pow(2.0, sizeof(int) * 8) / 2);
-	integerToString(intLowerLimit, testString);
+	intToStringBaseN(intLowerLimit, 10, testString);
 	printf("%d\t%s\n", intLowerLimit, testString);
 
 }
