@@ -20,7 +20,8 @@ int main(int argc, char *argv[])
 	if (argc == 1) {
 		char inputString[MAXSTRINGSIZE];
 		scanf("%s", inputString);
-		printf("%g", stringToDouble(inputString));
+		double num = stringToDouble(inputString);
+		printf("%g", num);
 	} else {
 		if (argc <= 3 && !strcmp(argv[1], "--test")) {
 			int testC;
@@ -30,7 +31,14 @@ int main(int argc, char *argv[])
 				testC = 6;
 			}
 			srand(time(NULL));
-			randTests(testC);
+			return randTests(testC);
+		} else {
+			int i;
+			double num;
+			for (i = 1; i <= argc; i++) {
+				num = stringToDouble(argv[i]);
+				printf("%s%g", ((i > 1 && i < argc) ? "\n" : ""), num);
+			}
 			return 0;
 		}
 	}
@@ -73,4 +81,15 @@ double randDouble(double lower, double upper, int resolution)
 
 int randTests(int testC)
 {
+	int correctness = 0;
+	double testDouble, convertedDouble;
+	char testString[MAXSTRINGSIZE];
+	for (; testC > 0; testC--) {
+		testDouble = randDouble(-1000, 1000, 3);
+		printf("%g\n", testDouble);
+		sprintf(testString, "%g", testDouble);
+		convertedDouble = stringToDouble(testString);
+		correctness += (convertedDouble == testDouble);
+	}
+	return correctness;
 }
