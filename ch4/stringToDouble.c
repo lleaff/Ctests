@@ -44,8 +44,50 @@ int main(int argc, char *argv[])
 	}
 }
 
+BOOL charIsDigit(char myChar)
+{
+	return (myChar >= '0' && myChar <= '9');
+}
+
+int charToInt(char myChar)
+{
+	return (myChar - '0');
+}
+
 double stringToDouble(char str[])
 {
+	double num = 0;
+	int i = str[0] == '-' ? 1 : 0;
+	BOOL significand = TRUE; //inverse being exponent
+	int point = strlen(str), base = 0;
+	int exponent = 0;
+	BOOL negExponent = FALSE;
+	for (; str[i] != '\0'; i++) {
+		if(significand) {
+			if (str[i] == '.') {
+				point = i;
+			} else if (str[i] == 'e' || str[i] == 'E') {
+				significand = FALSE;
+				base = i;
+			} else if (charIsDigit(str[i])) {
+				num = (i < point) ? (num * 10 + charToInt(str[i])) : (num + (charToInt(str[i]) * pow(10, i - point)));
+			} else {
+				fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
+				return 0;
+			}
+		} else {
+			if (i == base + 1 && str[i] == '-') {
+				negExponent = TRUE;
+			} else if (charIsDigit(str[i])) {
+				exponent = exponent * 10 + charToInt(str[i]);
+			}
+		}
+	}
+	if (base != 0) {
+		exponent = negExponent ? -exponent : exponent;
+		num = num * pow(10, exponent);
+	}
+	return str[0] == '-' ? -num : num;;
 }
 
 int stringToInt(char str[])
@@ -53,7 +95,7 @@ int stringToInt(char str[])
 	int num = 0;
 	int i = (str[0] == '-') ? 1 : 0;
 	for (; str[i] != '\0'; i++) {
-		num = (num * 10) + (str[i] - '0');
+		num = (num * 10) + charToInt(str[i]);
 	}
 	return (str[0] == '-') ? -num : num;
 }
@@ -62,7 +104,7 @@ BOOL stringIsInt(char str[])
 {
 	int i = (str[0] == '-') ? 1 : 0;
 	for (; str[i] != '\0'; i++) {
-		if (!(str[i] >= '0' && str[i] <= '9')) {
+		if (!charIsDigit(str[i])) {
 			return FALSE;
 		}
 	}
