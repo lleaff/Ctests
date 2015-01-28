@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	} else {
 		if (argc <= 3 && !strcmp(argv[1], "--test")) {
 			int testC;
-			if (stringIsInt(argv[2])) {
+			if (argc == 3 && stringIsInt(argv[2])) {
 				testC = stringToInt(argv[2]);
 			} else {
 				testC = 6;
@@ -35,9 +35,9 @@ int main(int argc, char *argv[])
 		} else {
 			int i;
 			double num;
-			for (i = 1; i <= argc; i++) {
+			for (i = 1; i < argc; i++) {
 				num = stringToDouble(argv[i]);
-				printf("%s%g", ((i > 1 && i < argc) ? "\n" : ""), num);
+				printf("%g%s", num, (i < argc - 1 ? "\n" : ""));
 			}
 			return 0;
 		}
@@ -70,16 +70,19 @@ double stringToDouble(char str[])
 				significand = FALSE;
 				base = i;
 			} else if (charIsDigit(str[i])) {
-				num = (i < point) ? (num * 10 + charToInt(str[i])) : (num + (charToInt(str[i]) * pow(10, i - point)));
+				num = (i < point) ? (num * 10 + charToInt(str[i])) : (num + (charToInt(str[i]) * pow(10, -(i - point))));
 			} else {
 				fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
-				return 0;
+				return NAN;
 			}
 		} else {
 			if (i == base + 1 && str[i] == '-') {
 				negExponent = TRUE;
 			} else if (charIsDigit(str[i])) {
 				exponent = exponent * 10 + charToInt(str[i]);
+			} else {
+				fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
+				return NAN;
 			}
 		}
 	}
@@ -87,7 +90,7 @@ double stringToDouble(char str[])
 		exponent = negExponent ? -exponent : exponent;
 		num = num * pow(10, exponent);
 	}
-	return str[0] == '-' ? -num : num;;
+	return (str[0] == '-') ? -num : num;;
 }
 
 int stringToInt(char str[])
@@ -121,6 +124,7 @@ double randDouble(double lower, double upper, int resolution)
 	return (double)randInt(lower, upper * (pow(10, resolution))) / (pow(10, resolution));
 }
 
+//Note: Automated equality tests don't mean much and fail seemingly randomly
 int randTests(int testC)
 {
 	int correctness = 0;
@@ -128,10 +132,14 @@ int randTests(int testC)
 	char testString[MAXSTRINGSIZE];
 	for (; testC > 0; testC--) {
 		testDouble = randDouble(-1000, 1000, 3);
-		printf("%g\n", testDouble);
+		printf("%g", testDouble);
 		sprintf(testString, "%g", testDouble);
 		convertedDouble = stringToDouble(testString);
 		correctness += (convertedDouble == testDouble);
+		if (convertedDouble != testDouble) {
+			printf("\tFAIL  %g", convertedDouble);
+		}
+		printf("\n");
 	}
 	return correctness;
 }
