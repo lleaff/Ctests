@@ -72,8 +72,7 @@ double stringToDouble(char str[])
 			} else if (charIsDigit(str[i])) {
 				num = (i < point) ? (num * 10 + charToInt(str[i])) : (num + (charToInt(str[i]) * pow(10, -(i - point))));
 			} else {
-				fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
-				return NAN;
+				goto errorParse;
 			}
 		} else {
 			if (i == base + 1 && str[i] == '-') {
@@ -81,10 +80,13 @@ double stringToDouble(char str[])
 			} else if (charIsDigit(str[i])) {
 				exponent = exponent * 10 + charToInt(str[i]);
 			} else {
-				fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
-				return NAN;
+				goto errorParse;
 			}
 		}
+	}
+	if (0) {
+errorParse: fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
+	return NAN;
 	}
 	if (base != 0) {
 		exponent = negExponent ? -exponent : exponent;
