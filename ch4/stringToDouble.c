@@ -98,7 +98,7 @@ errorParse: fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
 int stringToInt(char str[])
 {
 	int num = 0;
-	int i = (str[0] == '-') ? 1 : 0;
+	int i = (str[0] == '-' || str[0] == '+') ? 1 : 0;
 	for (; str[i] != '\0'; i++) {
 		num = (num * 10) + charToInt(str[i]);
 	}
@@ -107,7 +107,7 @@ int stringToInt(char str[])
 
 BOOL stringIsInt(char str[])
 {
-	int i = (str[0] == '-') ? 1 : 0;
+	int i = (str[0] == '-' || str[0] == '+') ? 1 : 0;
 	for (; str[i] != '\0'; i++) {
 		if (!charIsDigit(str[i])) {
 			return FALSE;
