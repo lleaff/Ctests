@@ -57,7 +57,7 @@ int charToInt(char myChar)
 double stringToDouble(char str[])
 {
 	double num = 0;
-	int i = str[0] == '-' ? 1 : 0;
+	int i = str[0] == '-' || str[0] == '+' ? 1 : 0;
 	BOOL significand = TRUE; //inverse being exponent
 	int point = strlen(str), base = 0;
 	int exponent = 0;
@@ -75,8 +75,8 @@ double stringToDouble(char str[])
 				goto errorParse;
 			}
 		} else {
-			if (i == base + 1 && str[i] == '-') {
-				negExponent = TRUE;
+			if (i == base + 1 && (str[i] == '-' || str[i] == '+')) {
+				negExponent = str[i] == '-' ? TRUE : FALSE;
 			} else if (charIsDigit(str[i])) {
 				exponent = exponent * 10 + charToInt(str[i]);
 			} else {
@@ -84,7 +84,7 @@ double stringToDouble(char str[])
 			}
 		}
 	}
-	if (0) {
+	if (0) { //Just wanted to try
 errorParse: fprintf(stderr, "ERROR: Can't parse string (\"%s\")", str);
 	return NAN;
 	}
