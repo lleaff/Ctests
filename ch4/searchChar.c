@@ -9,77 +9,51 @@
 
 typedef enum { FALSE, TRUE } BOOL;
 
+int stringToInt(char myString[]);
+int test(int testC);
 int randInt(int lowerLimit, int upperLimit);
 int printfExcerpt(char str[], int maxLength, int focusedIndex);
 
-int stringToInt(char myString[])
-{
-	int i = 0;
-	BOOL neg = FALSE;
-	if (myString[0] == '\0') {
-		return -1; //Error empty string
-	} else if (myString[0] == '-') {
-		neg = TRUE;
-		i++;
-	}
-	int num = 0;
-	for (; myString[i] != '\0'; i++) {
-		num = (num * 10) + (myString[i] - '0');
-	}
-	return neg ? -num : num;
-}
-
 int main(int argc, char **argv)
 {
-	BOOL test = FALSE;
 	int testC;
 	char searchedChar = EOF; //Boggus initialization
 	char containingString[MAXSTRINGSIZE];
 	if (argc == 1) {
 		scanf("%c", &searchedChar);
 		scanf("%s", containingString);
+		printf("%d", searchChar(searchedChar, containingString));
 	} else {
 		if (argc <= 3 && !strcmp(argv[1], "--test")) {
-			test = TRUE;
 			testC = 6;
 			if (argc == 3) {
 				testC = stringToInt(argv[2]);
+				testC = testC < 1 ? 0 : testC;
 			}
+			test(testC);
 		} else {
+			int result;
 			int i;
-			for (i = 1; i < argc; i++) {
-				
+			BOOL charFirst = FALSE, stringFirst = FALSE;
+			for (i = 1; i < argc; i += 2) {
+				if ((!stringFirst && charFirst) || (strlen(argv[i]) == 1 && strlen(argv[i + 1]) > 1)) {
+					charFirst = TRUE;
+					result = searchChar(argv[i][0], argv[i + 1]);
+				} else if ((stringFirst && !charFirst)|| (strlen(argv[i + 1]) == 1 && strlen(argv[i]) > 1)) {
+					stringFirst = TRUE;
+					result = searchChar(argv[i + 1][0], argv[i]);
+				}
+				if (stringFirst || charFirst) {
+					if (result != -1) {
+						printf("%d", result);
+					}
+					printf("%s%s", result == -1 ? "Not found" : "", (i < argc - 2 ? "\n" : ""));
+				}
 			}
 		}
 	} 
 
-	printf("%d", searchChar(searchedChar, containingString));
-
-	if (test) {
-		char testString[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-		srand(time(NULL));
-		char searchedChar;
-		int charIndex;
-		int arrowPos;
-
-		printf("Find rightmost occurence of characters in this text:\n %s\n\n", testString);
-		int i;
-		for (i = 0; i < testC; i++) {
-			searchedChar = randInt('a', 'z');
-			printf("?  %c\n", searchedChar);
-			charIndex = searchChar(searchedChar, testString);
-			if (charIndex != -1) {
-			arrowPos = printfExcerpt(testString, OUTBUFFERWIDTH, charIndex);
-			printf("\n");
-			for (; arrowPos > 0; arrowPos--) {
-				printf(" ");
-			}
-			printf("^\n");
-			} else {
-				printf("Not found\n");
-			}
-		}
-	}
+	return 0;
 }
 
 int searchChar(char searched, char str[])
@@ -135,4 +109,49 @@ int printfExcerpt(char str[], int maxLength, int focusedIndex)
 int randInt(int lowerLimit, int upperLimit)
 {
 	return (((upperLimit - lowerLimit) * rand()) / RAND_MAX) + lowerLimit;
+}
+
+int stringToInt(char myString[])
+{
+	int i = 0;
+	BOOL neg = FALSE;
+	if (myString[0] == '\0') {
+		return -1; //Error empty string
+	} else if (myString[0] == '-') {
+		neg = TRUE;
+		i++;
+	}
+	int num = 0;
+	for (; myString[i] != '\0'; i++) {
+		num = (num * 10) + (myString[i] - '0');
+	}
+	return neg ? -num : num;
+}
+
+int test(int testC)
+{
+	char testString[] = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+	srand(time(NULL));
+	char searchedChar;
+	int charIndex;
+	int arrowPos;
+
+	printf("Find rightmost occurence of characters in this text:\n %s\n\n", testString);
+	int i;
+	for (i = 0; i < testC; i++) {
+		searchedChar = randInt('a', 'z');
+		printf("?  %c\n", searchedChar);
+		charIndex = searchChar(searchedChar, testString);
+		if (charIndex != -1) {
+			arrowPos = printfExcerpt(testString, OUTBUFFERWIDTH, charIndex);
+			printf("\n");
+			for (; arrowPos > 0; arrowPos--) {
+				printf(" ");
+			}
+			printf("^\n");
+		} else {
+			printf("Not found\n");
+		}
+	}
+	return 0;
 }
