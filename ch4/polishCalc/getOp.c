@@ -1,5 +1,6 @@
 #include "getOp.h"
 #include "buffer.h"
+#include "valStack.h"
 #include <ctype.h>
 #include <stdio.h>
 
@@ -10,8 +11,21 @@ int charToDigit(char input)
 
 char getOp(char input)
 {
-	int i = 0;
-	switch (input) {
+	char ch;
+	if ((ch = pullChar()) == EMPTY) {
+		ch = input;
+	} else {
+		pushChar(input);
+	}
+
+	if (isdigit(input)) {
+		storeNum(charToDigit(input));
+		pushChar(NUMBER);
+		return NUMBER;
+	} else {
+		push(pullNum());
+	}
+	switch (ch) {
 		case ' ':
 		case '\t':
 		case ',':
@@ -19,9 +33,7 @@ char getOp(char input)
 		case EOF:
 		case '\0':
 			return EOF;
+		default:
+			return ch;
 	}
-	if (isdigit(input)) {
-		storeNum(charToDigit(input));
-		return NUMBER;
-	} else if ()
 }

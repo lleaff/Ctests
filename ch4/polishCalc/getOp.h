@@ -3,7 +3,7 @@
 #ifndef GETOP_H
 #define GETOP_H
 
-#define NUMBER '0'	//Return code to indicate a digit
+#define NUMBER -6	//Return code to indicate a digit /* 6 random number */
 #define SKIP ' '	//Return code to indicate to skip the char
 char getOp(char input);
 

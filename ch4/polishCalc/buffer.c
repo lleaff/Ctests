@@ -1,17 +1,33 @@
 #include "buffer.h"
 #include <math.h>
 
-double incompleteNum = 0;
-int fractionPart = 0;
-char charBuffer = '\0';
+typedef enum { FALSE, TRUE } BOOL;
 
+double incompleteNum = NAN;
+int fractionPart = 0;
+
+//Digits
 int charToInt(char digit)
 {
 	return digit - '0';
 }
 
+double doubleMin = 0;
+double doubleMax = 0;
+BOOL doubleIsNAN(double num)
+{
+	if (!doubleMin) {
+	doubleMin = pow(2, (sizeof(double) * 8)) / 2;
+	doubleMax = -(pow(2, (sizeof(double) * 8)) / 2) - 1;
+	}
+	return !(doubleMin >= num && num <= doubleMax);
+}
+
 void storeNum(char digit)
 {
+	if (doubleIsNAN(incompleteNum)) {
+		incompleteNum = 0;
+	}
 	if (digit == '.') {
 		fractionPart = 1;
 	} else if (fractionPart) {
@@ -25,7 +41,7 @@ void storeNum(char digit)
 void resetNum()
 {
 	fractionPart	= 0;
-	incompleteNum	= 0;
+	incompleteNum	= NAN;
 }
 
 double pullNum(void)
@@ -34,6 +50,9 @@ double pullNum(void)
 	resetNum();
 	return num;
 }
+
+//All characters
+char charBuffer = EMPTY;
 
 void pushChar(char character)
 {
