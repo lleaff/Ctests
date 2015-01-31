@@ -27,7 +27,12 @@ double calc(char input[])
 				operand2 = pull();
 				push(pull() / operand2);
 				break;
+			default:
+				fprintf(stderr, "ERROR: No meaning assigned to: %c\n", type);
+				break;
 		}
+		printf("DEBUG: calc() end-");//DEBUG
 	}
+	printf("DEBUG: pull()=%g", pull());//DEBUG
 	return pull();
 }

@@ -1,6 +1,10 @@
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
+typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
+
 #ifndef BUFFER_H
 #define BUFFER_H
-typedef enum { FALSE, TRUE } BOOL;
 BOOL doubleIsNAN(double num);
 void storeNum(char digit);
 double pullNum(void);

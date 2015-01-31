@@ -15,13 +15,16 @@ int main(int argc, char **argv)
 	if (argc == 1) {
 		char input[MAXSTRINGSIZE];
 		for (scanf("%s", input); !exitcmd(input); scanf("%s", input)) {
-			calc(input);
+			printf("%g\n", calc(input));;
+		}
+	} else {
+		int i;
+		for (i = 1; i < argc; i++) {
+			printf("DEBUG: argv[%d]=%s\n", i, argv[i]);//DEBUG
+			printf("%g\n", calc(argv[i]));
 		}
 	}
-	int i;
-	for (i = 1; i < argc; i++) {
-		calc(argv[i]);
-	}
+	return 0;
 }
 
 BOOL exitcmd(char input[])

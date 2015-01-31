@@ -16,7 +16,6 @@ void push(double value)
 	} else {
 		fprintf(stderr, "ERROR: stack full (%d values) can't push: %g\n", STACKSIZE, value);
 	}
-
 }
 
 double pull(void)

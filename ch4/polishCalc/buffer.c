@@ -1,7 +1,10 @@
 #include "buffer.h"
 #include <math.h>
 
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
 typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
 
 double incompleteNum = NAN;
 int fractionPart = 0;
