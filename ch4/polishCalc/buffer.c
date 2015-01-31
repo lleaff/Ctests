@@ -1,5 +1,6 @@
 #include "buffer.h"
 #include <math.h>
+#include <float.h>
 
 #ifndef BOOL_TYPE
 #define BOOL_TYPE
@@ -15,15 +16,9 @@ int charToInt(char digit)
 	return digit - '0';
 }
 
-double doubleMin = 0;
-double doubleMax = 0;
 BOOL doubleIsNAN(double num)
 {
-	if (!doubleMin) {
-	doubleMin = pow(2, (sizeof(double) * 8)) / 2;
-	doubleMax = -(pow(2, (sizeof(double) * 8)) / 2) - 1;
-	}
-	return !(doubleMin >= num && num <= doubleMax);
+	return !(DBL_MIN <= num && num <= DBL_MAX);
 }
 
 void storeNum(char digit)
