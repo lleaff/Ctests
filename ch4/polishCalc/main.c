@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 		int i;
 		for (i = 1; i < argc; i++) {
 			printf("DEBUG: argv[%d]=%s\n", i, argv[i]);//DEBUG
-			printf("%g\n", calc(argv[i]));
+			printf("\nRESULT=%g\n", calc(argv[i]));
 		}
 	}
 	return 0;

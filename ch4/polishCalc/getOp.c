@@ -12,14 +12,17 @@ int charToDigit(char input)
 char getOp(char input)
 {
 	char ch;
-	if ((ch = pullChar()) == EMPTY) {
+	if ((ch = pullChar()) == EMPTY || ch == NUMBER) {
 		ch = input;
+		printf("\t\t\tpullChar()\n");//DEBUG
 	} else {
 		pushChar(input);
+		printf("\t\t\tpushChar(%c)\n", input);//DEBUG
 	}
+	printf("--ch=%c input=%c", ch, input);//DEBUG
 
-	if (isdigit(input)) {
-		storeNum(charToDigit(input));
+	if (isdigit(ch)) {
+		storeNum(charToDigit(ch));
 		pushChar(NUMBER);
 		return NUMBER;
 	} else {
