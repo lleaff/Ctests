@@ -7,6 +7,7 @@
 
 typedef enum { FALSE, TRUE } BOOL;
 
+BOOL getUserInput(char *input);
 BOOL exitcmd(char input[]);
 
 //Simply forwards raw input to calc.c
@@ -14,8 +15,7 @@ int main(int argc, char **argv)
 {
 	if (argc == 1) {
 		char input[MAXSTRINGSIZE];
-		for (scanf("%s", input); !exitcmd(input); scanf("%s", input)) {
-			printf("DEBUG: input=\"%s\"\n", input);//DEBUG
+		for (getUserInput(input); !exitcmd(input); getUserInput(input)) {
 			printf("%g\n", calc(input));;
 		}
 	} else {
@@ -27,7 +27,20 @@ int main(int argc, char **argv)
 	return 0;
 }
 
+BOOL getUserInput(char *input)
+{
+	if (fgets(input, MAXSTRINGSIZE, stdin) == NULL) {
+		return FALSE;
+	}
+	//Remove trailing newline
+	if (input[strlen(input) - 1] == '\n') {
+		input[strlen(input) - 1] = '\0';
+	}
+	return TRUE;
+}
+
 BOOL exitcmd(char input[])
 {
-	return !(strcmp(input, "q") && strcmp(input, "quit") && strcmp(input, "exit"));
+	return !(strcmp(input, "q") && strcmp(input, "quit") && strcmp(input, "exit")) 
+		|| (input[0] == EOF);
 }
