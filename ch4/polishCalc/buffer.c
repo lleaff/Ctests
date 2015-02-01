@@ -48,16 +48,3 @@ double pullNum(void)
 	resetNum();
 	return num;
 }
-
-//All characters
-char charBuffer = EMPTY;
-
-void pushChar(char character)
-{
-	charBuffer = character;
-}
-
-char pullChar(void)
-{
-	return charBuffer;
-}

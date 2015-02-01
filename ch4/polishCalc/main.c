@@ -15,13 +15,13 @@ int main(int argc, char **argv)
 	if (argc == 1) {
 		char input[MAXSTRINGSIZE];
 		for (scanf("%s", input); !exitcmd(input); scanf("%s", input)) {
+			printf("DEBUG: input=\"%s\"\n", input);//DEBUG
 			printf("%g\n", calc(input));;
 		}
 	} else {
 		int i;
 		for (i = 1; i < argc; i++) {
-			printf("DEBUG: argv[%d]=%s\n", i, argv[i]);//DEBUG
-			printf("\nRESULT=%g\n", calc(argv[i]));
+			printf("%g%s", calc(argv[i]), (i == argc - 1) ? "" : "\n");
 		}
 	}
 	return 0;
@@ -29,5 +29,5 @@ int main(int argc, char **argv)
 
 BOOL exitcmd(char input[])
 {
-	return strcmp(input, "q") && strcmp(input, "quit") && strcmp(input, "exit");
+	return !(strcmp(input, "q") && strcmp(input, "quit") && strcmp(input, "exit"));
 }

@@ -9,24 +9,25 @@ int charToDigit(char input)
 	return input - '0';
 }
 
+#define EMPTY -2
+
 char getOp(char input)
 {
 	char ch;
-	if ((ch = pullChar()) == EMPTY || ch == NUMBER) {
+	static char chBuffer = EMPTY;
+	if (chBuffer == EMPTY || chBuffer == NUMBER) {
 		ch = input;
-		printf("\t\t\tpullChar()\n");//DEBUG
 	} else {
-		pushChar(input);
-		printf("\t\t\tpushChar(%c)\n", input);//DEBUG
+		ch = chBuffer;
 	}
-	printf("--ch=%c input=%c", ch, input);//DEBUG
 
 	if (isdigit(ch)) {
-		storeNum(charToDigit(ch));
-		pushChar(NUMBER);
+		storeNum(ch);
+		chBuffer = NUMBER;
 		return NUMBER;
-	} else {
+	} else if (chBuffer == NUMBER){
 		push(pullNum());
+		chBuffer = EMPTY;
 	}
 	switch (ch) {
 		case ' ':
