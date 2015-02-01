@@ -27,6 +27,9 @@ double calc(char input[])
 				operand2 = pull();
 				push(pull() / operand2);
 				break;
+			case '%':
+				operand2 = pull();
+				push((int)pull() % (int)operand2);
 			default:
 				fprintf(stderr, "ERROR: No meaning assigned to: %c\n", type);
 				break;

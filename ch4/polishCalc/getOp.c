@@ -21,6 +21,7 @@ char getOp(char input)
 		ch = chBuffer;
 	}
 
+	//0-9
 	if (isdigit(ch)) {
 		storeNum(ch);
 		chBuffer = NUMBER;
@@ -28,14 +29,24 @@ char getOp(char input)
 	} else if (chBuffer == NUMBER){
 		push(pullNum());
 		chBuffer = EMPTY;
+
+		//A-Z or a-z
+		if (isalpha(ch)) {
+			//TODO
+			pushChar(ch);
+			return COMMAND;
+		}
 	}
+
 	switch (ch) {
+		//is whitespace
 		case ' ':
 		case '\t':
-		case ',':
 			return SKIP;
+		//End of statement
 		case EOF:
 		case '\0':
+		case ',':
 			return EOF;
 		default:
 			return ch;
