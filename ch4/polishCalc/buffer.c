@@ -1,6 +1,8 @@
 #include "buffer.h"
 #include <math.h>
 #include <float.h>
+#include <stdio.h>
+#include <string.h>
 
 #ifndef BOOL_TYPE
 #define BOOL_TYPE
@@ -47,4 +49,39 @@ double pullNum(void)
 	double num = incompleteNum;
 	resetNum();
 	return num;
+}
+
+#define MAXCOMMANDSIZE 50
+char incompleteCommand[MAXCOMMANDSIZE] = "";
+int comPos = 0;
+
+void storeCommand(char myChar)
+{
+	if (comPos < MAXCOMMANDSIZE) {
+		incompleteCommand[comPos++] = myChar;
+		incompleteCommand[comPos] = '\0';
+	} else {
+		fprintf(stderr, "ERROR: Command stack full (> %d)", MAXCOMMANDSIZE);
+	}
+}
+
+//Returns the index of a string in an array of strings if it matches
+int compareCommand(int commandC, char *commands[])
+{
+	if (comPos == 0) {
+		return -2; //Command buffer empty
+	}
+	int i;
+	for (i = 0; i < commandC; i++) {
+		if (!strcmp(incompleteCommand, commands[i])) {
+			return i;
+		}
+	}
+	return -1; //No match
+}
+
+void resetCommand()
+{
+	comPos = 0;
+	incompleteCommand[0] = '\0';
 }

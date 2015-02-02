@@ -32,8 +32,7 @@ char getOp(char input)
 
 		//A-Z or a-z
 		if (isalpha(ch)) {
-			//TODO
-			pushChar(ch);
+			storeCommand(ch);
 			return COMMAND;
 		}
 	}

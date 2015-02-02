@@ -11,6 +11,7 @@ double calc(char input[])
 	for (i = 0, type = getOp(input[i]); type != EOF; i++, type = getOp(input[i])) {
 		switch(type) {
 			case NUMBER:
+			case COMMAND:
 			case SKIP:
 				break;
 			case '+':

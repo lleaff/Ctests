@@ -8,4 +8,7 @@ typedef enum { FALSE, TRUE } BOOL;
 BOOL doubleIsNAN(double num);
 void storeNum(char digit);
 double pullNum(void);
+void storeCommand(char myChar);
+//Returns the index of the given string which matches the stored one, otherwise returns -1
+int compareCommand(int commandC, char *commands[]);
 #endif /* BUFFER_H */
