@@ -1,4 +1,5 @@
 #include "buffer.h"
+#include "commands.h"
 #include <math.h>
 #include <float.h>
 #include <stdio.h>
@@ -51,7 +52,6 @@ double pullNum(void)
 	return num;
 }
 
-#define MAXCOMMANDSIZE 50
 char incompleteCommand[MAXCOMMANDSIZE] = "";
 int comPos = 0;
 
@@ -66,13 +66,15 @@ void storeCommand(char myChar)
 }
 
 //Returns the index of a string in an array of strings if it matches
-int compareCommand(int commandC, char *commands[])
+int compareCommand()
 {
+	extern char commands[COMMANDC][MAXCOMMANDSIZE];
+
 	if (comPos == 0) {
 		return -2; //Command buffer empty
 	}
 	int i;
-	for (i = 0; i < commandC; i++) {
+	for (i = 0; i < COMMANDC; i++) {
 		if (!strcmp(incompleteCommand, commands[i])) {
 			return i;
 		}

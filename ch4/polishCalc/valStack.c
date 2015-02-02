@@ -1,9 +1,9 @@
 #include "valStack.h"
+#include "valStackInternals.h"
 #include <math.h>
 #include <stdio.h>
 
 #define STACKSIZE 100
-
 double valStack[STACKSIZE];
 int stackPos = 0; //Current stack position
 
