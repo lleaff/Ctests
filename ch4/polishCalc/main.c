@@ -28,7 +28,7 @@ Input operations in \"Polish notation\"\n\
 		for (getUserInput(input); !exitcmd(input); getUserInput(input)) {
 			result = calc(input, &shouldPrintResult);
 			if (shouldPrintResult) {
-				printf("%g\n", result);
+				printf("> %g\n", result);
 			}
 		}
 	} else {
