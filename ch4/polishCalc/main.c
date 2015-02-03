@@ -18,6 +18,10 @@ int main(int argc, char **argv)
 {
 	if (argc == 1) {
 		// Interactive mode
+		printf("=========-Polish Calculator-=========\n\
+Input operations in \"Polish notation\"\n\
+(eg. 4 6 + => 10, 8 2 / 3 * => 12)\n\
+=====================================\n");
 		char input[MAXSTRINGSIZE];
 		double result;
 		BOOL shouldPrintResult = FALSE;
