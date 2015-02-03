@@ -2,10 +2,14 @@
 #include "calc.h"
 #include <stdio.h>
 #include <string.h>
+#include "buffer.h" //only for NAN-test
 
 #define MAXSTRINGSIZE 1000
 
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
 typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
 
 BOOL getUserInput(char *input);
 BOOL exitcmd(char input[]);
@@ -15,13 +19,18 @@ int main(int argc, char **argv)
 {
 	if (argc == 1) {
 		char input[MAXSTRINGSIZE];
+		double result;
+		BOOL shouldPrintResult = FALSE;
 		for (getUserInput(input); !exitcmd(input); getUserInput(input)) {
-			printf("%g\n", calc(input));;
+			result = calc(input, &shouldPrintResult);
+			if (shouldPrintResult) {
+				printf("%g\n", result);
+			}
 		}
 	} else {
 		int i;
 		for (i = 1; i < argc; i++) {
-			printf("%g%s", calc(argv[i]), (i == argc - 1) ? "" : "\n");
+			printf("%g%s", calc(argv[i], NULL), (i == argc - 1) ? "" : "\n");
 		}
 	}
 	return 0;

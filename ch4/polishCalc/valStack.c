@@ -25,7 +25,17 @@ double pull(void)
 		--stackPos;
 		return valStack[stackPos];
 	} else {
-		fprintf(stderr, "ERROR: stack empty\n");
+		fprintf(stderr, "ERROR: stack empty can't pull\n");
+		return 0.0;
+	}
+}
+
+double readTopValue(void)
+{
+	if (stackPos > 0) {
+		return valStack[stackPos - 1];
+	} else {
+		fprintf(stderr, "ERROR: stack empty can't read\n");
 		return 0.0;
 	}
 }

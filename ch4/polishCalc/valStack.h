@@ -5,4 +5,5 @@
 #define VALSTACK_H
 void push(double value);
 double pull(void);
+double readTopValue(void);
 #endif /* VALSTACK_H */

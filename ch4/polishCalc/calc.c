@@ -2,15 +2,23 @@
 #include "getOp.h"
 #include "valStack.h"
 #include <stdio.h>
+#include <math.h>
 
-double calc(char input[])
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
+typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
+
+double calc(char input[], BOOL *shouldPrintResult)
 {
 	char type;
 	int i;
 	double operand2;
+	BOOL value = FALSE; //Whether the input modified or added a value in the stack
 	for (i = 0, type = getOp(input[i]); type != EOF; i++, type = getOp(input[i])) {
 		switch(type) {
 			case NUMBER:
+				value = TRUE;
 			case COMMAND:
 			case SKIP:
 				break;
@@ -36,7 +44,10 @@ double calc(char input[])
 				break;
 		}
 	}
-	double returnVal = pull();
-	push(returnVal);
-	return returnVal;
+	
+	if (shouldPrintResult != NULL) {
+		*shouldPrintResult = value;
+	}
+
+	return (readTopValue());
 }
