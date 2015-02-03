@@ -5,7 +5,7 @@
 
 void cmdPrint() /* 0 */
 {
-	printf("Stack = %g\n", valStack[stackPos]);
+	printf("Stack = %g\n", valStack[stackPos - 1]);
 }
 
 void cmdDuplicate() /* 1 */

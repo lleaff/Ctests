@@ -42,6 +42,7 @@ char getOp(char input)
 	} else {
 		if (wait == Command) {
 			execCommand(compareCommand());
+			wait = Nothing;
 		}
 		/*--- 0-9 ---*/
 		if (isdigit(ch) && wait == Nothing) {
