@@ -2,7 +2,6 @@
 #include "calc.h"
 #include <stdio.h>
 #include <string.h>
-#include "buffer.h" //only for NAN-test
 
 #define MAXSTRINGSIZE 1000
 
