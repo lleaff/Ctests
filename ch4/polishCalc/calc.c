@@ -47,6 +47,9 @@ double calc(char input[], BOOL *shouldPrintResult)
 	
 	if (shouldPrintResult != NULL) {
 		*shouldPrintResult = value;
+		if (!value) {
+			return 0;
+		}
 	}
 
 	return (readTopValue());
