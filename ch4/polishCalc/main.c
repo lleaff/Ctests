@@ -17,6 +17,7 @@ BOOL exitcmd(char input[]);
 int main(int argc, char **argv)
 {
 	if (argc == 1) {
+		// Interactive mode
 		char input[MAXSTRINGSIZE];
 		double result;
 		BOOL shouldPrintResult = FALSE;
@@ -27,6 +28,7 @@ int main(int argc, char **argv)
 			}
 		}
 	} else {
+		// Argument processing mode
 		int i;
 		for (i = 1; i < argc; i++) {
 			printf("%g%s", calc(argv[i], NULL), (i == argc - 1) ? "" : "\n");
