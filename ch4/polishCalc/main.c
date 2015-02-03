@@ -25,7 +25,7 @@ Input operations in \"Polish notation\"\n\
 		char input[MAXSTRINGSIZE];
 		double result;
 		BOOL shouldPrintResult = FALSE;
-		for (getUserInput(input); !exitcmd(input); getUserInput(input)) {
+		for (printf("  "), getUserInput(input); !exitcmd(input); printf("  "), getUserInput(input)) {
 			result = calc(input, &shouldPrintResult);
 			if (shouldPrintResult) {
 				printf("> %g\n", result);
