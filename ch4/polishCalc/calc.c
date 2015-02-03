@@ -36,5 +36,7 @@ double calc(char input[])
 				break;
 		}
 	}
-	return pull();
+	double returnVal = pull();
+	push(returnVal);
+	return returnVal;
 }

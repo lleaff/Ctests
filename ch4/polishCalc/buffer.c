@@ -10,10 +10,10 @@
 typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
+/*---Numbers---*/
 double incompleteNum = NAN;
 int fractionPart = 0;
 
-//Digits
 int charToInt(char digit)
 {
 	return digit - '0';
@@ -52,6 +52,7 @@ double pullNum(void)
 	return num;
 }
 
+/*---Commands---*/
 char incompleteCommand[MAXCOMMANDSIZE] = "";
 int comPos = 0;
 
@@ -65,7 +66,8 @@ void storeCommand(char myChar)
 	}
 }
 
-//Returns the index of a string in an array of strings if it matches
+// Returns the index + 1 of a string in an array of
+//strings if it matches the stored command string.
 int compareCommand()
 {
 	extern char commands[COMMANDC][MAXCOMMANDSIZE];
@@ -76,10 +78,10 @@ int compareCommand()
 	int i;
 	for (i = 0; i < COMMANDC; i++) {
 		if (!strcmp(incompleteCommand, commands[i])) {
-			return i;
+			return i + 1;
 		}
 	}
-	return -1; //No match
+	return 0; //No match
 }
 
 void resetCommand()

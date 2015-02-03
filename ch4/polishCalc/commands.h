@@ -5,4 +5,6 @@
 #define MAXCOMMANDSIZE 50
 char commands[COMMANDC][MAXCOMMANDSIZE];
 
+void execCommand(int commandNum);
+
 #endif /* COMMANDS_H */
