@@ -50,6 +50,9 @@ double calc(char input[], BOOL *shouldPrintResult)
 				operand2 = pull();
 				push(pow(pull(), operand2));
 				break;
+			case VARIABLE:
+				setVar(pull());
+				break;
 			default:
 				fprintf(stderr, "ERROR: No meaning assigned to: %c\n", type);
 				break;

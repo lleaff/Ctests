@@ -4,7 +4,8 @@
 #define GETOP_H
 
 #define NUMBER -6	//Return code to indicate a digit
-#define COMMAND -5 	//Return code to indicate a command
+#define COMMAND -7 	//Return code to indicate a command
+#define VARIABLE -8	//Return code to indicate a variable
 #define SKIP ' '	//Return code to indicate to skip the char
 
 //Math operations return codes

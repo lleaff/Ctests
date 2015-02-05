@@ -2,6 +2,7 @@
 #include "valStackInternals.h"
 #include <math.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #define STACKSIZE 100
 double valStack[STACKSIZE];
@@ -38,4 +39,21 @@ double readTopValue(void)
 		fprintf(stderr, "ERROR: stack empty can't read\n");
 		return 0.0;
 	}
+}
+
+/*---Variables---*/
+#define VARIABLEC 26 //Number of letters in the alphabet
+double variables[VARIABLEC];
+
+int workingVar;
+
+void pushVar(char myChar)
+{
+	myChar = tolower(myChar);
+	workingVar = myChar - 'a';
+}
+
+void setVar(double value)
+{
+	variables[workingVar] = value;
 }

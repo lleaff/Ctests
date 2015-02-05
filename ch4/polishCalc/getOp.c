@@ -20,7 +20,7 @@ int charToDigit(char input)
 
 char getOp(char input)
 {
-	enum waitingType { Nothing, Command };
+	enum waitingType { Nothing, Command, Variable };
 	static enum waitingType wait = Nothing;
 	static char chBuffer = EMPTY;
 	char execCmdReturn;
@@ -34,12 +34,17 @@ char getOp(char input)
 
 	/*--- A-Z or a-z ---*/
 	if (isalpha(ch)) {
-		if (!wait == Command) {
-			resetCommand();
-			wait = Command;
+		if (wait == Variable) {
+			pushVar(ch);
+			return VARIABLE;
+		} else {
+			if (!wait == Command) {
+				resetCommand();
+				wait = Command;
+			}
+			storeCommand(ch);
+			return COMMAND;
 		}
-		storeCommand(ch);
-		return COMMAND;
 	} else {
 		if (wait == Command) {
 			execCmdReturn = execCommand(compareCommand());
@@ -60,6 +65,10 @@ char getOp(char input)
 				chBuffer = EMPTY;
 			}
 		}
+	}
+
+	if (ch == '>') {
+		wait = Variable;
 	}
 
 	switch (ch) {

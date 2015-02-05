@@ -1,5 +1,6 @@
 #include "buffer.h"
 #include "commands.h"
+#include "getOp.h"
 #include <math.h>
 #include <float.h>
 #include <stdio.h>
@@ -74,6 +75,8 @@ int compareCommand()
 
 	if (comPos == 0) {
 		return -2; //Command buffer empty
+	} else if (comPos == 1) {
+		return VARIABLE;
 	}
 	int i;
 	for (i = 0; i < COMMANDC; i++) {
