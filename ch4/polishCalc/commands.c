@@ -1,5 +1,6 @@
 #include "commands.h"
 #include "buffer.h"
+#include "getOp.h"
 #include "valStack.h"
 #include "valStackInternals.h"
 #include <stdio.h>
@@ -40,15 +41,20 @@ void cmdTrim()
 }
 
 char commands[COMMANDC][MAXCOMMANDSIZE] = { 
-	"print", 
-	"duplicate", 
-	"swap",
-	"clear",
-	"trim"
+	"print", /* 0 */
+	"duplicate", /* 1 */
+	"swap", /* 2 */
+	"clear", /* 3 */
+	"trim", /* 4 */
+	"sin", /* 5 */
+	"exp", /* 6 */
+	"pow", /* 7 */
 };
 
-void execCommand(int commandNum)
+//Returns 0 if the command is independant of calc, returns the id of the command otherwise
+char execCommand(int commandNum)
 {
+	char calcCmdID = REGCMD;
 	switch (commandNum - 1) {
 		case -1: break; //Default value if compareCommand() returns no match
 		case 0: cmdPrint();
@@ -61,7 +67,15 @@ void execCommand(int commandNum)
 				break;
 		case 4: cmdTrim();
 				break;
+		case 5: calcCmdID = SIN;
+				break;
+		case 6: calcCmdID = EXP;
+				break;
+		case 7: calcCmdID = POW;
+				return calcCmdID;
 		default: fprintf(stderr, "ERROR: No function at index %d\n", commandNum - 1);
+				return NOCMD;
 				break;
 	}
+	return calcCmdID;
 }

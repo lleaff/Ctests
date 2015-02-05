@@ -23,6 +23,7 @@ char getOp(char input)
 	enum waitingType { Nothing, Command };
 	static enum waitingType wait = Nothing;
 	static char chBuffer = EMPTY;
+	char execCmdReturn;
 
 	char ch;
 	if (chBuffer == EMPTY || chBuffer == NUMBER) {
@@ -41,8 +42,12 @@ char getOp(char input)
 		return COMMAND;
 	} else {
 		if (wait == Command) {
-			execCommand(compareCommand());
+			execCmdReturn = execCommand(compareCommand());
 			wait = Nothing;
+			//If the command is a "calc command"
+			if (execCmdReturn != REGCMD) {
+				return execCmdReturn;
+			}
 		}
 		/*--- 0-9 ---*/
 		if (isdigit(ch) && wait == Nothing) {

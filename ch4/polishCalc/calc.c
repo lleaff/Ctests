@@ -39,6 +39,17 @@ double calc(char input[], BOOL *shouldPrintResult)
 			case '%':
 				operand2 = pull();
 				push((int)pull() % (int)operand2);
+				break;
+			case SIN:
+				push(sin(pull()));
+				break;
+			case EXP:
+				push(exp(pull()));
+				break;
+			case POW:
+				operand2 = pull();
+				push(pow(pull(), operand2));
+				break;
 			default:
 				fprintf(stderr, "ERROR: No meaning assigned to: %c\n", type);
 				break;
