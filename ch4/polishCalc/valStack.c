@@ -47,13 +47,18 @@ double variables[VARIABLEC];
 
 int workingVar;
 
-void pushVar(char myChar)
+void setVar(char myChar)
 {
 	myChar = tolower(myChar);
 	workingVar = myChar - 'a';
 }
 
-void setVar(double value)
+void pushVar(double value)
 {
 	variables[workingVar] = value;
+}
+
+double readVar(void)
+{
+	return variables[workingVar];
 }

@@ -15,6 +15,7 @@ double calc(char input[], BOOL *shouldPrintResult)
 	int i;
 	double operand2;
 	BOOL value = FALSE; //Whether the input modified or added a value in the stack
+	BOOL assignment = FALSE; //Whether the variable to follow is used in an assignment
 	for (i = 0, type = getOp(input[i]); type != EOF; i++, type = getOp(input[i])) {
 		switch(type) {
 			case NUMBER:
@@ -50,8 +51,17 @@ double calc(char input[], BOOL *shouldPrintResult)
 				operand2 = pull();
 				push(pow(pull(), operand2));
 				break;
+			case ASSIGNMENT:
+				assignment = TRUE;
+				break;
 			case VARIABLE:
-				setVar(pull());
+				if (assignment) {
+					printf("pushVar(pull())\n");//DEBUG
+					pushVar(pull());
+				} else {
+					printf("push(readVar())\n");//DEBUG
+					push(readVar());
+				}
 				break;
 			default:
 				fprintf(stderr, "ERROR: No meaning assigned to: %c\n", type);

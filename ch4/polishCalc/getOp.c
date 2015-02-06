@@ -35,7 +35,8 @@ char getOp(char input)
 	/*--- A-Z or a-z ---*/
 	if (isalpha(ch)) {
 		if (wait == Variable) {
-			pushVar(ch);
+			setVar(ch);
+			wait = Nothing;
 			return VARIABLE;
 		} else {
 			if (!wait == Command) {
@@ -51,6 +52,7 @@ char getOp(char input)
 			wait = Nothing;
 			//If the command is a "calc command"
 			if (execCmdReturn != REGCMD) {
+				printf("execCmdReturn=%d%s\n", execCmdReturn, execCmdReturn == VARIABLE ? "VARIABLE" : "");//DEBUG
 				return execCmdReturn;
 			}
 		}
@@ -69,6 +71,7 @@ char getOp(char input)
 
 	if (ch == '>') {
 		wait = Variable;
+		return ASSIGNMENT;
 	}
 
 	switch (ch) {

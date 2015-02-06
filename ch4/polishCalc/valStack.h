@@ -8,6 +8,7 @@ void push(double value);
 double pull(void);
 double readTopValue(void);
 //Variables
-void pushVar(char myChar);
-void setVar(double value);
+void setVar(char myChar);
+void pushVar(double value);
+double readVar(void);
 #endif /* VALSTACK_H */

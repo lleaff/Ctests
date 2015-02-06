@@ -69,7 +69,7 @@ void storeCommand(char myChar)
 
 // Returns the index + 1 of a string in an array of
 //strings if it matches the stored command string.
-int compareCommand()
+int compareCommand(void)
 {
 	extern char commands[COMMANDC][MAXCOMMANDSIZE];
 

@@ -56,25 +56,28 @@ char execCommand(int commandNum)
 {
 	char calcCmdID = REGCMD;
 	switch (commandNum - 1) {
+		case VARIABLE + 1:	calcCmdID = VARIABLE;
+							printf("calcCmdID = VARIABLE\n");
+				break;
 		case -1: break; //Default value if compareCommand() returns no match
-		case 0: cmdPrint();
+		case 0: 		cmdPrint();
 				break;
-		case 1: cmdDuplicate();
+		case 1: 		cmdDuplicate();
 				break;
-		case 2: cmdSwap();
+		case 2: 		cmdSwap();
 				break;
-		case 3: cmdClear();
+		case 3: 		cmdClear();
 				break;
-		case 4: cmdTrim();
+		case 4: 		cmdTrim();
 				break;
-		case 5: calcCmdID = SIN;
+		case 5: 		calcCmdID = SIN;
 				break;
-		case 6: calcCmdID = EXP;
+		case 6: 		calcCmdID = EXP;
 				break;
-		case 7: calcCmdID = POW;
-				return calcCmdID;
-		default: fprintf(stderr, "ERROR: No function at index %d\n", commandNum - 1);
-				return NOCMD;
+		case 7: 		calcCmdID = POW;
+				break;
+		default: 		fprintf(stderr, "ERROR: No function at index %d\n", commandNum - 1);
+						calcCmdID = NOCMD;
 				break;
 	}
 	return calcCmdID;
