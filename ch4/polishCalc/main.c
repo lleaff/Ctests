@@ -20,7 +20,9 @@ int main(int argc, char **argv)
 		// Interactive mode
 		printf("=========-Polish Calculator-=========\n\
 Input operations in \"Polish notation\"\n\
-(eg. 4 6 + => 10, 8 2 / 3 * => 12)\n\
+   (eg. 4 6 + => 10, 8 2 / 3 * => 12)\n\
+You can assign one-letter variables\n\
+   (eg. 6 1 + > x, x 2 * => 14)\n\
 =====================================\n");
 		char input[MAXSTRINGSIZE];
 		double result;
