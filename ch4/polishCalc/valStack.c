@@ -4,6 +4,11 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
+typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
+
 #define STACKSIZE 100
 double valStack[STACKSIZE];
 int stackPos = 0; //Current stack position
@@ -44,6 +49,7 @@ double readTopValue(void)
 /*---Variables---*/
 #define VARIABLEC 26 //Number of letters in the alphabet
 double variables[VARIABLEC];
+BOOL varSet[VARIABLEC] = { FALSE };
 
 int workingVar;
 
@@ -56,9 +62,15 @@ void setVar(char myChar)
 void pushVar(double value)
 {
 	variables[workingVar] = value;
+	varSet[workingVar] = TRUE;
 }
 
 double readVar(void)
 {
 	return variables[workingVar];
+}
+
+BOOL isVarInit(void)
+{
+	return varSet[workingVar];
 }

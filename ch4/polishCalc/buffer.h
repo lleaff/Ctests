@@ -17,5 +17,6 @@ void storeCommand(char myChar);
 //Returns the index of the given string which matches the stored one, otherwise returns -1
 int compareCommand();
 void resetCommand();
+char readCharInCommand(int index);
 
 #endif /* BUFFER_H */

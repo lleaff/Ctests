@@ -52,6 +52,9 @@ char getOp(char input)
 			wait = Nothing;
 			//If the command is a "calc command"
 			if (execCmdReturn != REGCMD) {
+				if (execCmdReturn == VARIABLE) {
+					setVar(readCharInCommand(0));
+				}
 				return execCmdReturn;
 			}
 		}

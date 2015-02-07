@@ -59,8 +59,12 @@ double calc(char input[], BOOL *shouldPrintResult)
 					value = FALSE;
 					pushVar(pull());
 				} else {
-					value = TRUE;
-					push(readVar());
+					if (isVarInit()) {
+						value = TRUE;
+						push(readVar());
+					} else {
+						fprintf(stderr, "ERROR: Variable unnassigned\n");
+					}
 				}
 				break;
 			default:

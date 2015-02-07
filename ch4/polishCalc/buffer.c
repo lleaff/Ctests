@@ -87,6 +87,11 @@ int compareCommand(void)
 	return 0; //No match
 }
 
+char readCharInCommand(int index)
+{
+	return incompleteCommand[index];
+}
+
 void resetCommand()
 {
 	comPos = 0;
