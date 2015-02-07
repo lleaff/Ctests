@@ -40,6 +40,15 @@ void cmdTrim()
 	}
 }
 
+void cmdTop()
+{
+	if (stackPos) {
+		push(readTopValue());
+	} else {
+		fprintf(stderr, "ERROR: stack empty can't use top value\n");
+	}
+}
+
 char commands[COMMANDC][MAXCOMMANDSIZE] = { 
 	"print", /* 0 */
 	"duplicate", /* 1 */
@@ -49,6 +58,7 @@ char commands[COMMANDC][MAXCOMMANDSIZE] = {
 	"sin", /* 5 */
 	"exp", /* 6 */
 	"pow", /* 7 */
+	"top", /* 8 */
 };
 
 //Returns 0 if the command is independant of calc, returns the id of the command otherwise
@@ -74,6 +84,8 @@ char execCommand(int commandNum)
 		case 6: 		calcCmdID = EXP;
 				break;
 		case 7: 		calcCmdID = POW;
+				break;
+		case 8:			cmdTop();
 				break;
 		default: 		fprintf(stderr, "ERROR: No function at index %d\n", commandNum - 1);
 						calcCmdID = NOCMD;
