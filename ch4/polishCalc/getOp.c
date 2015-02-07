@@ -52,7 +52,6 @@ char getOp(char input)
 			wait = Nothing;
 			//If the command is a "calc command"
 			if (execCmdReturn != REGCMD) {
-				printf("execCmdReturn=%d%s\n", execCmdReturn, execCmdReturn == VARIABLE ? "VARIABLE" : "");//DEBUG
 				return execCmdReturn;
 			}
 		}

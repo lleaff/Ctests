@@ -56,8 +56,7 @@ char execCommand(int commandNum)
 {
 	char calcCmdID = REGCMD;
 	switch (commandNum - 1) {
-		case VARIABLE + 1:	calcCmdID = VARIABLE;
-							printf("calcCmdID = VARIABLE\n");
+		case (VARIABLE - 1):	calcCmdID = VARIABLE;
 				break;
 		case -1: break; //Default value if compareCommand() returns no match
 		case 0: 		cmdPrint();

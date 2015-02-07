@@ -56,10 +56,10 @@ double calc(char input[], BOOL *shouldPrintResult)
 				break;
 			case VARIABLE:
 				if (assignment) {
-					printf("pushVar(pull())\n");//DEBUG
+					value = FALSE;
 					pushVar(pull());
 				} else {
-					printf("push(readVar())\n");//DEBUG
+					value = TRUE;
 					push(readVar());
 				}
 				break;
