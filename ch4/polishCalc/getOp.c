@@ -61,7 +61,7 @@ char getOp(char input)
 			}
 		}
 		/*--- 0-9 ---*/
-		if (isdigit(ch) && wait == Nothing) {
+		if ((isdigit(ch) || ch == '.') && wait == Nothing) {
 			storeNum(ch);
 			chBuffer = NUMBER;
 			return NUMBER;

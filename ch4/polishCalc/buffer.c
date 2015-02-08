@@ -33,7 +33,9 @@ void storeNum(char digit)
 	if (digit == '.') {
 		fractionPart = 1;
 	} else if (fractionPart) {
-		incompleteNum += pow(charToInt(digit), -(10 * fractionPart));
+		if (charToInt(digit) != 0) {
+			incompleteNum += pow(charToInt(digit), -(10 * fractionPart));
+		}
 		fractionPart++;
 	} else {
 		incompleteNum = incompleteNum * 10 + charToInt(digit);
