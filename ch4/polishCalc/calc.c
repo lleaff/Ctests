@@ -40,6 +40,7 @@ double calc(char input[], BOOL *shouldPrintResult)
 					operandBuffer[oCCurr + 1] = add(operandBuffer[oCCurr], operandBuffer[oCCurr + 1]);
 				}
 				push(operandBuffer[oCCurr]);
+				setOC(pullOC() + 1);
 				break;
 			case '-':
 					operand2 = pull();

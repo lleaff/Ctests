@@ -43,6 +43,7 @@ void cmdTrim()
 void cmdTop()
 {
 	if (stackPos) {
+		setOC(pullOC() + 1);
 		push(readTopValue());
 	} else {
 		fprintf(stderr, "ERROR: stack empty can't use top value\n");

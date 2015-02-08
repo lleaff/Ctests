@@ -25,7 +25,6 @@ char getOp(char input)
 	static enum waitingType wait = Nothing;
 	static char chBuffer = EMPTY;
 	char execCmdReturn;
-	static int operandsCTmp;
 
 	char ch;
 	if (chBuffer == EMPTY || chBuffer == NUMBER) {
@@ -55,6 +54,7 @@ char getOp(char input)
 			//If the command is a "calc command"
 			if (execCmdReturn != REGCMD) {
 				if (execCmdReturn == VARIABLE) {
+					operandsC++;
 					setVar(readCharInCommand(0));
 				}
 				return execCmdReturn;
@@ -88,12 +88,10 @@ char getOp(char input)
 		case EOF:
 		case '\0':
 		case ',':
-			operandsC = 0, operandsCTmp = 0; //Reset all operand counters
+			operandsC = 0; //Reset all operand counters
 			return EOF;
 		//Should be an operator
 		default: 
-			//Reset local operand counter but not external so calc.c can still access it
-			operandsCTmp = 0;
 			return ch;
 	}
 }
@@ -103,4 +101,9 @@ int pullOC(void)
 	int tmp = operandsC;
 	operandsC = 0;
 	return tmp;
+}
+
+void setOC(int num)
+{
+	operandsC = num;
 }
