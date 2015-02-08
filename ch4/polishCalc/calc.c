@@ -36,7 +36,6 @@ double power(double val1, double val2)
 
 double (*operation)(double, double);
 
-
 static int oC, oCCurr; //Number of operations
 #define MAXOPERANDSC 50
 static double operandBuffer[MAXOPERANDSC];
