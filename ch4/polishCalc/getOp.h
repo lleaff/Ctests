@@ -17,5 +17,6 @@
 #define POW 'p'
 
 char getOp(char input);
+int pullOC(void); //Returns the number of operands before an operator
 
 #endif /* GETOP_H */

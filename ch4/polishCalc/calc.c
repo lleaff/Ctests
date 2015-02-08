@@ -9,10 +9,18 @@
 typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
+double add(double val1, double val2)
+{
+	return val1 + val2;
+}
+
 double calc(char input[], BOOL *shouldPrintResult)
 {
 	char type;
 	int i;
+	int oC, oCCurr; //Number of operations
+#define MAXOPERANDSC 50
+	double operandBuffer[MAXOPERANDSC];
 	double operand2;
 	BOOL value = FALSE; //Whether the input modified or added a value in the stack
 	BOOL assignment = FALSE; //Whether the variable to follow is used in an assignment
@@ -24,11 +32,18 @@ double calc(char input[], BOOL *shouldPrintResult)
 			case SKIP:
 				break;
 			case '+':
-				push(pull() + pull());
+				oC = pullOC();
+				for (oCCurr = oC; oCCurr > 0; oCCurr--) {
+					operandBuffer[oCCurr] = pull();
+				}
+				for (oCCurr = 1; oCCurr < oC; oCCurr++) {
+					operandBuffer[oCCurr + 1] = add(operandBuffer[oCCurr], operandBuffer[oCCurr + 1]);
+				}
+				push(operandBuffer[oCCurr]);
 				break;
 			case '-':
-				operand2 = pull();
-				push(pull() - operand2);
+					operand2 = pull();
+					push(pull() - operand2);
 				break;
 			case '*':
 				push(pull() * pull());

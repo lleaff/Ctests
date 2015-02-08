@@ -17,6 +17,7 @@ int charToDigit(char input)
 
 #define EMPTY -2
 
+static int operandsC;
 
 char getOp(char input)
 {
@@ -24,6 +25,7 @@ char getOp(char input)
 	static enum waitingType wait = Nothing;
 	static char chBuffer = EMPTY;
 	char execCmdReturn;
+	static int operandsCTmp;
 
 	char ch;
 	if (chBuffer == EMPTY || chBuffer == NUMBER) {
@@ -64,7 +66,8 @@ char getOp(char input)
 			chBuffer = NUMBER;
 			return NUMBER;
 		} else {
-			if (chBuffer == NUMBER) {
+			if (chBuffer == NUMBER) { //Number complete, push it and increase operands counter
+				operandsC++;
 				push(pullNum());
 				chBuffer = EMPTY;
 			}
@@ -77,7 +80,7 @@ char getOp(char input)
 	}
 
 	switch (ch) {
-		//is whitespace
+		//Whitespace
 		case ' ':
 		case '\t':
 			return SKIP;
@@ -85,8 +88,19 @@ char getOp(char input)
 		case EOF:
 		case '\0':
 		case ',':
+			operandsC = 0, operandsCTmp = 0; //Reset all operand counters
 			return EOF;
-		default:
+		//Should be an operator
+		default: 
+			//Reset local operand counter but not external so calc.c can still access it
+			operandsCTmp = 0;
 			return ch;
 	}
+}
+
+int pullOC(void)
+{
+	int tmp = operandsC;
+	operandsC = 0;
+	return tmp;
 }
