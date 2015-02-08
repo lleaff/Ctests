@@ -76,7 +76,8 @@ int compareCommand(void)
 	if (comPos == 0) {
 		return -2; //Command buffer empty
 	} else if (comPos == 1) {
-		return VARIABLE;
+		//We know it's a variable since only and all variables are 1 character long
+		return VARIABLE; 
 	}
 	int i;
 	for (i = 0; i < COMMANDC; i++) {
