@@ -34,7 +34,7 @@ void storeNum(char digit)
 		fractionPart = 1;
 	} else if (fractionPart) {
 		if (charToInt(digit) != 0) {
-			incompleteNum += pow(charToInt(digit), -(10 * fractionPart));
+			incompleteNum += (double)charToInt(digit) * (double)pow(10, -fractionPart);
 		}
 		fractionPart++;
 	} else {
