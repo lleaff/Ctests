@@ -85,10 +85,11 @@ char getOp(char input)
 		case '\t':
 			return SKIP;
 		//End of statement
-		case EOF:
 		case '\0':
 		case ',':
 			operandsC = 0; //Reset all operand counters
+			return '\n';
+		case EOF:
 			return EOF;
 		//Should be an operator
 		default: 

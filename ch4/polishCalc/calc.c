@@ -52,13 +52,15 @@ void doOperation(double (*operation)(double, double)) {
 				setOC(pullOC() + 1);
 }
 
+BOOL isEOF = FALSE;
+
 double calc(char input[], BOOL *shouldPrintResult)
 {
 	char type;
 	int i;
 	BOOL value = FALSE; //Whether the input modified or added a value in the stack
 	BOOL assignment = FALSE; //Whether the variable to follow is used in an assignment
-	for (i = 0, type = getOp(input[i]); type != EOF; i++, type = getOp(input[i])) {
+	for (i = 0, type = getOp(input[i]); type != '\n' && type != EOF; i++, type = getOp(input[i])) {
 		switch(type) {
 			case NUMBER:
 				value = TRUE;
@@ -117,6 +119,8 @@ double calc(char input[], BOOL *shouldPrintResult)
 			return 0;
 		}
 	}
-
+	if (type == EOF) {
+		isEOF = TRUE;
+	}
 	return (readTopValue());
 }
