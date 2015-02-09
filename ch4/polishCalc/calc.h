@@ -8,5 +8,4 @@ typedef enum { FALSE, TRUE } BOOL;
 #ifndef CALC_H
 #define CALC_H
 double calc(char input[], BOOL *shouldPrintValue);
-extern BOOL isEOF;
 #endif /* CALC_H */

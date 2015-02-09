@@ -119,8 +119,5 @@ double calc(char input[], BOOL *shouldPrintResult)
 			return 0;
 		}
 	}
-	if (type == EOF) {
-		isEOF = TRUE;
-	}
 	return (readTopValue());
 }

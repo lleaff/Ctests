@@ -16,7 +16,6 @@ BOOL exitcmd(char input[]);
 //Simply forwards raw input to calc.c
 int main(int argc, char **argv)
 {
-	printf("argc=%d\n", argc);//DEBUG
 	if (argc == 1) {
 		// Interactive mode
 		printf("=========-Polish Calculator-=========\n\
@@ -27,12 +26,14 @@ You can assign one-letter variables\n\
 =====================================\n");
 		char input[MAXSTRINGSIZE];
 		double result;
+		BOOL isThereInput = TRUE;
 		BOOL shouldPrintResult = FALSE;
-		for (printf("  "), getUserInput(input); !exitcmd(input) && !isEOF; printf("  "), getUserInput(input)) {
+		for (printf("  "), isThereInput = getUserInput(input); !exitcmd(input) && isThereInput; printf("  ")) {
 			result = calc(input, &shouldPrintResult);
 			if (shouldPrintResult) {
 				printf("> %g\n", result);
 			}
+			isThereInput = getUserInput(input);
 		}
 	} else {
 		// Argument processing mode
