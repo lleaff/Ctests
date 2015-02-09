@@ -41,15 +41,15 @@ static int oC, oCCurr; //Number of operations
 static double operandBuffer[MAXOPERANDSC];
 
 void doOperation(double (*operation)(double, double)) {
-				oC = pullOC();
-				for (oCCurr = oC; oCCurr > 0; oCCurr--) {
-					operandBuffer[oCCurr] = pull();
-				}
-				for (oCCurr = 1; oCCurr < oC; oCCurr++) {
-					operandBuffer[oCCurr + 1] = (*operation)(operandBuffer[oCCurr], operandBuffer[oCCurr + 1]);
-				}
-				push(operandBuffer[oCCurr]);
-				setOC(pullOC() + 1);
+	oC = pullOC();
+	for (oCCurr = oC; oCCurr > 0; oCCurr--) {
+		operandBuffer[oCCurr] = pull();
+	}
+	for (oCCurr = 1; oCCurr < oC; oCCurr++) {
+		operandBuffer[oCCurr + 1] = (*operation)(operandBuffer[oCCurr], operandBuffer[oCCurr + 1]);
+	}
+	push(operandBuffer[oCCurr]);
+	setOC(pullOC() + 1);
 }
 
 BOOL isEOF = FALSE;
