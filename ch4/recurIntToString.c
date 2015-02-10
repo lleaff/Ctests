@@ -43,40 +43,68 @@ int randInt(int lower, int upper) {
 	return ((rand() * (upper - lower)) / RAND_MAX) + lower;
 }
 
+#define MAXNUMLENGTH 100
+
+int getIntFromInput(int *isEOF)
+{
+	char userInput[MAXNUMLENGTH];
+	if (fgets(userInput, MAXNUMLENGTH, stdin) != NULL && 
+			!(!strcmp(userInput, "q\n") || !strcmp(userInput, "quit\n") || !strcmp(userInput, "exit\n"))) {
+		userInput[strlen(userInput) - 1] = 
+			userInput[strlen(userInput) - 1] == '\n' ? '\0' : userInput[strlen(userInput) - 1];
+		return (int)stringToDouble(userInput);
+	} else {
+		*isEOF = 1;
+		return 0;
+	}
+}
+
 int main(int argc, char *argv[])
 {
-#define MAXNUMLENGTH 100
 	char convertedInt[MAXNUMLENGTH];
 
-	if (!strcmp(argv[1], "--test")) {
-		int testResult = 0;
+	if (argc > 1) {
+		if (!strcmp(argv[1], "--test")) {
+			int testResult = 0;
 #define DEFAULTTESTC 6
-		int testC = (argc == 3) ? (int)stringToDouble(argv[2]) : DEFAULTTESTC;
-		srand(time(NULL));
-		int testNum;
-		int i;
-		for (i = 0; i < testC; i++) {
-			testNum = randInt(0, 9999);
-			intToString(testNum, convertedInt);
-			printf("%-6d %s\n", testNum, convertedInt);
-			if ((int)stringToDouble(convertedInt) != testNum) {
-				testResult++;
+			int testC = (argc == 3) ? (int)stringToDouble(argv[2]) : DEFAULTTESTC;
+			srand(time(NULL));
+			int testNum;
+			int i;
+			for (i = 0; i < testC; i++) {
+				testNum = randInt(0, 9999);
+				intToString(testNum, convertedInt);
+				printf("%-6d %s\n", testNum, convertedInt);
+				if ((int)stringToDouble(convertedInt) != testNum) {
+					testResult++;
+				}
+			}
+			//Test with "0"
+			intToString(0, convertedInt);
+			printf("%-6d %s\n", 0, convertedInt);
+			printf("\nTest result: %s", testResult ? "FAILURE" : "SUCCESS");
+			if (testResult) {
+				printf(" %d errors", testResult);
+			}
+			printf("\n");
+			return testResult;
+		} else { //Process arguments
+			int i;
+			for (i = 1; i < argc; i++) {
+				intToString((int)stringToDouble(argv[i]), convertedInt);
+				printf("%s\n", convertedInt);
 			}
 		}
-		//Test with "0"
-		intToString(0, convertedInt);
-		printf("%-6d %s\n", 0, convertedInt);
-		printf("\nTest result: %s", testResult ? "FAILURE" : "SUCCESS");
-		if (testResult) {
-			printf(" %d errors", testResult);
-		}
-		printf("\n");
-	} else {
-		//Process arguments
-		int i;
-		for (i = 1; i < argc; i++) {
-			intToString((int)stringToDouble(argv[i]), convertedInt);
+	} else { //No arguments, take input from stdin
+		int isEOF = 0;
+		while (1) {
+			intToString(getIntFromInput(&isEOF), convertedInt);
+			if (isEOF) {
+				break;
+			}
 			printf("%s\n", convertedInt);
+			convertedInt[0] = '\0';
 		}
 	}
+	return 0;
 }
