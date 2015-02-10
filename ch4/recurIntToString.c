@@ -37,6 +37,7 @@ int main(int argc, char *argv[])
 	char convertedInt[MAXNUMLENGTH];
 
 	if (!strcmp(argv[1], "--test")) {
+		int testResult = 0;
 #define DEFAULTTESTC 6
 		int testC = (argc == 3) ? (int)stringToDouble(argv[2]) : DEFAULTTESTC;
 		srand(time(NULL));
@@ -46,10 +47,18 @@ int main(int argc, char *argv[])
 			testNum = randInt(0, 9999);
 			intToString(testNum, convertedInt);
 			printf("%-6d %s\n", testNum, convertedInt);
+			if ((int)stringToDouble(convertedInt) != testNum) {
+				testResult++;
+			}
 		}
 		//Test with "0"
 		intToString(0, convertedInt);
 		printf("%-6d %s\n", 0, convertedInt);
+		printf("\nTest result: %s", testResult ? "FAILURE" : "SUCCESS");
+		if (testResult) {
+			printf(" %d errors", testResult);
+		}
+		printf("\n");
 	} else {
 		//Process arguments
 		int i;
