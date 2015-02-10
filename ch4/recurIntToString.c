@@ -23,8 +23,20 @@ double stringToDouble(char myString[])
 	return num;
 }
 
-char intToString(int input, char myString[])
+int intToString(int input, char myString[])
 {
+	int i = 0;
+	if (input < 0) {
+		myString[i] = '-';
+		return 1 + intToString(-input, &myString[1]);
+	}
+	if (input / 10 > 0) {
+		i = intToString(input / 10, myString);
+	}
+	myString[i] = input % 10 + '0';
+	i++;
+	myString[i] = '\0';
+	return i;
 }
 
 int randInt(int lower, int upper) {
