@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	char input[MAXSTRINGSIZE];
 
 	if (argc == 1) {
-		while (gets(input) != NULL) {
+		while (fgets(input, MAXSTRINGSIZE, stdin) != NULL) {
 			if (input[strlen(input) - 1] == '\n') { //Remove trailing newline
 				input[strlen(input) - 1] = '\0';
 			}
