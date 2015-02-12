@@ -8,4 +8,5 @@
 #else
 #define DEBUGPRINT(...)
 #define DEBUGP(...)
-#endif /* DEBUG_H, DEBUG */
+#endif /* DEBUG */
+#endif /* DEBUG_H */
