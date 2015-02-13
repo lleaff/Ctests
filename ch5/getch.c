@@ -18,13 +18,14 @@ char charBuffer(int push)
 			lastCh = getchar();
 			return lastCh;
 		} else {
-			empty = FALSE;
+			empty = TRUE;
 			lastCh = buffer;
 			return lastCh;
 		}
 	} else { // ungetch mode
 		if (empty) {
 			buffer = lastCh;
+			empty = FALSE;
 			return '0';
 		} else {
 			fprintf(stderr, "ERROR: buffer full (%c), can't push back: %c\n", buffer, lastCh);
@@ -40,6 +41,7 @@ void ungetch(void)
 
 char getch(void)
 {
+
 	return charBuffer(1);
 }
 
