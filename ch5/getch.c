@@ -41,7 +41,6 @@ void ungetch(void)
 
 char getch(void)
 {
-
 	return charBuffer(1);
 }
 
