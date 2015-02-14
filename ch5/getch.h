@@ -2,4 +2,4 @@
 #define GETCH_H
 char getch(void);
 void ungetch(void);
-#endif
+#endif /* GETCH_H */
