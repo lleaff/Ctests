@@ -3,7 +3,6 @@
 #include <stdlib.h> //For NULL pointer identifier
 #include <string.h>
 
-
 typedef struct String {
 	double stringTypeID;
 	char *Chars;
