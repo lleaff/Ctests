@@ -7,7 +7,7 @@
 #define DEBUGP(...)			DEBUGPRINT(__VA_ARGS__)
 #define DEBUGSTATEMENT(...)	__VA_ARGS__
 #define DEBUGS(...)	DEBUGSTATEMENT(__VA_ARGS__)
-#define PUTCHARLIT(myChar)	do {Debug__putcharLit(myChar)} while(0)
+#define PUTCHARLIT(myChar)	Debug__putcharLit(myChar)
 void Debug__putcharLit(char myChar);
 #else
 #define DEBUGPRINT(...)
