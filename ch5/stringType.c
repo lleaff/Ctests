@@ -1,16 +1,23 @@
 #include "stringType.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define MIN(val1, val2)	((val1 < val2 ? val1 : val2))
 
 #define STRINGTYPEID 16.5541e59
 const double String__StringTypeID_ref = STRINGTYPEID;
 
+String newEmptyString(void);
+
 String newString(int length, char *cStyleString)
 {
 	String myString;
 	if (cStyleString == NULL) {
+		if (length < 0) {
+			fprintf(stderr, "ERROR: stringType:newString, ");
+			return newEmptyString();
+		}
 		myString.Chars = malloc((sizeof(char) * length) + 1);
 		myString.Length = myString.LengthLimit = length;
 	} else {
@@ -19,10 +26,18 @@ String newString(int length, char *cStyleString)
 		for (i = 0; cStyleString[i] != '\0'; i++)
 			;
 		myString.Length = i;
-		myString.LengthLimit = length;
+		myString.LengthLimit = length < 0 ? length : i;
 	}
 	myString.stringTypeID = String__StringTypeID_ref;
 	return myString;
+}
+
+String newEmptyString(void)
+{
+	String emptyString = {
+		.stringTypeID = String__StringTypeID_ref, .Chars = NULL, .Length = -1, .LengthLimit = -1 
+	};
+	return emptyString;
 }
 
 int isStringType(void *ptr)
