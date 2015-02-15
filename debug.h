@@ -6,9 +6,11 @@
 #define DEBUGPRINT(...)		fprintf(stderr, __VA_ARGS__)
 #define DEBUGP(...)			DEBUGPRINT(__VA_ARGS__)
 #define DEBUGSTATEMENT(...)	__VA_ARGS__
+#define DEBUGS(...)	DEBUGSTATEMENT(__VA_ARGS__)
 #else
 #define DEBUGPRINT(...)
 #define DEBUGP(...)
 #define DEBUGSTATEMENT(...)
+#define DEBUGS(...)
 #endif /* DEBUG */
 #endif /* DEBUG_H */
