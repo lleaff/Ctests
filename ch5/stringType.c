@@ -5,7 +5,7 @@
 #define MIN(val1, val2)	((val1 < val2 ? val1 : val2))
 
 #define STRINGTYPEID 16.5541e59
-const double __StringTypeID_ref = STRINGTYPEID;
+const double String__StringTypeID_ref = STRINGTYPEID;
 
 String newString(int length, char *cStyleString)
 {
@@ -21,16 +21,16 @@ String newString(int length, char *cStyleString)
 		myString.Length = i;
 		myString.LengthLimit = length;
 	}
-	myString.stringTypeID = __StringTypeID_ref;
+	myString.stringTypeID = String__StringTypeID_ref;
 	return myString;
 }
 
 int isStringType(void *ptr)
 {
-	return (*(double *)ptr == __StringTypeID_ref);
+	return (*(double *)ptr == String__StringTypeID_ref);
 }
 
-int strlen__flexible(void *ptr)
+int String__strlength(void *ptr)
 {
 	if (isStringType(ptr)) { //Is "String" type
 		return ((String*)ptr)->Length;
@@ -43,13 +43,13 @@ int strlen__flexible(void *ptr)
 }
 
 //Returns 0 if both strings are String types, 1 if the origin string is C-type string
-int CopyString(String destination, void *otherString)
+int CopyString(String destination, void *origin)
 {
-	if (isStringType(otherString)) {
-		memcpy(destination.Chars, (*(String *)otherString)->Chars, destination.Length * sizeof(char));
+	if (isStringType(origin)) {
+		memcpy(destination.Chars, (*(String *)origin).Chars, destination.Length * sizeof(char));
 		return 0;
 	} else {
-		strcpy(destination.Chars, (char *)otherString);
+		strcpy(destination.Chars, (char *)origin);
 		return 1;
 	}
 }

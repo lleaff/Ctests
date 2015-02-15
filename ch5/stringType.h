@@ -2,7 +2,9 @@
 #define STRINGTYPE_H
 #include <stdlib.h> //For NULL pointer identifier
 
-typedef struct {
+#define strlen(string) String__strlength(&string)
+
+typedef struct String {
 	double stringTypeID;
 	char *Chars;
 	int Length;
@@ -10,9 +12,8 @@ typedef struct {
 } String;
 
 String newString(int length, char *cStyleString);
-int CopyString(String destination, void *otherString);
+int CopyString(String destination, void *origin);
 
-#define strlen(ptr)	strlen__flexible(&ptr)
-int strlen__flexible(void *ptr);
+int String__strlength(void *ptr);
 
 #endif /*  STRINGTYPE_H */
