@@ -3,8 +3,10 @@
 
 int main()
 {
-	String testStr = newString(50, NULL);
+	String testStr = newString(50, "YOYOYO");
 	char cStyleStr[] = "Yolo";
-	printf("%d\n", strlen(testStr));
-	printf("%d\n", strlen(cStyleStr));
+	printf("String:\n%s\n", testStr.Chars);
+	printf("len1=%d, .LengthLimit=%d\n", strlen(testStr), testStr.LengthLimit);
+	printf("\nC-style:\n%s\n", cStyleStr);
+	printf("len2=%d\n", strlen(cStyleStr));
 }

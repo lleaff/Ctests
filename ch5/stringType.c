@@ -19,14 +19,16 @@ String newString(int length, char *cStyleString)
 			return newEmptyString();
 		}
 		myString.Chars = malloc((sizeof(char) * length) + 1);
-		myString.Length = myString.LengthLimit = length;
+		myString.Length = 0;
+		myString.LengthLimit = length;
 	} else {
-		CopyString(myString, cStyleString);
 		int i;
 		for (i = 0; cStyleString[i] != '\0'; i++)
 			;
-		myString.Length = i;
+		myString.Length = i < length ? i : length;
 		myString.LengthLimit = length < 0 ? length : i;
+		myString.Chars = malloc((sizeof(char) * myString.LengthLimit) + 1);
+		CopyString(myString, cStyleString);
 	}
 	myString.stringTypeID = String__StringTypeID_ref;
 	return myString;
