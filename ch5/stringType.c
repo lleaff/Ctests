@@ -52,8 +52,9 @@ int String__strlength(void *ptr)
 	if (isStringType(ptr)) { //Is "String" type
 		return ((String*)ptr)->Length;
 	} else { //Is C-style string
+		char *str = (char *)(void **)ptr;
 		int i;
-		for (i = 0; *(char *)(ptr + (i * sizeof(char))) != '\0'; i++)
+		for (i = 0; *(str + i) != '\0'; i++)
 			;
 		return i;
 	}
