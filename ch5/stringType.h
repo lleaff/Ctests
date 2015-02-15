@@ -14,7 +14,6 @@ typedef struct String {
 
 String newString(int length, char *cStyleString);
 int CopyString(String destination, void *origin);
-
-int String__strlength(void *ptr);
+int isStringType(void *ptr);
 
 #endif /*  STRINGTYPE_H */
