@@ -1,8 +1,9 @@
 #ifndef STRINGTYPE_H
 #define STRINGTYPE_H
 #include <stdlib.h> //For NULL pointer identifier
+#include <string.h>
 
-#define strlen(string) String__strlength(&string)
+#define strlen(string) String__strlength(&(string))
 
 typedef struct String {
 	double stringTypeID;
