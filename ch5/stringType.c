@@ -42,6 +42,12 @@ String newEmptyString(void)
 	return emptyString;
 }
 
+void changeStringLength(String myString, int lengthLimit)
+{
+	myString.Chars = (char *)realloc(myString.Chars, sizeof(char) * lengthLimit);
+	myString.LengthLimit = lengthLimit;
+}
+
 int isStringType(void *ptr)
 {
 	return (*(double *)ptr == String__StringTypeID_ref);

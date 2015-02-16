@@ -12,6 +12,7 @@ typedef struct String {
 
 String newString(int length, char *cStyleString);
 
+void changeStringLength(String myString, int lengthLimit);
 int isStringType(void *ptr);
 #define strlen(string) String__strlength(string)
 int String__strlength(void *ptr);
