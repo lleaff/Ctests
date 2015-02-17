@@ -57,10 +57,19 @@ int main()
 	String teststr2 = newString(50, "Goodbye");
 	srand((int)time(NULL));
 	printf("str1: %s\nstr2: %s\n", teststr1.Chars, teststr2.Chars);
-	int n = randInt(0, strlen(teststr2));
-	printf("Copy the first %d characters from str2 and the end of str1...\n", n);
+	int n;
+
+	n = randInt(0, strlen(teststr2));
+	printf("\nCopy the first %d characters from str2 at the end of str1...\n\n", n);
 	strncat(teststr1, teststr2, n);
 	printf("str1: %s\nstr2: %s\n", teststr1.Chars, teststr2.Chars);
+
+	n = randInt(0, strlen(teststr2));
+	printf("\nCopy the first %d characters from str2 on str1...\n\n", n);
+	strncpy(teststr1, teststr2, n);
+	printf("str1: %s\nstr2: %s\n", teststr1.Chars, teststr2.Chars);
+
+
 	return 0;
 }
 
