@@ -1,12 +1,14 @@
+#define DEBUG
 #include "stringType.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../debug.h"
 
 #define MIN(val1, val2)	((val1 < val2 ? val1 : val2))
 
-#define STRINGTYPEID 16.5541e59
-const double String__StringTypeID_ref = STRINGTYPEID;
+#define STRINGTYPEID 5751
+const short String__StringTypeID_ref = STRINGTYPEID;
 
 String newEmptyString(void);
 
@@ -50,18 +52,21 @@ void changeStringLength(String myString, int lengthLimit)
 
 int isStringType(void *ptr)
 {
-	return (*(double *)ptr == String__StringTypeID_ref);
+	DEBUGP("\tDEBUG: isStringType(%p)=%s\n", ptr, (*(short *)ptr == String__StringTypeID_ref) ? "TRUE" : "FALSE");
+	return (*(short *)ptr == String__StringTypeID_ref);
 }
 
 int String__strlength(void *ptr)
 {
-	if (isStringType(ptr)) { //Is "String" type
-		return ((String*)ptr)->Length;
+	if (isStringType(*(void **)ptr)) { //Is "String" type
+		DEBUGP("\tDEBUG: strlen(%p)=%d (String)(%s)\n", ptr, (**(String**)ptr).Length, (**(String **)ptr).Chars);
+		return (*(String **)ptr)->Length;
 	} else { //Is C-style string
-		char *str = (char *)(void **)ptr;
+		char *str = *(char **)ptr;
 		int i;
 		for (i = 0; *(str + i) != '\0'; i++)
 			;
+		DEBUGP("\tDEBUG: strlen(%p)=%d (char*)(%s)\n", ptr, i, str);
 		return i;
 	}
 }
