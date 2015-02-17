@@ -3,11 +3,11 @@
 //Put "#define DEBUG" at the top of your file to enable the functions
 #include <stdio.h>
 #ifdef DEBUG
-#define DEBUGPRINT(...)		fprintf(stderr, __VA_ARGS__)
+#define DEBUGPRINT(...)		do {fprintf(stderr, __VA_ARGS__);}while(0);
 #define DEBUGP(...)			DEBUGPRINT(__VA_ARGS__)
 #define DEBUGSTATEMENT(...)	__VA_ARGS__
 #define DEBUGS(...)	DEBUGSTATEMENT(__VA_ARGS__)
-#define PUTCHARLIT(myChar)	Debug__putcharLit(myChar)
+#define PUTCHARLIT(myChar)	do{Debug__putcharLit(myChar);}while(0);
 void Debug__putcharLit(char myChar);
 #else
 #define DEBUGPRINT(...)
