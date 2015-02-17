@@ -1,4 +1,3 @@
-#define DEBUG
 #include "stringType.h"
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +13,7 @@ String newEmptyString(void);
 
 String newString(int length, char *cStyleString)
 {
+	DEBUGP("\tDEBUG: \t>>> newString(%d, %s)\n", length, cStyleString == NULL ? "NULL" : cStyleString)
 	String myString;
 	if (cStyleString == NULL) {
 		if (length < 0) {
@@ -52,21 +52,21 @@ void changeStringLength(String myString, int lengthLimit)
 
 int isStringType(void *ptr)
 {
-	DEBUGP("\tDEBUG: isStringType(%p)=%s\n", ptr, (*(short *)ptr == String__StringTypeID_ref) ? "TRUE" : "FALSE");
+	DEBUGP("\tDEBUG: isStringType(%p)=%s\n", ptr, (*(short *)ptr == String__StringTypeID_ref) ? "TRUE" : "FALSE")
 	return (*(short *)ptr == String__StringTypeID_ref);
 }
 
 int String__strlength(void *ptr)
 {
-	if (isStringType(*(void **)ptr)) { //Is "String" type
-		DEBUGP("\tDEBUG: strlen(%p)=%d (String)(%s)\n", ptr, (**(String**)ptr).Length, (**(String **)ptr).Chars);
-		return (*(String **)ptr)->Length;
+	if (isStringType(ptr)) { //Is "String" type
+		DEBUGP("\tDEBUG: strlen(%p)=%d (String)(%s)\n", ptr, (*(String*)ptr).Length, (*(String *)ptr).Chars)
+		return (*(String *)ptr).Length;
 	} else { //Is C-style string
 		char *str = *(char **)ptr;
 		int i;
 		for (i = 0; *(str + i) != '\0'; i++)
 			;
-		DEBUGP("\tDEBUG: strlen(%p)=%d (char*)(%s)\n", ptr, i, str);
+		DEBUGP("\tDEBUG: strlen(%p)=%d (char*)(%s)\n", ptr, i, str)
 		return i;
 	}
 }
