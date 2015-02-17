@@ -56,6 +56,12 @@ int isStringType(void *ptr)
 	return (*(short *)ptr == String__StringTypeID_ref);
 }
 
+/*  Returns the pointer to the actual char[] */
+char *getStringChars(void *ptr)
+{
+	return (isStringType((void *)ptr)) ? (*(String *)ptr).Chars : (char *)ptr;
+}
+
 int String__strlength(void *ptr)
 {
 	if (isStringType(ptr)) { //Is "String" type

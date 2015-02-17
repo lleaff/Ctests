@@ -11,7 +11,7 @@
 int String__strncat(void *str1, void *str2, int n)
 {
 	int l1 = strlen(*(void **)str1), l2 = strlen(*(void **)str2);
-	char *string2Chars = (isStringType((void **)str2)) ? (*(String *)str2).Chars : *(char **)str2;
+	char *string2Chars = getStringChars(str2);
 	int returnVal = 0;
 	if (isStringType((void **)str1)) {
 		String string1 = *(String *)str1;
@@ -41,6 +41,7 @@ int String__strncpy(void *str1, void *str2, int n)
 
 	return 0;
 }
+
 
 #ifdef DEBUG
 #include <stdlib.h>	//For testing with rand()
