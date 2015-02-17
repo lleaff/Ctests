@@ -1,4 +1,5 @@
 #define DEBUG
+#include "stringnfuncs.h"
 #include "../debug.h"
 
 #include "stringType.h"
@@ -35,6 +36,12 @@ int String__strncat(void *str1, void *str2, int n)
 	return returnVal;
 }
 
+int String__strncpy(void *str1, void *str2, int n)
+{
+
+	return 0;
+}
+
 #ifdef DEBUG
 #include <stdlib.h>	//For testing with rand()
 #include <time.h>	//For seeding rand() with srand(time())
@@ -52,7 +59,7 @@ int main()
 	printf("str1: %s\nstr2: %s\n", teststr1.Chars, teststr2.Chars);
 	int n = randInt(0, strlen(teststr2));
 	printf("Copy the first %d characters from str2 and the end of str1...\n", n);
-	String__strncat(&teststr1, &teststr2, n);
+	strncat(teststr1, teststr2, n);
 	printf("str1: %s\nstr2: %s\n", teststr1.Chars, teststr2.Chars);
 	return 0;
 }
