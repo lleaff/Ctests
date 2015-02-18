@@ -95,7 +95,6 @@ int main()
 	strncpy(teststr3, teststr2, n);
 	printf("str3: %s\nstr2: %s\n", teststr3.Chars, teststr2.Chars);
 
-
 	return 0;
 }
 
