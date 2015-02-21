@@ -5,7 +5,7 @@ typedef enum { CHAR, SHORT, INT, LONG, FLOAT, DOUBLE, LONGDOUBLE, UNKNOWN, GREAT
 
 #define TYPES__TYPESC 7 //Number of types
 
-int typesSizes[TYPES__TYPESC] = {
+int TYPES__typesSizes[TYPES__TYPESC] = {
 	(int)sizeof(char),
 	(int)sizeof(short),
 	(int)sizeof(int),
@@ -16,5 +16,7 @@ int typesSizes[TYPES__TYPESC] = {
 };
 
 TYPE getType(int size);
+
+#define SIZEOF(myTYPE)	(TYPES__typesSizes[myTYPE])
 
 #endif /*  TYPES_H */

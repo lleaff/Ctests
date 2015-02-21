@@ -8,12 +8,12 @@ typedef enum { FALSE, TRUE } BOOL;
 
 TYPE getType(int size)
 {
-	if (size > typesSizes[LONGDOUBLE]) {
+	if (size > TYPES__typesSizes[LONGDOUBLE]) {
 		return GREATERTHANLONGDOUBLE;
 	}
 	int i;
 	for (i = 0; i < TYPES__TYPESC; ++i) {
-		if (size == typesSizes[i]) {
+		if (size == TYPES__typesSizes[i]) {
 			return (TYPE)i;
 		}
 	}
