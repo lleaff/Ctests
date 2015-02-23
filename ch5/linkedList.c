@@ -40,8 +40,8 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 	return myLink;
 }
 
-#define LASTARGID_LLD 242319377175715117
-static const long double LastArgId_LLD = LASTARGID_LLD;
+#define LASTARGID_LLD 242319717654231400
+static const long long LastArgId_LLD = LASTARGID_LLD;
 #define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
 
 LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
@@ -70,28 +70,25 @@ LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 /*  Returns 0 if there is no argument left */
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
-	if (*(long double*)ap == LastArgId_LLD) { /*  Assuming ap is a pointer to the args stored contiguously */
-		return 0; //Last argument //TODO: <===This is never reached
-	}
 	switch (*type) {
-		case CHAR:		*(long double*)elemmem = va_arg(ap, int);
-						/* 'char' is promoted to 'int' when passed through '...' */
+		case CHAR:		/* 'char' is promoted to 'int' w*hen passed through '...' */
+		case SHORT:		/* 'short' is promoted to 'int' *when passed through '...' */	
+		case INT:
+						*(int*)elemmem = va_arg(*ap, int);
 					break;
-		case INT:		*(long double*)elemmem = va_arg(ap, int);
+		case LONG:		*(long*)elemmem = va_arg(*ap, long);
 					break;
-		case SHORT:		*(long double*)elemmem = va_arg(ap, int);
-						/* 'short' is promoted to 'int' when passed through '...' */
+		case FLOAT:		/* 'float' is promoted to 'double' when passed through '...' */
+		case DOUBLE:	*(double*)elemmem = va_arg(*ap, double);
 					break;
-		case LONG:		*(long double*)elemmem = va_arg(ap, long);
+		case LONGDOUBLE:*(long double*)elemmem = va_arg(*ap, long double);
 					break;
-		case FLOAT:		*(long double*)elemmem = va_arg(ap, double);
-						/* 'float' is promoted to 'double' when passed through '...' */
+		default:
 					break;
-		case DOUBLE:	*(long double*)elemmem = va_arg(ap, double);
-					break;
-		case LONGDOUBLE:*(long double*)elemmem = va_arg(ap, long double);
-					break;
-		default:	break;
+	}
+	if (**(long long**)ap == LastArgId_LLD) {
+		va_end(*ap);
+		return 0; //Last argument
 	}
 	return 1; //Success
 }
@@ -143,5 +140,5 @@ static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE
 int main()
 {
 	LL intList = newLL(sizeof(int), 64, 2, 32, 8, 16, 4, 1);
-	printf("%d\n", (int)(intList.curr->elem));
+	printf("intList.curr->elem=%d\n", (int)(intList.curr->elem));
 }
