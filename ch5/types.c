@@ -45,6 +45,15 @@ TYPE getTYPEFromString(char* typeStr)
 	return UNKNOWN;
 }
 
+int isStringTYPE(char* myString)
+{
+	if (getTYPEFromString(myString) == UNKNOWN) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
 int TYPES__getTypeSize(TYPE myTYPE)
 {
 	return TYPES__typesSizes[(int)myTYPE];

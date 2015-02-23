@@ -7,6 +7,7 @@ typedef enum { CHAR, SHORT, INT, LONG, FLOAT, DOUBLE, LONGDOUBLE, UNKNOWN, GREAT
 
 TYPE getTYPEFromSize(int size);
 TYPE getTYPEFromString(char* typeStr);
+int isStringTYPE(char* myString);
 
 #define SIZEOF(myTYPE)	(TYPES__getTypeSize(myTYPE))
 int TYPES__getTypeSize(TYPE myTYPE);
