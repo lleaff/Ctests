@@ -70,15 +70,18 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 		return 0; //Last argument
 	}
 	switch (*type) {
-		case CHAR:		*(long double*)elemmem = va_arg(ap, char);
+		case CHAR:		*(long double*)elemmem = va_arg(ap, int);
+						/* 'char' is promoted to 'int' when passed through '...' */
 					break;
 		case INT:		*(long double*)elemmem = va_arg(ap, int);
 					break;
 		case SHORT:		*(long double*)elemmem = va_arg(ap, short);
+						/* 'short' is promoted to 'int' when passed through '...' */
 					break;
 		case LONG:		*(long double*)elemmem = va_arg(ap, long);
 					break;
-		case FLOAT:		*(long double*)elemmem = va_arg(ap, float);
+		case FLOAT:		*(long double*)elemmem = va_arg(ap, double);
+						/* 'float' is promoted to 'double' when passed through '...' */
 					break;
 		case DOUBLE:	*(long double*)elemmem = va_arg(ap, double);
 					break;
@@ -132,5 +135,6 @@ static void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size)
 
 int main()
 {
-	//LL intList = LL__newLL(sizeof(int), 1, 2, 4, 8, 16, 32, 64);
+	LL intList = LL__newLL(sizeof(int), 1, 2, 4, 8, 16, 32, 64);
+	printf("%d\n", (int)(intList.curr->elem));
 }
