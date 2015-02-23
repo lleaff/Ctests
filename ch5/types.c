@@ -10,6 +10,16 @@ typedef enum { FALSE, TRUE } BOOL;
 char typesStr[TYPES__TYPESC][MAXTYPENAMELENGTH] =
 	{ "CHAR", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "LONGDOUBLE" };
 
+int TYPES__typesSizes[TYPES__TYPESC] = {
+	(int)sizeof(char),
+	(int)sizeof(short),
+	(int)sizeof(int),
+	(int)sizeof(long),
+	(int)sizeof(float),
+	(int)sizeof(double),
+	(int)sizeof(long double),
+};
+
 TYPE getTYPEFromSize(int size)
 {
 	if (size > TYPES__typesSizes[LONGDOUBLE]) {
@@ -33,4 +43,9 @@ TYPE getTYPEFromString(char* typeStr)
 		}
 	}
 	return UNKNOWN;
+}
+
+int TYPES__getTypeSize(TYPE myTYPE)
+{
+	return TYPES__typesSizes[(int)myTYPE];
 }

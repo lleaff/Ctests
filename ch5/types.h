@@ -3,21 +3,12 @@
 
 typedef enum { CHAR, SHORT, INT, LONG, FLOAT, DOUBLE, LONGDOUBLE, UNKNOWN, GREATERTHANLONGDOUBLE } TYPE;
 
-static const int TYPES__TYPESC = 7; //Number of types
-
-int TYPES__typesSizes[TYPES__TYPESC] = {
-	(int)sizeof(char),
-	(int)sizeof(short),
-	(int)sizeof(int),
-	(int)sizeof(long),
-	(int)sizeof(float),
-	(int)sizeof(double),
-	(int)sizeof(long double),
-};
+#define TYPES__TYPESC 7 //Number of types
 
 TYPE getTYPEFromSize(int size);
 TYPE getTYPEFromString(char* typeStr);
 
-#define SIZEOF(myTYPE)	(TYPES__typesSizes[myTYPE])
+#define SIZEOF(myTYPE)	(TYPES__getTypeSize(myTYPE))
+int TYPES__getTypeSize(TYPE myTYPE);
 
 #endif /*  TYPES_H */
