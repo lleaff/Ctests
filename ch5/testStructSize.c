@@ -19,6 +19,9 @@ struct oneByteStruct { char oneB; };
 struct ldStruct { char oneB; double ld[40]; };
 struct wordStruct { char oneB; int i; };
 
+struct naked		{ char hi; char ho; };
+struct dressedup	{ char hi; char ho; char hello[]; };
+
 int main()
 {
 	printf("sizeof(Link)\t  %d\n", (int)sizeof(Link));
@@ -38,4 +41,7 @@ int main()
 	printf("\n"); /*  ===================  */
 	printf("sizeof(wordStruct)\t%d\n", (int)sizeof(struct wordStruct));
 	printf("offsetof(int)\t%d\n", (int)offsetof(struct wordStruct, i));
+	printf("\n"); /*  ===================  */
+	printf("sizeof(naked)\t\t%d\n", (int)sizeof(struct naked));
+	printf("sizeof(dressedup)\t%d\n", (int)sizeof(struct dressedup));
 }
