@@ -26,7 +26,9 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 	return myLink;
 }
 
-#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, __VA_ARGS__, LASTARGID_LLD)
+#define LASTARGID_LLD 242319377175715117
+static const long double LastArgId_LLD = LASTARGID_LLD;
+#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, __VA_ARGS__, LastArgId_LLD)
 
 Link LL__newLL(char* typeOrSize, ...)
 {
@@ -45,8 +47,6 @@ Link LL__newLL(char* typeOrSize, ...)
 
 }
 
-#define LASTARGID_LLD 242319377175715117
-static const long double LastArgId_LLD = LASTARGID_LLD;
 /*  Returns 0 if there is no argument left */
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
