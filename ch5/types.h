@@ -20,4 +20,6 @@ TYPE getTYPEFromString(char* typeStr);
 
 #define SIZEOF(myTYPE)	(TYPES__typesSizes[myTYPE])
 
+int getCpuWordSize();
+
 #endif /*  TYPES_H */
