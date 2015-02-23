@@ -17,8 +17,13 @@ case ' ':printf("_space_");break;\
 default:putchar(myChar);break;}\
 }while(0);
 
-#define TOLOWER(myString)	do{int i; for(i=0;myString[i]!='\0';++i){tolower(myString[i]);}}while(0);
-#define TOUPPER(myString)	do{int i; for(i=0;myString[i]!='\0';++i){toupper(myString[i]);}}while(0);
+#define TOLOWER(myString)	DEBUG__TOLOWER(myString)
+char* DEBUG__TOLOWER(char* myString)
+{ int i; for(i=0;myString[i]!='\0';++i){tolower(myString[i]);} return myString; }
+
+#define TOUPPER(myString)	DEBUG__TOUPPER(myString)
+char* DEBUG__TOUPPER(char* myString)
+{ int i; for(i=0;myString[i]!='\0';++i){toupper(myString[i]);} return myString; }
 
 #else
 #define DEBUGPRINT(...)
@@ -27,6 +32,7 @@ default:putchar(myChar);break;}\
 #define DEBUGS(...)
 #define PUTCHARLIT(myChar)
 #define TOLOWER(myString)
+#define TOUPPER(myString)
 #endif /* DEBUG */
 
 #endif /* DEBUG_H */
