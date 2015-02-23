@@ -1,3 +1,6 @@
+#define DEBUG
+#include "../debug.h"
+
 #include "types.h"
 #include <stdio.h>
 #include <stdlib.h> /*  malloc() */
@@ -22,7 +25,7 @@ typedef struct Link {
 	char elem[];
 } Link;
 
-static void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size);
+static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size);
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
 
 Link* LL__newLink(int size, void* elemmem, Link* prev)
@@ -39,16 +42,17 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 
 #define LASTARGID_LLD 242319377175715117
 static const long double LastArgId_LLD = LASTARGID_LLD;
-#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, __VA_ARGS__, LastArgId_LLD)
+#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
 
-LL LL__newLL(char* typeOrSize, ...)
+LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 {
+	DEBUGP("typeOrSize=\"%s\"\n", typeOrSize)
 	TYPE type;
 	int size;
-	resolveTypeAndSizeFromString(typeOrSize, &type, &size);
+	resolveTypeAndSizeFromString(typeOrSize, typeOrSizeValue, &type, &size);
 
 	va_list ap;
-	va_start(ap, typeOrSize);
+	va_start(ap, typeOrSizeValue);
 	char elemmem[size];
 
 	Link* prev = NULL;
@@ -67,7 +71,7 @@ LL LL__newLL(char* typeOrSize, ...)
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
 	if (*(long double*)ap == LastArgId_LLD) { /*  Assuming ap is a pointer to the args stored contiguously */
-		return 0; //Last argument
+		return 0; //Last argument //TODO: <===This is never reached
 	}
 	switch (*type) {
 		case CHAR:		*(long double*)elemmem = va_arg(ap, int);
@@ -75,7 +79,7 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 					break;
 		case INT:		*(long double*)elemmem = va_arg(ap, int);
 					break;
-		case SHORT:		*(long double*)elemmem = va_arg(ap, short);
+		case SHORT:		*(long double*)elemmem = va_arg(ap, int);
 						/* 'short' is promoted to 'int' when passed through '...' */
 					break;
 		case LONG:		*(long double*)elemmem = va_arg(ap, long);
@@ -123,18 +127,21 @@ static int tryGetIntFromString(char* myString, int* convertedInt)
 	return 1; //Success
 }
 
-static void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size)
+static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size)
 {
 	if (tryGetIntFromString(myString, size)) {	/*	String is int	*/
 		*type = getTYPEFromSize(*size);
-	} else {									/*	String is type	*/
+	} else if (isStringTYPE(myString)) {		/*	String is type	*/
 		*type = getTYPEFromString(myString);
 		*size = SIZEOF(*type);
+	} else {									/*  Get size from myStringValue instead */
+		*size = myStringValue;
+		*type = getTYPEFromSize(*size);
 	}
 }
 
 int main()
 {
-	LL intList = LL__newLL(sizeof(int), 1, 2, 4, 8, 16, 32, 64);
+	LL intList = newLL(sizeof(int), 64, 2, 32, 8, 16, 4, 1);
 	printf("%d\n", (int)(intList.curr->elem));
 }
