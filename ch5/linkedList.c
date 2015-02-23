@@ -1,8 +1,8 @@
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h> /*  malloc() */
 #include <string.h>
 #include <stdarg.h>
-#include "types.h"
 /*  CHAR, SHORT, INT, LONG, FLOAT, DOUBLE, LONGDOUBLE, UNKNOWN, GREATERTHANLONGDOUBLE */
 
 #ifndef BOOL_TYPE
@@ -10,9 +10,15 @@
 typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
+typedef struct LL {
+	struct Link* curr;
+	int length;
+} LL;
+
 typedef struct Link {
 	struct Link* prev;
 	struct Link* next;
+	TYPE type;
 	char elem[];
 } Link;
 
@@ -23,6 +29,11 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 {
 	Link* myLink = (Link*)malloc(size + sizeof(Link));
 	memcpy(myLink->elem, elemmem, size);
+	myLink->prev = prev;
+	myLink->next = NULL;
+	if (prev != NULL) {
+		prev->next = myLink; /*  Set itself as 'next' of previous Link */
+	}
 	return myLink;
 }
 
@@ -30,7 +41,7 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 static const long double LastArgId_LLD = LASTARGID_LLD;
 #define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, __VA_ARGS__, LastArgId_LLD)
 
-Link LL__newLL(char* typeOrSize, ...)
+LL LL__newLL(char* typeOrSize, ...)
 {
 	TYPE type;
 	int size;
@@ -41,34 +52,37 @@ Link LL__newLL(char* typeOrSize, ...)
 	char elemmem[size];
 
 	Link* prev = NULL;
-	while (initElemmem(&type, &elemmem, &ap)) {
+	int length;
+	for (length = 0; initElemmem(&type, &elemmem, &ap); length++) {
 		LL__newLink(size, &elemmem, prev);
 	}
 
+	LL myLinkedList;
+	myLinkedList.curr = prev;
+	myLinkedList.length = length;
+	return myLinkedList;
 }
 
 /*  Returns 0 if there is no argument left */
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
-	//TODO: That won't work because va_arg will push ap {sizeof(long double)} B instead of {sizeof(type)} B
-	long double va_argBuffer = va_arg(ap, long double);
-	if (va_argBuffer == LastArgId_LLD) {
+	if (*(long double*)ap == LastArgId_LLD) { /*  Assuming ap is a pointer to the args stored contiguously */
 		return 0; //Last argument
 	}
 	switch (*type) {
-		case CHAR:		*(long double*)elemmem = (char)va_argBuffer;
+		case CHAR:		*(long double*)elemmem = va_arg(ap, char);
 					break;
-		case INT:		*(long double*)elemmem = (int)va_argBuffer;
+		case INT:		*(long double*)elemmem = va_arg(ap, int);
 					break;
-		case SHORT:		*(long double*)elemmem = (short)va_argBuffer;
+		case SHORT:		*(long double*)elemmem = va_arg(ap, short);
 					break;
-		case LONG:		*(long double*)elemmem = (long)va_argBuffer;
+		case LONG:		*(long double*)elemmem = va_arg(ap, long);
 					break;
-		case FLOAT:		*(long double*)elemmem = (float)va_argBuffer;
+		case FLOAT:		*(long double*)elemmem = va_arg(ap, float);
 					break;
-		case DOUBLE:	*(long double*)elemmem = (double)va_argBuffer;
+		case DOUBLE:	*(long double*)elemmem = va_arg(ap, double);
 					break;
-		case LONGDOUBLE:*(long double*)elemmem = (long double)va_argBuffer;
+		case LONGDOUBLE:*(long double*)elemmem = va_arg(ap, long double);
 					break;
 		default:	break;
 	}
@@ -118,5 +132,5 @@ static void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size)
 
 int main()
 {
-	LL intList = LL__newLL(sizeof(int), 1, 2, 4, 8, 16, 32, 64);
+	//LL intList = LL__newLL(sizeof(int), 1, 2, 4, 8, 16, 32, 64);
 }
