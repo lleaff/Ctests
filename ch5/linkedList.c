@@ -50,6 +50,7 @@ static const long double LastArgId_LLD = LASTARGID_LLD;
 /*  Returns 0 if there is no argument left */
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
+	//TODO: That won't work because va_arg will push ap {sizeof(long double)} B instead of {sizeof(type)} B
 	long double va_argBuffer = va_arg(ap, long double);
 	if (va_argBuffer == LastArgId_LLD) {
 		return 0; //Last argument
