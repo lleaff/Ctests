@@ -1,6 +1,5 @@
 #include "types.h"
 #include <string.h> /*  memcpy() */
-#include <stddef.h> /*  offsetof() */
 
 #ifndef BOOL_TYPE
 #define BOOL_TYPE
@@ -34,14 +33,4 @@ TYPE getTYPEFromString(char* typeStr)
 		}
 	}
 	return UNKNOWN;
-}
-
-struct dummyStruct {
-	char dummyChar;
-	long double dummyLD;
-};
-
-int getCpuWordSize()
-{
-	return ((int)offsetof(struct dummyStruct, dummyLD));
 }
