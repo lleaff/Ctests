@@ -1,19 +1,34 @@
 #include <stdio.h>
+#include <stdlib.h> /*  malloc() */
+#include <string.h>
 #include <stdarg.h>
 #include "types.h"
 /*  CHAR, SHORT, INT, LONG, FLOAT, DOUBLE, LONGDOUBLE, UNKNOWN, GREATERTHANLONGDOUBLE */
 
-typedef struct LL {
-	struct LL* prev;
-	struct LL* next;
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
+typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
+
+typedef struct Link {
+	struct Link* prev;
+	struct Link* next;
 	char elem[];
-} LL;
+} Link;
 
-void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size);
+static void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size);
+static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
 
-#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, __VA_ARGS__)
+Link* LL__newLink(int size, void* elemmem, Link* prev)
+{
+	Link* myLink = (Link*)malloc(size + sizeof(Link));
+	memcpy(myLink->elem, elemmem, size);
+	return myLink;
+}
 
-LL LL__newLL(char* typeOrSize, ...)
+#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, __VA_ARGS__, LASTARGID_LLD)
+
+Link LL__newLL(char* typeOrSize, ...)
 {
 	TYPE type;
 	int size;
@@ -22,28 +37,45 @@ LL LL__newLL(char* typeOrSize, ...)
 	va_list ap;
 	va_start(ap, typeOrSize);
 	char elemmem[size];
-	switch (type) {
-		case CHAR:		*elemmem = va_arg(ap, char);
-					break;
-		case INT:		*elemmem = va_arg(ap, int);
-					break;
-		case SHORT:		*elemmem = va_arg(ap, short);
-					break;
-		case LONG:		*elemmem = va_arg(ap, long);
-					break;
-		case FLOAT:		*elemmem = va_arg(ap, float);
-					break;
-		case DOUBLE:	*elemmem = va_arg(ap, double);
-					break;
-		case LONGDOUBLE:*elemmem = va_arg(ap, long double);
-					break;
-		default:	break;
+
+	Link* prev = NULL;
+	while (initElemmem(&type, &elemmem, &ap)) {
+		LL__newLink(size, &elemmem, prev);
 	}
 
 }
 
+#define LASTARGID_LLD 242319377175715117
+static const long double LastArgId_LLD = LASTARGID_LLD;
+/*  Returns 0 if there is no argument left */
+static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
+{
+	long double va_argBuffer = va_arg(ap, long double);
+	if (va_argBuffer == LastArgId_LLD) {
+		return 0; //Last argument
+	}
+	switch (*type) {
+		case CHAR:		*(long double*)elemmem = (char)va_argBuffer;
+					break;
+		case INT:		*(long double*)elemmem = (int)va_argBuffer;
+					break;
+		case SHORT:		*(long double*)elemmem = (short)va_argBuffer;
+					break;
+		case LONG:		*(long double*)elemmem = (long)va_argBuffer;
+					break;
+		case FLOAT:		*(long double*)elemmem = (float)va_argBuffer;
+					break;
+		case DOUBLE:	*(long double*)elemmem = (double)va_argBuffer;
+					break;
+		case LONGDOUBLE:*(long double*)elemmem = (long double)va_argBuffer;
+					break;
+		default:	break;
+	}
+	return 1; //Success
+}
+
 //Returns -1 if the char doesn't represent a digit
-int tryGetIntFromChar(char digit)
+static int tryGetIntFromChar(char digit)
 {
 	if (digit >= '0' && digit <= '9') {
 		return digit - '0'; 
@@ -53,7 +85,7 @@ int tryGetIntFromChar(char digit)
 }
 
 //Returns 1 if successful, 0 if string doesn't convert to an int
-int tryGetIntFromString(char* myString, int* convertedInt)
+static int tryGetIntFromString(char* myString, int* convertedInt)
 {
 	*convertedInt = 0;
 	int sign = 1;
@@ -73,12 +105,12 @@ int tryGetIntFromString(char* myString, int* convertedInt)
 	return 1; //Success
 }
 
-void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size)
+static void resolveTypeAndSizeFromString(char* myString, TYPE* type, int* size)
 {
 	if (tryGetIntFromString(myString, size)) {	/*	String is int	*/
-		*type = getTypeFromSize(*size);
+		*type = getTYPEFromSize(*size);
 	} else {									/*	String is type	*/
-		*type = getTypeFromString(myString);
+		*type = getTYPEFromString(myString);
 		*size = SIZEOF(*type);
 	}
 }
