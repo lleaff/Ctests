@@ -13,6 +13,10 @@
 typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
+/* ========================================================================	*
+ * 								The structs									*
+ * ======================================================================== */
+
 #define LinkedList LL //Verbose form
 
 typedef struct LL {
@@ -27,29 +31,20 @@ typedef struct Link {
 	char elem[];
 } Link;
 
-
+/* =========================  END The Structs	==========================	*/
 
 /* ========================================================================	*
- * 							Initializing the struct							*
+ * 								Initialization								*
  * ======================================================================== */
+Link* LL__newLink(int size, void* elemmem, Link* prev);
 static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size);
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
 
-Link* LL__newLink(int size, void* elemmem, Link* prev)
-{
-	Link* myLink = (Link*)malloc(sizeof(Link) + size); /*  Size of the empty struct + size of elem */
-	memcpy(myLink->elem, elemmem, size);
-	myLink->prev = prev;
-	myLink->next = NULL;
-	if (prev != NULL) {
-		prev->next = myLink; /*  Set itself as 'next' of previous Link */
-	}
-	return myLink;
-}
-
 #define LASTARGID_LLD 242319717654231400
 static const long long LastArgId_LLD = LASTARGID_LLD;
+
 #define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
+#define newLinkedList(typeOrSize, ...)	LL__newLL(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
 
 LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 {
@@ -76,6 +71,18 @@ LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 	DEBUGP("    myLinkedList.curr->elem=%d\n", (int)((myLinkedList.curr)->elem))
 	myLinkedList.length = length;
 	return myLinkedList;
+}
+
+Link* LL__newLink(int size, void* elemmem, Link* prev)
+{
+	Link* myLink = (Link*)malloc(sizeof(Link) + size); /*  Size of the empty struct + size of elem */
+	memcpy(myLink->elem, elemmem, size);
+	myLink->prev = prev;
+	myLink->next = NULL;
+	if (prev != NULL) {
+		prev->next = myLink; /*  Set itself as 'next' of previous Link */
+	}
+	return myLink;
 }
 
 /*  Returns 0 if there is no argument left */
@@ -148,8 +155,25 @@ static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE
 	}
 }
 
-/* ===================== END  Initializing the struct ===================== */
+/* ===================== END  Initialization ===================== */
 
+/* ========================================================================	*
+ * 							Operations and manipulation						*
+ * ======================================================================== */
+
+#define readLL(type, myLL)	
+void LL__readLL(type, myLL)
+{
+
+}
+
+/* ==================  END  Operations and manipulation  ================== */
+
+
+/* ========================================================================	*
+ * 									Tests									*
+ * ======================================================================== */
+#ifdef DEBUG
 int main()
 {
 	LL intList = newLL(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
@@ -167,3 +191,5 @@ int main()
 	printf("intList.curr->elem=%d\n", (int)((intList.curr)->elem));
 	printf("((intList.curr->prev))->elem=%d\n", *(int*)(intList.curr)->elem);
 }
+#endif
+/* ==================  			END  Tests				  ================== */
