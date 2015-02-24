@@ -13,6 +13,8 @@
 typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
+#define LinkedList LL //Verbose form
+
 typedef struct LL {
 	struct Link* curr;
 	int length;
@@ -25,12 +27,17 @@ typedef struct Link {
 	char elem[];
 } Link;
 
+
+
+/* ========================================================================	*
+ * 							Initializing the struct							*
+ * ======================================================================== */
 static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size);
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
 
 Link* LL__newLink(int size, void* elemmem, Link* prev)
 {
-	Link* myLink = (Link*)malloc(size + sizeof(Link));
+	Link* myLink = (Link*)malloc(sizeof(Link) + size); /*  Size of the empty struct + size of elem */
 	memcpy(myLink->elem, elemmem, size);
 	myLink->prev = prev;
 	myLink->next = NULL;
@@ -50,6 +57,7 @@ LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 	TYPE type;
 	int size;
 	resolveTypeAndSizeFromString(typeOrSize, typeOrSizeValue, &type, &size);
+	DEBUGP("size=%d\ttype=%d\n", size, (int)type)
 
 	va_list ap;
 	va_start(ap, typeOrSizeValue);
@@ -58,11 +66,14 @@ LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 	Link* prev = NULL;
 	int length;
 	for (length = 0; initElemmem(&type, &elemmem, &ap); length++) {
-		LL__newLink(size, &elemmem, prev);
+		DEBUGP("*(%s*)elemmem=%d\n", TOLOWER(getStringFromTYPE(type)), *(int*)elemmem)
+		prev = LL__newLink(size, elemmem, prev);
 	}
 
 	LL myLinkedList;
 	myLinkedList.curr = prev;
+	DEBUGP("&&& myLinkedList.curr=%p\n", myLinkedList.curr)
+	DEBUGP("    myLinkedList.curr->elem=%d\n", (int)((myLinkedList.curr)->elem))
 	myLinkedList.length = length;
 	return myLinkedList;
 }
@@ -71,10 +82,9 @@ LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
 	switch (*type) {
-		case CHAR:		/* 'char' is promoted to 'int' w*hen passed through '...' */
-		case SHORT:		/* 'short' is promoted to 'int' *when passed through '...' */	
-		case INT:
-						*(int*)elemmem = va_arg(*ap, int);
+		case CHAR:		/* 'char' is promoted to 'int' when passed through '...' */
+		case SHORT:		/* 'short' is promoted to 'int' when passed through '...' */	
+		case INT:		*(int*)elemmem = va_arg(*ap, int);
 					break;
 		case LONG:		*(long*)elemmem = va_arg(*ap, long);
 					break;
@@ -88,6 +98,7 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 	}
 	if (**(long long**)ap == LastArgId_LLD) {
 		va_end(*ap);
+		DEBUGP("------LastArg------\n")
 		return 0; //Last argument
 	}
 	return 1; //Success
@@ -137,8 +148,22 @@ static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE
 	}
 }
 
+/* ===================== END  Initializing the struct ===================== */
+
 int main()
 {
-	LL intList = newLL(sizeof(int), 64, 2, 32, 8, 16, 4, 1);
-	printf("intList.curr->elem=%d\n", (int)(intList.curr->elem));
+	LL intList = newLL(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
+	printf("length=%d\n", intList.length);
+	DEBUGP("&&& intList.curr=%p\n", intList.curr)
+	printf("intList.curr->elem=%d\n", *(int*)((intList.curr)->elem));
+
+	Link currLink = *(intList.curr);
+	printf("Link currLink = *(intList.curr);\n");
+	printf("currLink.elem=%d\n", *(int*)currLink.elem);
+
+	*(int*)(intList.curr)->elem = 555;
+	printf(">>>>*(int*)(intList.curr)->elem = 555;\n");
+
+	printf("intList.curr->elem=%d\n", (int)((intList.curr)->elem));
+	printf("((intList.curr->prev))->elem=%d\n", *(int*)(intList.curr)->elem);
 }
