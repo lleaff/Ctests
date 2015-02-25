@@ -176,6 +176,15 @@ long double LL__readlongdoubleLL(LL myLL)
 	return *(long double*)((myLL.curr)->elem);
 }
 
+BOOL LL__isHead(LL* myLL)
+{
+	return (myLL->curr->prev == NULL);
+}
+BOOL LL__isTail(LL* myLL)
+{
+	return (myLL->curr->next == NULL);
+}
+
 /* ==================  			END  Read				 ================== */
 
 /* ========================================================================	*
@@ -230,6 +239,15 @@ int LL__moveN(LL* myLL, int n)
 	} else {
 		return 0;
 	}
+}
+
+void LL__toHead(LL* myLL)
+{
+	while (LL__prevLink(myLL));
+}
+void LL__toTail(LL* myLL)
+{
+	while (LL__prevLink(myLL));
 }
 
 /* ==================  			END  Move			  	 ================== */

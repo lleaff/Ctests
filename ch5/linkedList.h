@@ -1,6 +1,10 @@
 #ifndef LINKEDLIST_H
 #include "types.h"
 
+#ifndef BOOL_TYPE
+#define BOOL_TYPE
+typedef enum { FALSE, TRUE } BOOL;
+#endif /* BOOL_TYPE */
 
 /* ========================================================================	*
  * 								The structs									*
@@ -50,6 +54,11 @@ long 		LL__readlongLL		(LL myLL);
 float 		LL__readfloatLL		(LL myLL);
 double 		LL__readdoubleLL	(LL myLL);
 long double LL__readlongdoubleLL(LL myLL);
+
+#define LLisHead(myLL)	LL__isHead(&(myLL))
+BOOL LL__isHead(LL* myLL);
+#define LLisTail(myLL)	LL__isTail(&(myLL))
+BOOL LL__isTail(LL* myLL);
 
 /* ========================================================================	*
  * 									Move									*
