@@ -1,12 +1,14 @@
+# Binaries
 *.exe
+*.o
 
-#Vim temp files
+# Vim temp files
 *.swp
 *.swo
 *.swn
 *.swm
 
-###OS X
+### OS X
 
 .DS_Store
 .AppleDouble
