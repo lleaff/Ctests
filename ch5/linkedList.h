@@ -44,7 +44,9 @@ typedef struct Link {
 #define LLread(type)	LL__READLLCALLPASTER(type)
 #endif /* LLread */
 
-/*  Changes the link the passed LinkedList points to */
+/*  Changes the link the passed LinkedList points to,
+ *   returns 0 if the current link is tail or head,
+ *   returns 1 if the new link is in the middle */
 #define LLnext(myLL)	LL__nextLink(&(LL))
 int LL__nextLink(LL* myLL);
 #define LLprev(myLL)	LL__prevLink(&(LL))
