@@ -1,3 +1,5 @@
+#include "../debug.h"
+
 #include "linkedList.h"
 #include "types.h"
 #include <stdio.h>
@@ -11,12 +13,26 @@
 typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
+#ifdef DEBUG
+static inline void* mallocdebug(int size)
+{
+	void* returnptr = malloc(size);
+	if (!returnptr) {
+		fprintf(stderr, "ERROR: malloc failed, can't allocate %d B\n", size);
+	} else {
+		fprintf(stderr, "DEBUG: malloc success, allocated %d B\n", size);
+	}
+	return returnptr;
+}
+#define malloc(size)	mallocdebug(size)
+#endif /* DEBUG */
+
 /* ========================================================================	*
  * 								Initialization								*
  * ======================================================================== */
-Link* LL__newLink(int size, void* elemmem, Link* prev);
+Link* LL__newLink(int size, void* elemMem, Link* prev);
 static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size);
-static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
+static int fillElemMem(const TYPE* type, void* elemMem, va_list* ap);
 
 #define LASTARGID_LLD 242319717654231400
 static const long long LastArgId_LLD = LASTARGID_LLD;
@@ -33,12 +49,12 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 
 	va_list ap;
 	va_start(ap, typeOrSizeValue);
-	char elemmem[size];
+	char elemMem[size];
 
 	Link* prev = NULL;
 	int length;
-	for (length = 0; initElemmem(&type, &elemmem, &ap); length++) {
-		prev = LL__newLink(size, elemmem, prev);
+	for (length = 0; fillElemMem(&type, &elemMem, &ap); length++) {
+		prev = LL__newLink(size, elemMem, prev);
 	}
 
 	LL myLinkedList;
@@ -47,10 +63,10 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 	return myLinkedList;
 }
 
-Link* LL__newLink(int size, void* elemmem, Link* prev)
+Link* LL__newLink(int size, void* elemMem, Link* prev)
 {
 	Link* myLink = (Link*)malloc(sizeof(Link) + size); /*  Size of the empty struct + size of elem */
-	memcpy(myLink->elem, elemmem, size);
+	memcpy(myLink->elem, elemMem, size);
 	myLink->prev = prev;
 	myLink->next = NULL;
 	if (prev != NULL) {
@@ -60,7 +76,7 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 }
 
 /*  Returns 0 if there is no argument left */
-static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
+inline static int fillElemMem(const TYPE* type, void* elemMem, va_list* ap)
 {
 	if (**(long long**)ap == LastArgId_LLD) {
 		va_end(*ap);
@@ -69,14 +85,14 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 	switch (*type) {
 		case CHAR:			/* 'char' is promoted to 'int' when passed through '...' */
 		case SHORT:			/* 'short' is promoted to 'int' when passed through '...' */	
-		case INT:			*(int*)elemmem = va_arg(*ap, int);
+		case INT:			*(int*)elemMem = va_arg(*ap, int);
 					break;
-		case LONG:			*(long*)elemmem = va_arg(*ap, long);
+		case LONG:			*(long*)elemMem = va_arg(*ap, long);
 					break;
 		case FLOAT:			/* 'float' is promoted to 'double' when passed through '...' */
-		case DOUBLE:		*(double*)elemmem = va_arg(*ap, double);
+		case DOUBLE:		*(double*)elemMem = va_arg(*ap, double);
 					break;
-		case LONGDOUBLE:	*(long double*)elemmem = va_arg(*ap, long double); //<= SEGFAULT here TODO
+		case LONGDOUBLE:	*(long double*)elemMem = (long double)va_arg(*ap, long double); //<= SEGFAULT here TODO
 					break;
 		default:
 					break;
@@ -248,9 +264,6 @@ void LL__toTail(LL* myLL)
 /* ========================================================================	*
  * 									Tests									*
  * ======================================================================== */
-#define DEBUG
-#include "../debug.h"
-
 #ifdef DEBUG
 int main()
 {
