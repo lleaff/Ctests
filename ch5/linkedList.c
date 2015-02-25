@@ -92,6 +92,11 @@ Link* LL__newLink(int size, void* elemmem, Link* prev)
 /*  Returns 0 if there is no argument left */
 static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
+	if (**(long long**)ap == LastArgId_LLD) {
+		va_end(*ap);
+		DEBUGP("------LastArgReached------\n")
+		return 0; //Last argument
+	}
 	switch (*type) {
 		case CHAR:		/* 'char' is promoted to 'int' when passed through '...' */
 		case SHORT:		/* 'short' is promoted to 'int' when passed through '...' */	
@@ -107,16 +112,11 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 		default:
 					break;
 	}
-	if (**(long long**)ap == LastArgId_LLD) {
-		va_end(*ap);
-		DEBUGP("------LastArgReached------\n")
-		return 0; //Last argument
-	}
 	return 1; //Success
 }
 
 //Returns -1 if the char doesn't represent a digit
-static int tryGetIntFromChar(char digit)
+inline static int tryGetIntFromChar(char digit)
 {
 	if (digit >= '0' && digit <= '9') {
 		return digit - '0'; 
@@ -126,7 +126,7 @@ static int tryGetIntFromChar(char digit)
 }
 
 //Returns 1 if successful, 0 if string doesn't convert to an int
-static int tryGetIntFromString(char* myString, int* convertedInt)
+inline static int tryGetIntFromString(char* myString, int* convertedInt)
 {
 	*convertedInt = 0;
 	int sign = 1;
@@ -146,7 +146,7 @@ static int tryGetIntFromString(char* myString, int* convertedInt)
 	return 1; //Success
 }
 
-static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size)
+inline static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size)
 {
 	if (tryGetIntFromString(myString, size)) {	/*	String is int	*/
 		*type = getTYPEFromSize(*size);
@@ -280,7 +280,6 @@ int main()
 	*(int*)((intList.curr)->elem) = 555;
 	printf(">>>>*(int*)(intList.curr)->elem = 555;\n");
 
-	printf("intList.curr->elem=%d\n", (int)((intList.curr)->elem));
 	printf("((intList.curr->prev))->elem=%d\n", *(int*)(intList.curr->prev->elem));
 	printf("((intList.curr->next))->elem=%d\n", intList.curr->next == NULL ? 666 : *(int*)(intList.curr->next->elem));
 
