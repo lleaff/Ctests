@@ -1,6 +1,3 @@
-#define DEBUG
-#include "../debug.h"
-
 #include "linkedList.h"
 #include "types.h"
 #include <stdio.h>
@@ -30,11 +27,9 @@ static const long long LastArgId_LLD = LASTARGID_LLD;
 
 LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 {
-	DEBUGP("typeOrSize=\"%s\"\n", typeOrSize)
 	TYPE type;
 	int size;
 	resolveTypeAndSizeFromString(typeOrSize, typeOrSizeValue, &type, &size);
-	DEBUGP("size=%d\ttype=%d\n", size, (int)type)
 
 	va_list ap;
 	va_start(ap, typeOrSizeValue);
@@ -43,7 +38,6 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 	Link* prev = NULL;
 	int length;
 	for (length = 0; initElemmem(&type, &elemmem, &ap); length++) {
-		DEBUGP("*(%s*)elemmem=%d\n", TOLOWER(getStringFromTYPE(type)), *(int*)elemmem)
 		prev = LL__newLink(size, elemmem, prev);
 	}
 
@@ -70,20 +64,19 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 {
 	if (**(long long**)ap == LastArgId_LLD) {
 		va_end(*ap);
-		DEBUGP("------LastArgReached------\n")
 		return 0; //Last argument
 	}
 	switch (*type) {
-		case CHAR:		/* 'char' is promoted to 'int' when passed through '...' */
-		case SHORT:		/* 'short' is promoted to 'int' when passed through '...' */	
-		case INT:		*(int*)elemmem = va_arg(*ap, int);
+		case CHAR:			/* 'char' is promoted to 'int' when passed through '...' */
+		case SHORT:			/* 'short' is promoted to 'int' when passed through '...' */	
+		case INT:			*(int*)elemmem = va_arg(*ap, int);
 					break;
-		case LONG:		*(long*)elemmem = va_arg(*ap, long);
+		case LONG:			*(long*)elemmem = va_arg(*ap, long);
 					break;
-		case FLOAT:		/* 'float' is promoted to 'double' when passed through '...' */
-		case DOUBLE:	*(double*)elemmem = va_arg(*ap, double);
+		case FLOAT:			/* 'float' is promoted to 'double' when passed through '...' */
+		case DOUBLE:		*(double*)elemmem = va_arg(*ap, double);
 					break;
-		case LONGDOUBLE:*(long double*)elemmem = va_arg(*ap, long double);
+		case LONGDOUBLE:	*(long double*)elemmem = va_arg(*ap, long double); //<= SEGFAULT here TODO
 					break;
 		default:
 					break;
@@ -251,18 +244,34 @@ void LL__toTail(LL* myLL)
 
 /* ==================  			END  Move			  	 ================== */
 
+
 /* ========================================================================	*
  * 									Tests									*
  * ======================================================================== */
+#define DEBUG
+#include "../debug.h"
+
 #ifdef DEBUG
 int main()
 {
-	//LL intList = LL__CallLLnew(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
 	LL intList = LLnew(int)(64, 32, 16, 8, 4, 2, 1);
 	printf("length=%d\n", intList.length);
 	printf("CURRINT=%d\n", LLread(int)(intList));
 	LLprev(intList); printf("prev\n");
 	printf("CURRINT=%d\n", LLread(int)(intList));
+
+	printf("\n================================\n\n");
+
+	LL doubleList = LLnew(double)(999.9, 888.8, 777.7, 666.6);
+	printf("length=%d\n", doubleList.length);
+	printf("> %g\n", LLread(double)(doubleList));
+
+	printf("\n================================\n\n");
+
+	LL ldList = LLnew(longdouble)(999.9, 888.8, 777.7, 666.6);
+	printf("length=%d\n", ldList.length);
+	printf("> %Lg\n", LLread(longdouble)(ldList));
+
 }
 #endif
 /* ==================  			END  Tests				  ================== */
