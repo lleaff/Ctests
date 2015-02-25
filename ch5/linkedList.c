@@ -15,29 +15,6 @@ typedef enum { FALSE, TRUE } BOOL;
 #endif /* BOOL_TYPE */
 
 /* ========================================================================	*
- * 								The structs									*
- * ======================================================================== */
-
-#ifndef LL
-#define LL LL
-#define LinkedList LL //Verbose form
-
-typedef struct LL {
-	struct Link* curr;
-	int length;
-} LL;
-
-typedef struct Link {
-	struct Link* prev;
-	struct Link* next;
-	TYPE type;
-	char elem[];
-} Link;
-#endif /* LL */
-
-/* =========================  END The structs	==========================	*/
-
-/* ========================================================================	*
  * 								Initialization								*
  * ======================================================================== */
 Link* LL__newLink(int size, void* elemmem, Link* prev);
@@ -205,7 +182,6 @@ long double LL__readlongdoubleLL(LL myLL)
  * 									Move									*
  * ======================================================================== */
 
-#define LLnext(myLL)	LL__nextLink(&(LL))
 int LL__nextLink(LL* myLL)
 {
 	if (myLL->curr->next != NULL) {
@@ -215,7 +191,6 @@ int LL__nextLink(LL* myLL)
 		return 0; //Last link
 	}
 }
-#define LLprev(myLL)	LL__prevLink(&(LL))
 int LL__prevLink(LL* myLL)
 {
 	if (myLL->curr->prev != NULL) {
@@ -227,7 +202,6 @@ int LL__prevLink(LL* myLL)
 }
 
 
-#define LLnextn(myLL, n)	LL__nextNLinks(&(LL), n)
 int LL__nextNLinks(LL* myLL, int n)
 {
 	for (; n > 0; --n) {
@@ -237,7 +211,6 @@ int LL__nextNLinks(LL* myLL, int n)
 	}
 	return n;
 }
-#define LLprevn(myLL, n)	LL__prevNLinks(&(LL), n)
 int LL__prevNLinks(LL* myLL, int n)
 {
 	for (; n > 0; --n) {
@@ -248,7 +221,6 @@ int LL__prevNLinks(LL* myLL, int n)
 	return n;
 }
 
-#define LLmove(myLL, n)	LL__moveN(&(LL), n)
 int LL__moveN(LL* myLL, int n)
 {
 	if (n > 0) {
@@ -270,20 +242,9 @@ int main()
 {
 	LL intList = LLnew(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
 	printf("length=%d\n", intList.length);
-	DEBUGP("&&& intList.curr=%p\n", intList.curr)
-	printf("intList.curr->elem=%d\n", *(int*)((intList.curr)->elem));
-
-	Link currLink = *(intList.curr);
-	printf("Link currLink = *(intList.curr);\n");
-	printf("currLink.elem=%d\n", *(int*)currLink.elem);
-
-	*(int*)((intList.curr)->elem) = 555;
-	printf(">>>>*(int*)(intList.curr)->elem = 555;\n");
-
-	printf("((intList.curr->prev))->elem=%d\n", *(int*)(intList.curr->prev->elem));
-	printf("((intList.curr->next))->elem=%d\n", intList.curr->next == NULL ? 666 : *(int*)(intList.curr->next->elem));
-
-	printf("\nCURRINT: %d\n", LLread(int)(intList));
+	printf("CURRINT=%d\n", LLread(int)(intList));
+	LLprev(intList); printf("prev\n");
+	printf("CURRINT=%d\n", LLread(int)(intList));
 }
 #endif
 /* ==================  			END  Tests				  ================== */

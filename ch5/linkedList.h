@@ -5,8 +5,6 @@
 /* ========================================================================	*
  * 								The structs									*
  * ======================================================================== */
-#ifndef LL
-#define LL LL
 #define LinkedList LL //Verbose form
 
 typedef struct LL {
@@ -20,7 +18,6 @@ typedef struct Link {
 	TYPE type;
 	char elem[];
 } Link;
-#endif /* LL */
 
 /* ========================================================================	*
  * 								Initialization								*
@@ -52,17 +49,19 @@ typedef struct Link {
 /*  Changes the link the passed LinkedList points to,
  *   returns 0 if the current link is tail or head,
  *   returns 1 if the new link is in the middle */
-#define LLnext(myLL)	LL__nextLink(&(LL))
+#define LLnext(myLL)	LL__nextLink(&(myLL))
 int LL__nextLink(LL* myLL);
-#define LLprev(myLL)	LL__prevLink(&(LL))
+#define LLprev(myLL)	LL__prevLink(&(myLL))
 int LL__prevLink(LL* myLL);
 
 /*  Returns the number of moves not performed due to reaching tail or head  */
-#define LLnextn(myLL, n)	LL__nextNLinks(&(LL), n)
+#define LLnextn(myLL, n)	LL__nextNLinks(&(myLL), n)
 int LL__nextNLinks(LL* myLL, int n);
-#define LLprevn(myLL, n)	LL__prevNLinks(&(LL), n)
+#define LLprevn(myLL, n)	LL__prevNLinks(&(myLL), n)
 int LL__prevNLinks(LL* myLL, int n);
-#define LLmove(myLL, n)	LL__moveN(&(LL), n)
+/*  Moves to the n previous links if n < 0, to the n next links if n > 0,
+ *   returns the number of moves not performed due to reaching tail or head  */
+#define LLmove(myLL, n)	LL__moveN(&(myLL), n)
 int LL__moveN(LL* myLL, int n);
 
 #endif /* LINKEDLIST_H */
