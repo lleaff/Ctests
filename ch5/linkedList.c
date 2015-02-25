@@ -1,6 +1,7 @@
 #define DEBUG
 #include "../debug.h"
 
+#include "linkedList.h"
 #include "types.h"
 #include <stdio.h>
 #include <stdlib.h> /*  malloc() */
@@ -17,6 +18,8 @@ typedef enum { FALSE, TRUE } BOOL;
  * 								The structs									*
  * ======================================================================== */
 
+#ifndef LL
+#define LL LL
 #define LinkedList LL //Verbose form
 
 typedef struct LL {
@@ -30,8 +33,9 @@ typedef struct Link {
 	TYPE type;
 	char elem[];
 } Link;
+#endif /* LL */
 
-/* =========================  END The Structs	==========================	*/
+/* =========================  END The structs	==========================	*/
 
 /* ========================================================================	*
  * 								Initialization								*
@@ -43,10 +47,12 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
 #define LASTARGID_LLD 242319717654231400
 static const long long LastArgId_LLD = LASTARGID_LLD;
 
-#define newLL(typeOrSize, ...)	LL__newLL(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
-#define newLinkedList(typeOrSize, ...)	LL__newLL(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
+#ifndef LLnew
+#define LLnew(typeOrSize, ...)	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
+#define newLinkedList(typeOrSize, ...)	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
+#endif /* LLnew */
 
-LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
+LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 {
 	DEBUGP("typeOrSize=\"%s\"\n", typeOrSize)
 	TYPE type;
@@ -67,8 +73,6 @@ LL LL__newLL(char* typeOrSize, int typeOrSizeValue, ...)
 
 	LL myLinkedList;
 	myLinkedList.curr = prev;
-	DEBUGP("&&& myLinkedList.curr=%p\n", myLinkedList.curr)
-	DEBUGP("    myLinkedList.curr->elem=%d\n", (int)((myLinkedList.curr)->elem))
 	myLinkedList.length = length;
 	return myLinkedList;
 }
@@ -105,7 +109,7 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap)
 	}
 	if (**(long long**)ap == LastArgId_LLD) {
 		va_end(*ap);
-		DEBUGP("------LastArg------\n")
+		DEBUGP("------LastArgReached------\n")
 		return 0; //Last argument
 	}
 	return 1; //Success
@@ -155,20 +159,71 @@ static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE
 	}
 }
 
-/* ===================== END  Initialization ===================== */
+/* =====================      END  Initialization 	  ===================== */
 
 /* ========================================================================	*
- * 							Operations and manipulation						*
+ * 							Operations, manipulation						*
  * ======================================================================== */
 
-#define readLL(type, myLL)	
-void LL__readLL(type, myLL)
-{
+/*  --------------------- read --------------------- */
+#ifndef LLread
+/* Usage: LLread(type)(myLL) */
+#define LL__READLLCALLPASTER(type)	LL__read ## type ## LL
+#define LLread(type)	LL__READLLCALLPASTER(type)
+#endif /* LLread */
 
+char LL__readcharLL(LL myLL)
+{
+	return *(char*)((myLL.curr)->elem);
+}
+short LL__readshortLL(LL myLL)
+{
+	return *(short*)((myLL.curr)->elem);
+}
+int LL__readintLL(LL myLL)
+{
+	return *(int*)((myLL.curr)->elem);
+}
+long LL__readlongLL(LL myLL)
+{
+	return *(long*)((myLL.curr)->elem);
+}
+float LL__readfloatLL(LL myLL)
+{
+	return *(float*)((myLL.curr)->elem);
+}
+double LL__readdoubleLL(LL myLL)
+{
+	return *(double*)((myLL.curr)->elem);
+}
+long double LL__readlongdoubleLL(LL myLL)
+{
+	return *(long double*)((myLL.curr)->elem);
 }
 
-/* ==================  END  Operations and manipulation  ================== */
+/*  --------------------- move --------------------- */
+#define LLnext(myLL)	LL__nextLink(&(LL))
+int LL__nextLink(LL* myLL)
+{
+	if (myLL->curr->next != NULL) {
+		myLL->curr = myLL->curr->next;
+		return 1; //Success
+	} else {
+		return 0; //Last link
+	}
+}
+#define LLprev(myLL)	LL__prevLink(&(LL))
+int LL__prevLink(LL* myLL)
+{
+	if (myLL->curr->prev != NULL) {
+		myLL->curr = myLL->curr->prev;
+		return 1; //Success
+	} else {
+		return 0; //First link
+	}
+}
 
+/* ==================  END  Operations, manipulation  	 ================== */
 
 /* ========================================================================	*
  * 									Tests									*
@@ -176,7 +231,7 @@ void LL__readLL(type, myLL)
 #ifdef DEBUG
 int main()
 {
-	LL intList = newLL(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
+	LL intList = LLnew(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
 	printf("length=%d\n", intList.length);
 	DEBUGP("&&& intList.curr=%p\n", intList.curr)
 	printf("intList.curr->elem=%d\n", *(int*)((intList.curr)->elem));
@@ -185,11 +240,14 @@ int main()
 	printf("Link currLink = *(intList.curr);\n");
 	printf("currLink.elem=%d\n", *(int*)currLink.elem);
 
-	*(int*)(intList.curr)->elem = 555;
+	*(int*)((intList.curr)->elem) = 555;
 	printf(">>>>*(int*)(intList.curr)->elem = 555;\n");
 
 	printf("intList.curr->elem=%d\n", (int)((intList.curr)->elem));
-	printf("((intList.curr->prev))->elem=%d\n", *(int*)(intList.curr)->elem);
+	printf("((intList.curr->prev))->elem=%d\n", *(int*)(intList.curr->prev->elem));
+	printf("((intList.curr->next))->elem=%d\n", intList.curr->next == NULL ? 666 : *(int*)(intList.curr->next->elem));
+
+	printf("\nCURRINT: %d\n", LLread(int)(intList));
 }
 #endif
 /* ==================  			END  Tests				  ================== */
