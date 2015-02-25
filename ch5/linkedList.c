@@ -162,10 +162,8 @@ static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE
 /* =====================      END  Initialization 	  ===================== */
 
 /* ========================================================================	*
- * 							Operations, manipulation						*
+ * 									Read									*
  * ======================================================================== */
-
-/*  --------------------- read --------------------- */
 #ifndef LLread
 /* Usage: LLread(type)(myLL) */
 #define LL__READLLCALLPASTER(type)	LL__read ## type ## LL
@@ -201,7 +199,12 @@ long double LL__readlongdoubleLL(LL myLL)
 	return *(long double*)((myLL.curr)->elem);
 }
 
-/*  --------------------- move --------------------- */
+/* ==================  			END  Read				 ================== */
+
+/* ========================================================================	*
+ * 									Move									*
+ * ======================================================================== */
+
 #define LLnext(myLL)	LL__nextLink(&(LL))
 int LL__nextLink(LL* myLL)
 {
@@ -223,7 +226,41 @@ int LL__prevLink(LL* myLL)
 	}
 }
 
-/* ==================  END  Operations, manipulation  	 ================== */
+
+#define LLnextn(myLL, n)	LL__nextNLinks(&(LL), n)
+int LL__nextNLinks(LL* myLL, int n)
+{
+	for (; n > 0; --n) {
+		if (!LL__nextLink(myLL)) {
+			break;
+		}
+	}
+	return n;
+}
+#define LLprevn(myLL, n)	LL__prevNLinks(&(LL), n)
+int LL__prevNLinks(LL* myLL, int n)
+{
+	for (; n > 0; --n) {
+		if (!LL__prevLink(myLL)) {
+			break;
+		}
+	}
+	return n;
+}
+
+#define LLmove(myLL, n)	LL__moveN(&(LL), n)
+int LL__moveN(LL* myLL, int n)
+{
+	if (n > 0) {
+		return LL__nextNLinks(myLL, n);
+	} else if (n < 0) {
+		return LL__prevNLinks(myLL, -n);
+	} else {
+		return 0;
+	}
+}
+
+/* ==================  			END  Move			  	 ================== */
 
 /* ========================================================================	*
  * 									Tests									*
