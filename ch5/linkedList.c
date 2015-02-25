@@ -24,10 +24,9 @@ static int initElemmem(const TYPE* type, void* elemmem, va_list* ap);
 #define LASTARGID_LLD 242319717654231400
 static const long long LastArgId_LLD = LASTARGID_LLD;
 
-#ifndef LLnew
-#define LLnew(typeOrSize, ...)	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
-#define newLinkedList(typeOrSize, ...)	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
-#endif /* LLnew */
+#ifndef LL__CallLLnew
+#define LL__CallLLnew(typeOrSize, ...)	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
+#endif /* LL__CallLLnew */
 
 LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 {
@@ -258,7 +257,8 @@ void LL__toTail(LL* myLL)
 #ifdef DEBUG
 int main()
 {
-	LL intList = LLnew(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
+	//LL intList = LL__CallLLnew(sizeof(int), 64, 32, 16, 8, 4, 2, 1);
+	LL intList = LLnew(int)(64, 32, 16, 8, 4, 2, 1);
 	printf("length=%d\n", intList.length);
 	printf("CURRINT=%d\n", LLread(int)(intList));
 	LLprev(intList); printf("prev\n");

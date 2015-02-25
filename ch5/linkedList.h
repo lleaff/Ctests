@@ -26,18 +26,23 @@ typedef struct Link {
 /* ========================================================================	*
  * 								Initialization								*
  * ======================================================================== */
-#ifndef LLnew
-/*  Usage: 
- *  	LLnew(int, 1, 2, 3)
- *  	LLnew(sizeof(int), 1, 2, 3)
- *  	LLnew(4, 1, 2, 3) 
- *  are all equivalent */
-#define LLnew(typeOrSize, ...)	\
-	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
-#define newLinkedList(typeOrSize, ...)	\
+#ifndef LL__CallLLnew
+/* Usage: LLnew(type)(myLL) */
+#define LL__CallLLnew(typeOrSize, ...)	\
 	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
 LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...);
-#endif /* LLnew */
+
+#define charLLnew(...)			LL__CallLLnew(CHAR, __VA_ARGS__)
+#define shortLLnew(...)			LL__CallLLnew(SHORT, __VA_ARGS__)
+#define intLLnew(...) 			LL__CallLLnew(INT, __VA_ARGS__)
+#define longLLnew(...) 			LL__CallLLnew(LONG, __VA_ARGS__)
+#define floatLLnew(...)			LL__CallLLnew(FLOAT, __VA_ARGS__)
+#define doubleLLnew(...)		LL__CallLLnew(DOUBLE, __VA_ARGS__)
+#define longdoubleLLnew(...)	LL__CallLLnew(LONGDOUBLE, __VA_ARGS__)
+
+#define LL__NEWLLCALLPASTER(type)	type ## LLnew
+#define	LLnew(type)	LL__NEWLLCALLPASTER(type)
+#endif /* LL__CallLLnew */
 
 /* ========================================================================	*
  * 									Read									*
