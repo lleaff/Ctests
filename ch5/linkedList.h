@@ -32,6 +32,7 @@ typedef struct Link {
 	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
 #define newLinkedList(typeOrSize, ...)	\
 	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
+LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...);
 #endif /* LLnew */
 
 /* ========================================================================	*
@@ -42,6 +43,13 @@ typedef struct Link {
 #define LL__READLLCALLPASTER(type)	LL__read ## type ## LL
 #define LLread(type)	LL__READLLCALLPASTER(type)
 #endif /* LLread */
+char 		LL__readcharLL		(LL myLL);
+short 		LL__readshortLL		(LL myLL);
+int 		LL__readintLL		(LL myLL);
+long 		LL__readlongLL		(LL myLL);
+float 		LL__readfloatLL		(LL myLL);
+double 		LL__readdoubleLL	(LL myLL);
+long double LL__readlongdoubleLL(LL myLL);
 
 /* ========================================================================	*
  * 									Move									*
@@ -63,5 +71,10 @@ int LL__prevNLinks(LL* myLL, int n);
  *   returns the number of moves not performed due to reaching tail or head  */
 #define LLmove(myLL, n)	LL__moveN(&(myLL), n)
 int LL__moveN(LL* myLL, int n);
+
+#define LLtoHead(myLL)	LL__toHead(&(myLL))
+void LL__toHead(LL* myLL);
+#define LLtoTail(myLL)	LL__toTail(&(myLL))
+void LL__toTail(LL* myLL);
 
 #endif /* LINKEDLIST_H */
