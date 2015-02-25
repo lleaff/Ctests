@@ -92,7 +92,7 @@ inline static int fillElemMem(const TYPE* type, void* elemMem, va_list* ap)
 		case FLOAT:			/* 'float' is promoted to 'double' when passed through '...' */
 		case DOUBLE:		*(double*)elemMem = va_arg(*ap, double);
 					break;
-		case LONGDOUBLE:	*(long double*)elemMem = (long double)va_arg(*ap, long double); //<= SEGFAULT here TODO
+		case LONGDOUBLE:	*(long double*)elemMem = (long double)va_arg(*ap, long double); //<= SEGFAULT here when compiled with gcc, but not with clang
 					break;
 		default:
 					break;
