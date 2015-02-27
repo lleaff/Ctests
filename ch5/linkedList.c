@@ -1,4 +1,3 @@
-#define DEBUG
 #include "../debug.h"
 
 #include "linkedList.h"
@@ -360,7 +359,9 @@ int main()
 	LLnext(ldList);
 	printf("LLnext(ldList);\n");
 	printf("> %Lg\n", LLread(longdouble)(ldList));
-	printf("> %Lg\n", *(long double*)(LLnextLink(ldList)->elem));
+	if (!LLisTail(ldList)) {
+		printf("> %Lg\n", *(long double*)LLnextLink(ldList)->elem);
+	}
 
 }
 #endif
