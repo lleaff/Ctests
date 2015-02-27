@@ -55,7 +55,7 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 	LL__Link* prev = NULL;
 	int length;
 	for (length = 0; fillElemMem(&type, &elemMem, &ap); length++) {
-		prev = LL__newLink(size, elemMem, prev);
+		prev = LL__newLink(type, elemMem, prev);
 	}
 
 	LL myLinkedList;
@@ -64,17 +64,20 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 	return myLinkedList;
 }
 
-LL__Link* LL__newLink(int size, void* elemMem, LL__Link* prev)
+LL__Link* LL__newLink(TYPE type, void* elemMem, LL__Link* prev)
 {
-	LL__Link* myLink = (LL__Link*)malloc(sizeof(LL__Link) + size); /*  Size of the empty struct + size of elem */
+	//DEBUGP("sizeof(LL__Link)=%d + SIZEOF(%s) = %d\n", (int)sizeof(LL__Link), getStringFromTYPE(type), (int)sizeof(LL__Link) + SIZEOF(type))
+	/*  Allocate size of empty LL__Link struct + size of elem */
+	LL__Link* myLink = (LL__Link*)malloc(sizeof(LL__Link) + SIZEOF(type)); 
 	if (elemMem) {
-		memcpy(myLink->elem, elemMem, size);
+		memcpy(myLink->elem, elemMem, SIZEOF(type));
 	}
 	myLink->prev = prev;
 	myLink->next = NULL;
 	if (prev != NULL) {
 		prev->next = myLink; /*  Set itself as 'next' of previous Link */
 	}
+	myLink->type = type;
 	return myLink;
 }
 
@@ -196,41 +199,41 @@ BOOL LL__isTail(LL* myLL)
 	return (myLL->curr->next == NULL);
 }
 
-LL__Link LL__getLink(LL* myLL)
+LL__Link* LL__getLink(LL* myLL)
 {
-	return *(myLL->curr);
+	return (myLL->curr);
 }
 
-LL__Link LL__nextLink(LL* myLL)
+LL__Link* LL__nextLink(LL* myLL)
 {
-	return *(myLL->curr->next);
+	return (myLL->curr->next);
 }
-LL__Link LL__prevLink(LL* myLL)
+LL__Link* LL__prevLink(LL* myLL)
 {
-	return *(myLL->curr->prev);
+	return (myLL->curr->prev);
 }
-LL__Link LL__nextNLinks(LL* myLL, int n)
+LL__Link* LL__nextNLinks(LL* myLL, int n)
 {
 	LL__Link* ptr = myLL->curr;
 	while ((ptr = ptr->next) && --n)
 		;
-	return *ptr;
+	return ptr;
 }
-LL__Link LL__prevNLinks(LL* myLL, int n)
+LL__Link* LL__prevNLinks(LL* myLL, int n)
 {
 	LL__Link* ptr = myLL->curr;
 	while ((ptr = ptr->prev) && --n)
 		;
-	return *ptr;
+	return ptr;
 }
-LL__Link LL__readN(LL* myLL, int n)
+LL__Link* LL__readN(LL* myLL, int n)
 {
 	if (n > 0) {
 		return LL__nextNLinks(myLL, n);
 	} else if (n < 0) {
 		return LL__prevNLinks(myLL, n);
 	} else {
-		return *(myLL->curr);
+		return (myLL->curr);
 	}
 }
 
@@ -309,13 +312,15 @@ void LL__toTail(LL* myLL)
 #define LLinsert(myLL)	LL__insert(&(myLL))
 void LL__insert(LL* myLL)
 {
-	myLL->curr->prev = myLL->curr->prev->next = LL__newLink(SIZEOF(myLL->curr->type), NULL, myLL->curr->prev);
+	myLL->curr->prev = myLL->curr->prev->next = LL__newLink(myLL->curr->type, NULL, myLL->curr->prev);
+	myLL->curr->prev->type = myLL->curr->type;
 }
 
 #define LLappend(myLL)	LL__append(&(myLL))
 void LL__append(LL* myLL)
 {
-	myLL->curr->next = myLL->curr->next->prev = LL__newLink(SIZEOF(myLL->curr->type), NULL, myLL->curr->next);
+	myLL->curr->next = myLL->curr->next->prev = LL__newLink(myLL->curr->type, NULL, myLL->curr->next);
+	myLL->curr->next->type = myLL->curr->type;
 }
 
 /* ==================  			END  Manipulate		  	 ================== */
@@ -349,12 +354,14 @@ int main()
 	printf("> %Lg\n", LLread(longdouble)(ldList));
 	printf("\n");
 
-	LLappend(ldList);
-	*(long double*)(LLgetLink(ldList).elem) = 666.6;
-	LLnext(ldList);
-	printf("> %Lg\n", LLread(longdouble)(ldList));
-	printf("> %Lg\n", *(long double*)(LLnextLink(ldList).elem));
+	printf("sizeof(ld)=%d\tSIZEOF(LONGDOUBLE)=%d\n", (int)sizeof(long double), (int)SIZEOF(LONGDOUBLE));
 
+	LLappend(ldList);
+	*(long double*)(LLnextLink(ldList)->elem) = 666.6;
+	LLnext(ldList);
+	printf("LLnext(ldList);\n");
+	printf("> %Lg\n", LLread(longdouble)(ldList));
+	printf("> %Lg\n", *(long double*)(LLnextLink(ldList)->elem));
 
 }
 #endif

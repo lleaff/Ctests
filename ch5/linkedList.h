@@ -67,17 +67,17 @@ BOOL LL__isTail(LL* myLL);
 
 
 #define LLgetLink(myLL)		LL__getLink(&(myLL))
-LL__Link LL__getLink(LL* myLL);
+LL__Link* LL__getLink(LL* myLL);
 #define LLnextLink(myLL)		LL__nextLink(&(myLL))
-LL__Link LL__nextLink(LL* myLL);
+LL__Link* LL__nextLink(LL* myLL);
 #define LLprevLink(myLL)		LL__prevLink(&(myLL))
-LL__Link LL__prevLink(LL* myLL);
+LL__Link* LL__prevLink(LL* myLL);
 #define LLnextNLinks(myLL, n)	LL__nextNLinks(&(myLL), n)
-LL__Link LL__nextNLinks(LL* myLL, int n);
+LL__Link* LL__nextNLinks(LL* myLL, int n);
 #define LLprevNLinks(myLL, n)	LL__prevNLinks(&(myLL), n)
-LL__Link LL__prevNLinks(LL* myLL, int n);
+LL__Link* LL__prevNLinks(LL* myLL, int n);
 #define LLreadNLink(myLL, n)	LL__readN(&(myLL), n)
-LL__Link LL__readN(LL* myLL, int n);
+LL__Link* LL__readN(LL* myLL, int n);
 
 /* ========================================================================	*
  * 									Move									*
