@@ -12,16 +12,16 @@ typedef enum { FALSE, TRUE } BOOL;
 #define LinkedList LL //Verbose form
 
 typedef struct LL {
-	struct Link* curr;
+	struct LL__Link* curr;
 	int length;
 } LL;
 
-typedef struct Link {
-	struct Link* prev;
-	struct Link* next;
+typedef struct LL__Link {
+	struct LL__Link* prev;
+	struct LL__Link* next;
 	TYPE type;
 	char elem[];
-} Link;
+} LL__Link;
 
 /* ========================================================================	*
  * 								Initialization								*

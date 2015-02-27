@@ -30,7 +30,7 @@ static inline void* mallocdebug(int size)
 /* ========================================================================	*
  * 								Initialization								*
  * ======================================================================== */
-Link* LL__newLink(int size, void* elemMem, Link* prev);
+LL__Link* LL__newLink(int size, void* elemMem, LL__Link* prev);
 static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size);
 static int fillElemMem(const TYPE* type, void* elemMem, va_list* ap);
 
@@ -51,7 +51,7 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 	va_start(ap, typeOrSizeValue);
 	char elemMem[size];
 
-	Link* prev = NULL;
+	LL__Link* prev = NULL;
 	int length;
 	for (length = 0; fillElemMem(&type, &elemMem, &ap); length++) {
 		prev = LL__newLink(size, elemMem, prev);
@@ -63,9 +63,9 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 	return myLinkedList;
 }
 
-Link* LL__newLink(int size, void* elemMem, Link* prev)
+LL__Link* LL__newLink(int size, void* elemMem, LL__Link* prev)
 {
-	Link* myLink = (Link*)malloc(sizeof(Link) + size); /*  Size of the empty struct + size of elem */
+	LL__Link* myLink = (LL__Link*)malloc(sizeof(LL__Link) + size); /*  Size of the empty struct + size of elem */
 	memcpy(myLink->elem, elemMem, size);
 	myLink->prev = prev;
 	myLink->next = NULL;
@@ -260,6 +260,17 @@ void LL__toTail(LL* myLL)
 
 /* ==================  			END  Move			  	 ================== */
 
+/* ========================================================================	*
+ * 									Manipulate								*
+ * ======================================================================== */
+
+#define LLinsert(myLL)	LL__insert(&(myLL))
+void LL__insert(LL* myLL)
+{
+	
+}
+
+/* ==================  			END  Manipulate		  	 ================== */
 
 /* ========================================================================	*
  * 									Tests									*
