@@ -21,7 +21,7 @@ static inline void* mallocdebug(int size)
 	if (!returnptr) {
 		fprintf(stderr, "ERROR: malloc failed, can't allocate %d B\n", size);
 	} else {
-		fprintf(stderr, "DEBUG: malloc success, allocated %d B\n", size);
+		fprintf(stderr, "----- malloc success, allocated %d B\n", size);
 	}
 	return returnptr;
 }
@@ -355,7 +355,6 @@ int main()
 	printf("\n");
 
 	printf("sizeof(ld)=%d\tSIZEOF(LONGDOUBLE)=%d\n", (int)sizeof(long double), (int)SIZEOF(LONGDOUBLE));
-
 	LLappend(ldList);
 	*(long double*)(LLnextLink(ldList)->elem) = 666.6;
 	LLnext(ldList);
