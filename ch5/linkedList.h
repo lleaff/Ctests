@@ -71,16 +71,16 @@ BOOL LL__isTail(LL* myLL);
 /*  Changes the link the passed LinkedList points to,
  *   returns 0 if the current link is tail or head,
  *   returns 1 if the new link is in the middle */
-#define LLnext(myLL)	LL__nextLink(&(myLL))
-int LL__nextLink(LL* myLL);
-#define LLprev(myLL)	LL__prevLink(&(myLL))
-int LL__prevLink(LL* myLL);
+#define LLnext(myLL)	LL__next(&(myLL))
+int LL__next(LL* myLL);
+#define LLprev(myLL)	LL__prev(&(myLL))
+int LL__prev(LL* myLL);
 
 /*  Returns the number of moves not performed due to reaching tail or head  */
-#define LLnextn(myLL, n)	LL__nextNLinks(&(myLL), n)
-int LL__nextNLinks(LL* myLL, int n);
-#define LLprevn(myLL, n)	LL__prevNLinks(&(myLL), n)
-int LL__prevNLinks(LL* myLL, int n);
+#define LLnextn(myLL, n)	LL__nextN(&(myLL), n)
+int LL__nextN(LL* myLL, int n);
+#define LLprevn(myLL, n)	LL__prevN(&(myLL), n)
+int LL__prevN(LL* myLL, int n);
 /*  Moves to the n previous links if n < 0, to the n next links if n > 0,
  *   returns the number of moves not performed due to reaching tail or head  */
 #define LLmove(myLL, n)	LL__moveN(&(myLL), n)

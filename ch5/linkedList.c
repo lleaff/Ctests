@@ -193,13 +193,27 @@ BOOL LL__isTail(LL* myLL)
 	return (myLL->curr->next == NULL);
 }
 
+LL__Link nextLink(LL* myLL)
+{
+	return *(myLL->curr->next);
+}
+LL__Link prevLink(LL* myLL)
+{
+	return *(myLL->curr->prev);
+}
+LL__Link nextNLinks(LL* myLL)
+{
+	while ()
+}
+
+
 /* ==================  			END  Read				 ================== */
 
 /* ========================================================================	*
  * 									Move									*
  * ======================================================================== */
 
-int LL__nextLink(LL* myLL)
+int LL__next(LL* myLL)
 {
 	if (myLL->curr->next != NULL) {
 		myLL->curr = myLL->curr->next;
@@ -208,7 +222,7 @@ int LL__nextLink(LL* myLL)
 		return 0; //Last link
 	}
 }
-int LL__prevLink(LL* myLL)
+int LL__prev(LL* myLL)
 {
 	if (myLL->curr->prev != NULL) {
 		myLL->curr = myLL->curr->prev;
@@ -219,19 +233,19 @@ int LL__prevLink(LL* myLL)
 }
 
 
-int LL__nextNLinks(LL* myLL, int n)
+int LL__nextN(LL* myLL, int n)
 {
 	for (; n > 0; --n) {
-		if (!LL__nextLink(myLL)) {
+		if (!LL__next(myLL)) {
 			break;
 		}
 	}
 	return n;
 }
-int LL__prevNLinks(LL* myLL, int n)
+int LL__prevN(LL* myLL, int n)
 {
 	for (; n > 0; --n) {
-		if (!LL__prevLink(myLL)) {
+		if (!LL__prev(myLL)) {
 			break;
 		}
 	}
@@ -241,9 +255,9 @@ int LL__prevNLinks(LL* myLL, int n)
 int LL__moveN(LL* myLL, int n)
 {
 	if (n > 0) {
-		return LL__nextNLinks(myLL, n);
+		return LL__nextN(myLL, n);
 	} else if (n < 0) {
-		return LL__prevNLinks(myLL, -n);
+		return LL__prevN(myLL, -n);
 	} else {
 		return 0;
 	}
@@ -251,11 +265,11 @@ int LL__moveN(LL* myLL, int n)
 
 void LL__toHead(LL* myLL)
 {
-	while (LL__prevLink(myLL));
+	while (LL__prev(myLL));
 }
 void LL__toTail(LL* myLL)
 {
-	while (LL__prevLink(myLL));
+	while (LL__next(myLL));
 }
 
 /* ==================  			END  Move			  	 ================== */
@@ -267,7 +281,7 @@ void LL__toTail(LL* myLL)
 #define LLinsert(myLL)	LL__insert(&(myLL))
 void LL__insert(LL* myLL)
 {
-	
+
 }
 
 /* ==================  			END  Manipulate		  	 ================== */
