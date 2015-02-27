@@ -65,6 +65,20 @@ BOOL LL__isHead(LL* myLL);
 #define LLisTail(myLL)	LL__isTail(&(myLL))
 BOOL LL__isTail(LL* myLL);
 
+
+#define getLink(myLL)		LL__getLink(&(myLL))
+LL__Link LL__getLink(LL* myLL);
+#define nextLink(myLL)		LL__nextLink(&(myLL))
+LL__Link LL__nextLink(LL* myLL);
+#define prevLink(myLL)		LL__prevLink(&(myLL))
+LL__Link LL__prevLink(LL* myLL);
+#define nextNLinks(myLL, n)	LL__nextNLinks(&(myLL), n)
+LL__Link LL__nextNLinks(LL* myLL, int n);
+#define prevNLinks(myLL, n)	LL__prevNLinks(&(myLL), n)
+LL__Link LL__prevNLinks(LL* myLL, int n);
+#define readNLink(myLL, n)	LL__readN(&(myLL), n)
+LL__Link LL__readN(LL* myLL, int n);
+
 /* ========================================================================	*
  * 									Move									*
  * ======================================================================== */

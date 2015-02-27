@@ -193,17 +193,42 @@ BOOL LL__isTail(LL* myLL)
 	return (myLL->curr->next == NULL);
 }
 
-LL__Link nextLink(LL* myLL)
+LL__Link LL__getLink(LL* myLL)
+{
+	return *(myLL->curr);
+}
+
+LL__Link LL__nextLink(LL* myLL)
 {
 	return *(myLL->curr->next);
 }
-LL__Link prevLink(LL* myLL)
+LL__Link LL__prevLink(LL* myLL)
 {
 	return *(myLL->curr->prev);
 }
-LL__Link nextNLinks(LL* myLL)
+LL__Link LL__nextNLinks(LL* myLL, int n)
 {
-	while ()
+	LL__Link* ptr = myLL->curr;
+	while ((ptr = ptr->next) && --n)
+		;
+	return *ptr;
+}
+LL__Link LL__prevNLinks(LL* myLL, int n)
+{
+	LL__Link* ptr = myLL->curr;
+	while ((ptr = ptr->prev) && --n)
+		;
+	return *ptr;
+}
+LL__Link LL__readN(LL* myLL, int n)
+{
+	if (n > 0) {
+		return LL__nextNLinks(myLL, n);
+	} else if (n < 0) {
+		return LL__prevNLinks(myLL, n);
+	} else {
+		return *(myLL->curr);
+	}
 }
 
 
