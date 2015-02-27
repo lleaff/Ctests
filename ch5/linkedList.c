@@ -1,3 +1,4 @@
+#define DEBUG
 #include "../debug.h"
 
 #include "linkedList.h"
@@ -339,9 +340,21 @@ int main()
 
 	printf("\n================================\n\n");
 
-	LL ldList = LLnew(longdouble)(999.9, 888.8, 777.7, 666.6);
+	LL ldList = LLnew(longdouble)(999.9, 888.8, 777.7, 555.5);
 	printf("length=%d\n", ldList.length);
 	printf("> %Lg\n", LLread(longdouble)(ldList));
+
+	LLprev(ldList);
+	printf("LLprev(ldList);\n");
+	printf("> %Lg\n", LLread(longdouble)(ldList));
+	printf("\n");
+
+	LLappend(ldList);
+	*(long double*)(LLgetLink(ldList).elem) = 666.6;
+	LLnext(ldList);
+	printf("> %Lg\n", LLread(longdouble)(ldList));
+	printf("> %Lg\n", *(long double*)(LLnextLink(ldList).elem));
+
 
 }
 #endif
