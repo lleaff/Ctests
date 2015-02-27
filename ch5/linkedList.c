@@ -66,7 +66,9 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...)
 LL__Link* LL__newLink(int size, void* elemMem, LL__Link* prev)
 {
 	LL__Link* myLink = (LL__Link*)malloc(sizeof(LL__Link) + size); /*  Size of the empty struct + size of elem */
-	memcpy(myLink->elem, elemMem, size);
+	if (elemMem) {
+		memcpy(myLink->elem, elemMem, size);
+	}
 	myLink->prev = prev;
 	myLink->next = NULL;
 	if (prev != NULL) {
@@ -306,7 +308,13 @@ void LL__toTail(LL* myLL)
 #define LLinsert(myLL)	LL__insert(&(myLL))
 void LL__insert(LL* myLL)
 {
+	myLL->curr->prev = myLL->curr->prev->next = LL__newLink(SIZEOF(myLL->curr->type), NULL, myLL->curr->prev);
+}
 
+#define LLappend(myLL)	LL__append(&(myLL))
+void LL__append(LL* myLL)
+{
+	myLL->curr->next = myLL->curr->next->prev = LL__newLink(SIZEOF(myLL->curr->type), NULL, myLL->curr->next);
 }
 
 /* ==================  			END  Manipulate		  	 ================== */

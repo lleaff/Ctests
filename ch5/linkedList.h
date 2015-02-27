@@ -105,4 +105,12 @@ void LL__toHead(LL* myLL);
 #define LLtoTail(myLL)	LL__toTail(&(myLL))
 void LL__toTail(LL* myLL);
 
+/* ========================================================================	*
+ * 									Manipulate								*
+ * ======================================================================== */
+#define LLinsert(myLL)	LL__insert(&(myLL))
+void LL__insert(LL* myLL);
+#define LLappend(myLL)	LL__append(&(myLL))
+void LL__append(LL* myLL);
+
 #endif /* LINKEDLIST_H */
