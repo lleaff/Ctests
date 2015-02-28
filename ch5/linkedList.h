@@ -80,6 +80,23 @@ LL__Link* LL__prevNLinks(LL* myLL, int n);
 LL__Link* LL__readN(LL* myLL, int n);
 
 /* ========================================================================	*
+ * 									Write									*
+ * ======================================================================== */
+#ifndef LLwrite
+/* Usage: LLwrite(type)(myLL, myVar) */
+#define LL__WRITELLCALLPASTER(type)	LL__write ## type ## LL
+#define LLwrite(type)	LL__WRITELLCALLPASTER(type)
+#endif /* LLwrite */
+
+void LL__writecharLL		(LL myLL, char myVar);
+void LL__writeshortLL		(LL myLL, short myVar);
+void LL__writeintLL			(LL myLL, int myVar);
+void LL__writelongLL		(LL myLL, long myVar);
+void LL__writefloatLL		(LL myLL, float myVar);
+void LL__writedoubleLL		(LL myLL, double myVar);
+void LL__writelongdoubleLL	(LL myLL, long double myVar);
+
+/* ========================================================================	*
  * 									Move									*
  * ======================================================================== */
 /*  Changes the link the passed LinkedList points to,

@@ -243,7 +243,7 @@ LL__Link* LL__readN(LL* myLL, int n)
  * 									Write									*
  * ======================================================================== */
 #ifndef LLwrite
-/* Usage: LLwrite(type)(myLL) */
+/* Usage: LLwrite(type)(myLL, myVar) */
 #define LL__WRITELLCALLPASTER(type)	LL__write ## type ## LL
 #define LLwrite(type)	LL__WRITELLCALLPASTER(type)
 #endif /* LLwrite */
