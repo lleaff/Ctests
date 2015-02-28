@@ -398,6 +398,7 @@ int main()
 	*(long double*)(LLnextLink(ldList)->elem) = 666.6;
 	LLnext(ldList);
 	printf("LLnext(ldList);\n");
+	LLwrite(longdouble)(ldList, 111.1);
 	printf("> %Lg\n", LLread(longdouble)(ldList));
 	if (!LLisTail(ldList)) {
 		printf("> %Lg\n", *(long double*)LLnextLink(ldList)->elem);
