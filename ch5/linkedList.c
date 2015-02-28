@@ -240,6 +240,46 @@ LL__Link* LL__readN(LL* myLL, int n)
 /* ==================  			END  Read				 ================== */
 
 /* ========================================================================	*
+ * 									Write									*
+ * ======================================================================== */
+#ifndef LLwrite
+/* Usage: LLwrite(type)(myLL) */
+#define LL__WRITELLCALLPASTER(type)	LL__write ## type ## LL
+#define LLwrite(type)	LL__WRITELLCALLPASTER(type)
+#endif /* LLwrite */
+
+void LL__writecharLL(LL myLL, char myVar)
+{
+	*(char*)((myLL.curr)->elem) = (char)myVar;
+}
+void LL__writeshortLL(LL myLL, short myVar)
+{
+	*(short*)((myLL.curr)->elem) = (short)myVar;
+}
+void LL__writeintLL(LL myLL, int myVar)
+{
+	*(int*)((myLL.curr)->elem) = (int)myVar;
+}
+void LL__writelongLL(LL myLL, long myVar)
+{
+	*(long*)((myLL.curr)->elem) = (long)myVar;
+}
+void LL__writefloatLL(LL myLL, float myVar)
+{
+	*(float*)((myLL.curr)->elem) = (float)myVar;
+}
+void LL__writedoubleLL(LL myLL, double myVar)
+{
+	*(double*)((myLL.curr)->elem) = (double)myVar;
+}
+void LL__writelongdoubleLL(LL myLL, long double myVar)
+{
+	*(long double*)((myLL.curr)->elem) = (long double)myVar;
+}
+
+/* ==================  			END  Write				 ================== */
+
+/* ========================================================================	*
  * 									Move									*
  * ======================================================================== */
 
