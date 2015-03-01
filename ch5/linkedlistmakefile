@@ -1,2 +1,2 @@
 all:
-	gcc linkedList.c types.c -std=c99 -o linkedList -g
+	clang linkedList.c types.c -std=c99 -o linkedList -c
