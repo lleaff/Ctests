@@ -30,7 +30,7 @@ static inline void* mallocdebug(int size)
 /* ========================================================================	*
  * 								Initialization								*
  * ======================================================================== */
-LL__Link* LL__newLink(int size, void* elemMem, LL__Link* prev);
+LL__Link* LL__newLink(TYPE type, void* elemMem, LL__Link* prev);
 static void resolveTypeAndSizeFromString(char* myString, int myStringValue, TYPE* type, int* size);
 static int fillElemMem(const TYPE* type, void* elemMem, va_list* ap);
 
