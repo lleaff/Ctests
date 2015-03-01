@@ -12,7 +12,9 @@ typedef enum { FALSE, TRUE } BOOL;
 /* ========================================================================	*
  * 								The structs									*
  * ======================================================================== */
+#ifndef LinkedList
 #define LinkedList LL //Verbose form
+#endif /* LinkedList */
 
 typedef struct LL {
 	struct LL__Link* curr;
