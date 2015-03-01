@@ -1,5 +1,6 @@
 /* A linked list implementation with a heavy focus on user-friendliness over performance */
 /*  General function syntax is LLaction(LLstruct) or LLaction(type)(LLstruct) */
+/*  TODO Possible improvements: use C11 _Generic() keyword, use union, clean LL__LLnew's early steps */
 
 #ifndef LINKEDLIST_H
 #include "types.h"
