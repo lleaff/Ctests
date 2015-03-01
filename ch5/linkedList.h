@@ -1,3 +1,6 @@
+/* A linked list implementation with a heavy focus on user-friendliness over performance */
+/*  General function syntax is LLaction(LLstruct) or LLaction(type)(LLstruct) */
+
 #ifndef LINKEDLIST_H
 #include "types.h"
 
@@ -27,7 +30,7 @@ typedef struct LL__Link {
  * 								Initialization								*
  * ======================================================================== */
 #ifndef LL__CallLLnew
-/* Usage: LLnew(type)(myLL) */
+/* Usage: LLnew(type)(value1, value2, value3, ...) */
 #define LL__CallLLnew(typeOrSize, ...)	\
 	LL__LLnew(#typeOrSize, (int)typeOrSize, __VA_ARGS__, LastArgId_LLD)
 LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...);
