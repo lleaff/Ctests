@@ -45,6 +45,15 @@ LL LL__LLnew(char* typeOrSize, int typeOrSizeValue, ...);
 #endif /* LL__CallLLnew */
 
 /* ========================================================================	*
+ * 								Destruction									*
+ * ======================================================================== */
+
+#define LLrmLink(myLL)	LL__rmLink(&(myLL))
+int LL__rmLink(LL* myLL);
+#define LLrm(myLL)	LL__rm(&(myLL))
+void LL__rm(LL* myLL);
+
+/* ========================================================================	*
  * 									Read									*
  * ======================================================================== */
 #ifndef LLread

@@ -152,6 +152,50 @@ inline static void resolveTypeAndSizeFromString(char* myString, int myStringValu
 /* =====================      END  Initialization 	  ===================== */
 
 /* ========================================================================	*
+ * 								Destruction									*
+ * ======================================================================== */
+
+#define LLrmLink(myLL)	LL__rmLink(&(myLL))
+int LL__rmLink(LL* myLL)
+{
+	LL__Link* curr = myLL->curr;
+	if (!LL__isHead(myLL)) {
+		if (LL__isTail(myLL)) {
+			LL__prevLink(myLL)->next = NULL;
+		} else {
+			LL__prevLink(myLL)->next = LL__nextLink(myLL);
+			LL__nextLink(myLL)->prev = LL__prevLink(myLL);
+		}
+		LL__prev(myLL);
+		free(curr->elem); free(curr);
+		(myLL->length)--;
+		return 1;
+	} else if (!LL__isTail(myLL)) {
+		LL__nextLink(myLL)->prev = NULL;
+		LL__next(myLL);
+		free(curr->elem); free(curr);
+		(myLL->length)--;
+		return 1;
+	} else {
+		myLL->curr = NULL;
+		free(curr->elem); free(curr);
+		(myLL->length)--;
+		return 0;
+	}
+}
+
+#define LLrm(myLL)	LL__rm(&(myLL))
+void LL__rm(LL* myLL)
+{
+	LL__toHead(myLL);
+	while (LL__rmLink(myLL))
+		;
+	free(myLL);
+}
+
+/* =====================      END  Destruction	 	  ===================== */
+
+/* ========================================================================	*
  * 									Read									*
  * ======================================================================== */
 #ifndef LLread
