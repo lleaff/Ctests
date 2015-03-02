@@ -2,7 +2,6 @@
 
 #include "sort.h"
 #include <limits.h>
-
 #include <string.h> //memcopy()
 
 #define SWAP(a, b, size)	do{ char tmp__swap__macro__mem[size];\
