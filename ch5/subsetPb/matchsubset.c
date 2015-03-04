@@ -3,12 +3,12 @@
 
 #include "sort.h"
 
-int findAddSubset(int arrSize, int values[], int subset[], int match)
+int findSubsetSum(int arrSize, int values[], int subset[], int target)
 {
 	int sortLog[arrSize];
 	int i, j;
 	int found = 0;
-	for (i = 0; i < arrSize; ++i) {
+	for (i = 0; i < arrSize && i < ; ++i) {
 
 	}
 
@@ -25,7 +25,7 @@ int main()
 	int subset[SUBSET__TESTVALUESC];
 	int target = 100000000;
 
-	if (findAddSubset(SUBSET__TESTVALUESC, values, subset, target)) {
+	if (findSubsetSum(SUBSET__TESTVALUESC, values, subset, target)) {
 		int i, x = 0;
 		for (i = 0; i < SUBSET__TESTVALUESC; i++) {
 			if (subset[i]) {
